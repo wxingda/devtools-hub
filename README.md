@@ -94,7 +94,6 @@ python -m http.server 8000
 
 ## 📸 截图
 
-![主界面](screenshots/main.png)
 ![密码生成器](screenshots/password-generator.png)
 ![颜色调色板](screenshots/color-palette.png)
 
