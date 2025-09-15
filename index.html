@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevTools Hub - 开发者工具集合</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-tools"></i> DevTools Hub</h1>
+                <p>专为开发者打造的实用工具集合</p>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <nav class="nav">
+            <button class="nav-btn active" data-tool="password-generator">
+                <i class="fas fa-key"></i>
+                <span>密码生成器</span>
+            </button>
+            <button class="nav-btn" data-tool="color-palette">
+                <i class="fas fa-palette"></i>
+                <span>颜色调色板</span>
+            </button>
+            <button class="nav-btn" data-tool="regex-tester">
+                <i class="fas fa-search"></i>
+                <span>正则测试器</span>
+            </button>
+            <button class="nav-btn" data-tool="json-formatter">
+                <i class="fas fa-code"></i>
+                <span>JSON格式化</span>
+            </button>
+            <button class="nav-btn" data-tool="url-encoder">
+                <i class="fas fa-link"></i>
+                <span>URL编码器</span>
+            </button>
+            <button class="nav-btn" data-tool="base64-encoder">
+                <i class="fas fa-file-code"></i>
+                <span>Base64编码</span>
+            </button>
+            <button class="nav-btn" data-tool="hash-calculator">
+                <i class="fas fa-calculator"></i>
+                <span>哈希计算器</span>
+            </button>
+        </nav>
+
+        <main class="main">
+            <!-- 密码生成器 -->
+            <div class="tool active" id="password-generator">
+                <div class="tool-header">
+                    <h2><i class="fas fa-key"></i> 密码生成器</h2>
+                    <p>生成安全的随机密码</p>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="passwordLength">密码长度: <span id="lengthValue">16</span></label>
+                        <input type="range" id="passwordLength" min="4" max="128" value="16">
+                    </div>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="includeUppercase" checked> 包含大写字母 (A-Z)</label>
+                        <label><input type="checkbox" id="includeLowercase" checked> 包含小写字母 (a-z)</label>
+                        <label><input type="checkbox" id="includeNumbers" checked> 包含数字 (0-9)</label>
+                        <label><input type="checkbox" id="includeSymbols"> 包含特殊字符 (!@#$...)</label>
+                    </div>
+                    <button class="btn primary" onclick="generatePassword()">
+                        <i class="fas fa-refresh"></i> 生成密码
+                    </button>
+                    <div class="result-group">
+                        <div class="result-box">
+                            <input type="text" id="generatedPassword" placeholder="生成的密码将显示在这里..." readonly>
+                            <button class="copy-btn" onclick="copyPassword()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <span>密码强度: </span>
+                            <div class="strength-meter">
+                                <div class="strength-bar" id="strengthBar"></div>
+                            </div>
+                            <span id="strengthText">中等</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 颜色调色板 -->
+            <div class="tool" id="color-palette">
+                <div class="tool-header">
+                    <h2><i class="fas fa-palette"></i> 颜色调色板</h2>
+                    <p>颜色选择和格式转换</p>
+                </div>
+                <div class="tool-content">
+                    <div class="color-picker-section">
+                        <div class="color-display">
+                            <div class="color-preview" id="colorPreview"></div>
+                            <input type="color" id="colorPicker" value="#3498db">
+                        </div>
+                        <div class="color-inputs">
+                            <div class="input-group">
+                                <label for="hexInput">HEX</label>
+                                <input type="text" id="hexInput" value="#3498db">
+                            </div>
+                            <div class="input-group">
+                                <label for="rgbInput">RGB</label>
+                                <input type="text" id="rgbInput" value="rgb(52, 152, 219)">
+                            </div>
+                            <div class="input-group">
+                                <label for="hslInput">HSL</label>
+                                <input type="text" id="hslInput" value="hsl(204, 70%, 53%)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="color-palette">
+                        <h3>调色板</h3>
+                        <div class="palette-colors" id="paletteColors"></div>
+                        <button class="btn secondary" onclick="generatePalette()">
+                            <i class="fas fa-refresh"></i> 生成新调色板
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 正则表达式测试器 -->
+            <div class="tool" id="regex-tester">
+                <div class="tool-header">
+                    <h2><i class="fas fa-search"></i> 正则表达式测试器</h2>
+                    <p>实时测试和验证正则表达式</p>
+                </div>
+                <div class="tool-content">
+                    <div class="regex-section">
+                        <div class="form-group">
+                            <label for="regexPattern">正则表达式</label>
+                            <input type="text" id="regexPattern" placeholder="输入正则表达式..." value="\\b\\w+@\\w+\\.\\w+\\b">
+                        </div>
+                        <div class="regex-flags">
+                            <label><input type="checkbox" id="globalFlag" checked> 全局匹配 (g)</label>
+                            <label><input type="checkbox" id="ignoreCaseFlag"> 忽略大小写 (i)</label>
+                            <label><input type="checkbox" id="multilineFlag"> 多行模式 (m)</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="testString">测试字符串</label>
+                            <textarea id="testString" rows="8" placeholder="输入要测试的文本...">
+联系我们：
+邮箱：admin@example.com
+备用邮箱：support@test.org
+电话：+86 138-0013-8000
+网站：https://www.example.com
+            </textarea>
+                        </div>
+                        <div class="regex-results">
+                            <h3>匹配结果 (<span id="matchCount">0</span> 个匹配)</h3>
+                            <div class="matches-list" id="matchesList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JSON格式化器 -->
+            <div class="tool" id="json-formatter">
+                <div class="tool-header">
+                    <h2><i class="fas fa-code"></i> JSON格式化器</h2>
+                    <p>美化和压缩JSON数据</p>
+                </div>
+                <div class="tool-content">
+                    <div class="json-section">
+                        <div class="json-input">
+                            <label for="jsonInput">输入JSON</label>
+                            <textarea id="jsonInput" rows="12" placeholder="在这里粘贴或输入JSON数据...">
+{
+  "name": "DevTools Hub",
+  "version": "1.0.0",
+  "description": "开发者工具集合",
+  "tools": ["password-generator", "color-palette", "regex-tester", "json-formatter"],
+  "features": {
+    "offline": true,
+    "responsive": true,
+    "darkMode": true
+  }
+}
+                            </textarea>
+                        </div>
+                        <div class="json-controls">
+                            <button class="btn primary" onclick="formatJSON()">
+                                <i class="fas fa-magic"></i> 格式化
+                            </button>
+                            <button class="btn secondary" onclick="compressJSON()">
+                                <i class="fas fa-compress"></i> 压缩
+                            </button>
+                            <button class="btn secondary" onclick="validateJSON()">
+                                <i class="fas fa-check"></i> 验证
+                            </button>
+                        </div>
+                        <div class="json-output">
+                            <label for="jsonOutput">格式化结果</label>
+                            <textarea id="jsonOutput" rows="12" readonly></textarea>
+                            <div class="json-info">
+                                <span id="jsonStatus"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- URL编码器 -->
+            <div class="tool" id="url-encoder">
+                <div class="tool-header">
+                    <h2><i class="fas fa-link"></i> URL编码/解码器</h2>
+                    <p>URL字符串编码解码</p>
+                </div>
+                <div class="tool-content">
+                    <div class="url-section">
+                        <div class="form-group">
+                            <label for="urlInput">输入URL或文本</label>
+                            <textarea id="urlInput" rows="5" placeholder="输入需要编码或解码的URL...">https://example.com/search?q=开发者工具&type=utility</textarea>
+                        </div>
+                        <div class="url-controls">
+                            <button class="btn primary" onclick="encodeURL()">
+                                <i class="fas fa-lock"></i> URL编码
+                            </button>
+                            <button class="btn secondary" onclick="decodeURL()">
+                                <i class="fas fa-unlock"></i> URL解码
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label for="urlOutput">结果</label>
+                            <textarea id="urlOutput" rows="5" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Base64编码器 -->
+            <div class="tool" id="base64-encoder">
+                <div class="tool-header">
+                    <h2><i class="fas fa-file-code"></i> Base64编码器</h2>
+                    <p>Base64编码解码工具</p>
+                </div>
+                <div class="tool-content">
+                    <div class="base64-section">
+                        <div class="form-group">
+                            <label for="base64Input">输入文本</label>
+                            <textarea id="base64Input" rows="6" placeholder="输入需要编码或解码的文本...">Hello, DevTools Hub! 你好，开发者工具集合！</textarea>
+                        </div>
+                        <div class="base64-controls">
+                            <button class="btn primary" onclick="encodeBase64()">
+                                <i class="fas fa-upload"></i> Base64编码
+                            </button>
+                            <button class="btn secondary" onclick="decodeBase64()">
+                                <i class="fas fa-download"></i> Base64解码
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label for="base64Output">结果</label>
+                            <textarea id="base64Output" rows="6" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 哈希计算器 -->
+            <div class="tool" id="hash-calculator">
+                <div class="tool-header">
+                    <h2><i class="fas fa-calculator"></i> 哈希计算器</h2>
+                    <p>MD5、SHA1、SHA256计算</p>
+                </div>
+                <div class="tool-content">
+                    <div class="hash-section">
+                        <div class="form-group">
+                            <label for="hashInput">输入文本</label>
+                            <textarea id="hashInput" rows="5" placeholder="输入需要计算哈希值的文本...">DevTools Hub - 开发者工具集合</textarea>
+                        </div>
+                        <div class="hash-results">
+                            <div class="hash-result">
+                                <label>MD5:</label>
+                                <div class="result-box">
+                                    <input type="text" id="md5Result" readonly>
+                                    <button class="copy-btn" onclick="copyHash('md5Result')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hash-result">
+                                <label>SHA1:</label>
+                                <div class="result-box">
+                                    <input type="text" id="sha1Result" readonly>
+                                    <button class="copy-btn" onclick="copyHash('sha1Result')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hash-result">
+                                <label>SHA256:</label>
+                                <div class="result-box">
+                                    <input type="text" id="sha256Result" readonly>
+                                    <button class="copy-btn" onclick="copyHash('sha256Result')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 DevTools Hub. Made with ❤️ for developers.</p>
+            <div class="footer-links">
+                <a href="https://github.com/your-username/devtools-hub" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="#" onclick="showAbout()">
+                    <i class="fas fa-info-circle"></i> 关于
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
