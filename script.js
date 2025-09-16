@@ -4,6 +4,7 @@ let currentTool = 'password-generator';
 // DOM加载完成后初始化
 document.addEventListener('DOMContentLoaded', function () {
     initializeApp();
+    setupKeyboardShortcuts();
 });
 
 // 初始化应用
@@ -24,6 +25,109 @@ function initializeApp() {
 
     // 初始化正则表达式测试
     testRegex();
+    
+    // 添加页面加载动画
+    addPageTransitions();
+}
+
+// 设置键盘快捷键
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', function(e) {
+        // Alt + 数字键切换工具
+        if (e.altKey && !e.ctrlKey && !e.shiftKey) {
+            const toolKeys = {
+                '1': 'password-generator',
+                '2': 'color-palette', 
+                '3': 'regex-tester',
+                '4': 'json-formatter',
+                '5': 'url-encoder',
+                '6': 'base64-encoder',
+                '7': 'hash-calculator',
+                '8': 'timestamp-converter',
+                '9': 'qr-generator',
+                '0': 'text-diff'
+            };
+            
+            if (toolKeys[e.key]) {
+                e.preventDefault();
+                switchTool(toolKeys[e.key]);
+            }
+        }
+        
+        // Ctrl/Cmd + K 清空当前工具
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            clearCurrentTool();
+        }
+        
+        // Ctrl/Cmd + D 切换主题
+        if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+            e.preventDefault();
+            toggleTheme();
+        }
+        
+        // ESC 键清空焦点
+        if (e.key === 'Escape') {
+            document.activeElement.blur();
+        }
+    });
+}
+
+// 清空当前工具
+function clearCurrentTool() {
+    switch(currentTool) {
+        case 'password-generator':
+            document.getElementById('generatedPassword').value = '';
+            break;
+        case 'json-formatter':
+            document.getElementById('jsonInput').value = '';
+            document.getElementById('jsonOutput').value = '';
+            break;
+        case 'url-encoder':
+            document.getElementById('urlInput').value = '';
+            document.getElementById('urlOutput').value = '';
+            break;
+        case 'base64-encoder':
+            document.getElementById('base64Input').value = '';
+            document.getElementById('base64Output').value = '';
+            break;
+        case 'hash-calculator':
+            document.getElementById('hashInput').value = '';
+            calculateHashes();
+            break;
+        case 'timestamp-converter':
+            document.getElementById('timestampInput').value = '';
+            document.getElementById('datetimeInput').value = '';
+            document.getElementById('timestampResult').value = '';
+            document.getElementById('datetimeResult').value = '';
+            break;
+        case 'qr-generator':
+            document.getElementById('qrText').value = '';
+            document.getElementById('qrDisplay').innerHTML = '<p>点击"生成二维码"按钮创建二维码</p>';
+            break;
+        case 'text-diff':
+            clearDiff();
+            break;
+    }
+}
+
+// 添加页面过渡动画
+function addPageTransitions() {
+    const tools = document.querySelectorAll('.tool');
+    tools.forEach((tool, index) => {
+        tool.style.opacity = '0';
+        tool.style.transform = 'translateY(20px)';
+        tool.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    });
+    
+    // 显示当前工具
+    setTimeout(() => {
+        const activeTool = document.querySelector('.tool.active');
+        if (activeTool) {
+            activeTool.style.opacity = '1';
+            activeTool.style.transform = 'translateY(0)';
+        }
+    }, 100);
 }
 
 // 设置导航
@@ -41,17 +145,51 @@ function setupNavigation() {
 
 // 切换工具
 function switchTool(toolId) {
+    // 如果已经是当前工具，直接返回
+    if (currentTool === toolId) return;
+    
+    const currentToolElement = document.querySelector(`.tool.active`);
+    const newToolElement = document.getElementById(toolId);
+    
+    // 淡出当前工具
+    if (currentToolElement) {
+        currentToolElement.style.opacity = '0';
+        currentToolElement.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+            currentToolElement.classList.remove('active');
+            currentToolElement.style.transform = 'translateY(20px)';
+        }, 150);
+    }
+    
     // 更新导航按钮状态
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tool === toolId);
     });
-
-    // 显示对应工具
-    document.querySelectorAll('.tool').forEach(tool => {
-        tool.classList.toggle('active', tool.id === toolId);
-    });
-
-    currentTool = toolId;
+    
+    // 淡入新工具
+    setTimeout(() => {
+        if (newToolElement) {
+            newToolElement.classList.add('active');
+            newToolElement.style.opacity = '0';
+            newToolElement.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                newToolElement.style.opacity = '1';
+                newToolElement.style.transform = 'translateY(0)';
+            }, 50);
+        }
+        currentTool = toolId;
+    }, 150);
+    
+    // 添加点击反馈动画
+    const activeNavBtn = document.querySelector(`[data-tool="${toolId}"]`);
+    if (activeNavBtn) {
+        activeNavBtn.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            activeNavBtn.style.transform = '';
+        }, 100);
+    }
 }
 
 // 设置主题切换
@@ -638,4 +776,195 @@ function showAbout() {
 ✅ 开源免费
 
 Made with ❤️ for developers`);
+}
+
+// 时间戳转换器功能
+function convertTimestamp() {
+    const timestampInput = document.getElementById('timestampInput').value;
+    const timestampResult = document.getElementById('timestampResult');
+    
+    if (timestampInput) {
+        const timestamp = parseInt(timestampInput);
+        const date = new Date(timestamp * 1000);
+        timestampResult.value = date.toLocaleString();
+        updateTimestampFormats(date);
+    }
+}
+
+function convertDateTime() {
+    const datetimeInput = document.getElementById('datetimeInput').value;
+    const datetimeResult = document.getElementById('datetimeResult');
+    
+    if (datetimeInput) {
+        const date = new Date(datetimeInput);
+        const timestamp = Math.floor(date.getTime() / 1000);
+        datetimeResult.value = timestamp.toString();
+        updateTimestampFormats(date);
+    }
+}
+
+function setCurrentTimestamp() {
+    const now = new Date();
+    const timestamp = Math.floor(now.getTime() / 1000);
+    document.getElementById('timestampInput').value = timestamp;
+    convertTimestamp();
+}
+
+function setCurrentDateTime() {
+    const now = new Date();
+    const isoString = now.toISOString().slice(0, 16);
+    document.getElementById('datetimeInput').value = isoString;
+    convertDateTime();
+}
+
+function updateTimestampFormats(date) {
+    document.getElementById('isoFormat').value = date.toISOString();
+    document.getElementById('utcFormat').value = date.toUTCString();
+    document.getElementById('localFormat').value = date.toLocaleString();
+}
+
+// 添加时间戳输入监听器
+document.addEventListener('DOMContentLoaded', function() {
+    const timestampInput = document.getElementById('timestampInput');
+    const datetimeInput = document.getElementById('datetimeInput');
+    
+    if (timestampInput) {
+        timestampInput.addEventListener('input', convertTimestamp);
+    }
+    
+    if (datetimeInput) {
+        datetimeInput.addEventListener('input', convertDateTime);
+    }
+    
+    // 初始化时间戳转换器
+    setCurrentTimestamp();
+});
+
+// 二维码生成器功能
+function generateQR() {
+    const text = document.getElementById('qrText').value;
+    const size = document.getElementById('qrSize').value;
+    const level = document.getElementById('qrLevel').value;
+    const qrDisplay = document.getElementById('qrDisplay');
+    const downloadBtn = document.getElementById('downloadQR');
+    
+    if (!text.trim()) {
+        qrDisplay.innerHTML = '<p style="color: #e74c3c;">请输入要生成二维码的内容</p>';
+        downloadBtn.style.display = 'none';
+        return;
+    }
+    
+    // 使用Google Chart API生成二维码
+    const qrUrl = `https://chart.googleapis.com/chart?chs=${size}x${size}&cht=qr&chl=${encodeURIComponent(text)}&choe=UTF-8&chld=${level}|0`;
+    
+    qrDisplay.innerHTML = `
+        <img src="${qrUrl}" 
+             alt="QR Code" 
+             style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;"
+             onload="document.getElementById('downloadQR').style.display = 'inline-block'">
+    `;
+    
+    // 存储二维码URL供下载使用
+    window.currentQrUrl = qrUrl;
+}
+
+function downloadQR() {
+    if (window.currentQrUrl) {
+        const link = document.createElement('a');
+        link.href = window.currentQrUrl;
+        link.download = 'qrcode.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+}
+
+// 文本差异对比功能
+function compareTexts() {
+    const textA = document.getElementById('textA').value;
+    const textB = document.getElementById('textB').value;
+    const diffResult = document.getElementById('diffResult');
+    const diffStats = document.getElementById('diffStats');
+    
+    if (!textA.trim() && !textB.trim()) {
+        diffResult.innerHTML = '<p style="color: #e74c3c;">请输入要对比的文本</p>';
+        diffStats.textContent = '请输入文本进行对比';
+        return;
+    }
+    
+    const linesA = textA.split('\n');
+    const linesB = textB.split('\n');
+    
+    let html = '<div class="diff-content">';
+    let addedLines = 0;
+    let removedLines = 0;
+    let modifiedLines = 0;
+    
+    const maxLines = Math.max(linesA.length, linesB.length);
+    
+    for (let i = 0; i < maxLines; i++) {
+        const lineA = linesA[i] || '';
+        const lineB = linesB[i] || '';
+        
+        if (lineA === lineB) {
+            // 相同行
+            if (lineA !== '') {
+                html += `<div class="diff-line unchanged">
+                    <span class="line-number">${i + 1}</span>
+                    <span class="line-content">${escapeHtml(lineA)}</span>
+                </div>`;
+            }
+        } else {
+            // 不同行
+            if (lineA && !lineB) {
+                // 删除的行
+                html += `<div class="diff-line removed">
+                    <span class="line-number">-</span>
+                    <span class="line-content">${escapeHtml(lineA)}</span>
+                </div>`;
+                removedLines++;
+            } else if (!lineA && lineB) {
+                // 添加的行
+                html += `<div class="diff-line added">
+                    <span class="line-number">+</span>
+                    <span class="line-content">${escapeHtml(lineB)}</span>
+                </div>`;
+                addedLines++;
+            } else {
+                // 修改的行
+                html += `<div class="diff-line removed">
+                    <span class="line-number">-</span>
+                    <span class="line-content">${escapeHtml(lineA)}</span>
+                </div>`;
+                html += `<div class="diff-line added">
+                    <span class="line-number">+</span>
+                    <span class="line-content">${escapeHtml(lineB)}</span>
+                </div>`;
+                modifiedLines++;
+            }
+        }
+    }
+    
+    html += '</div>';
+    diffResult.innerHTML = html;
+    
+    // 更新统计信息
+    diffStats.innerHTML = `
+        <span style="color: #27ae60;">+${addedLines} 添加</span>
+        <span style="color: #e74c3c;">-${removedLines} 删除</span>
+        <span style="color: #f39c12;">${modifiedLines} 修改</span>
+    `;
+}
+
+function clearDiff() {
+    document.getElementById('textA').value = '';
+    document.getElementById('textB').value = '';
+    document.getElementById('diffResult').innerHTML = '';
+    document.getElementById('diffStats').textContent = '点击"对比文本"查看差异';
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }

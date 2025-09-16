@@ -1,0 +1,103 @@
+{
+  "name": "DevTools Hub",
+  "short_name": "DevTools Hub",
+  "description": "一站式开发者工具集合，包含密码生成器、颜色调色板、正则测试器等实用工具",
+  "version": "1.0.0",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3498db",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "zh-CN",
+  "categories": ["developer", "utilities", "productivity"],
+  "icons": [
+    {
+      "src": "icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "密码生成器",
+      "short_name": "密码",
+      "description": "生成安全的随机密码",
+      "url": "/?tool=password-generator",
+      "icons": [
+        {
+          "src": "icons/shortcut-password.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "二维码生成器",
+      "short_name": "二维码",
+      "description": "生成二维码",
+      "url": "/?tool=qr-generator",
+      "icons": [
+        {
+          "src": "icons/shortcut-qr.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "JSON格式化",
+      "short_name": "JSON",
+      "description": "格式化和验证JSON",
+      "url": "/?tool=json-formatter",
+      "icons": [
+        {
+          "src": "icons/shortcut-json.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}
