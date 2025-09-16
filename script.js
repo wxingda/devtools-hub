@@ -25,19 +25,19 @@ function initializeApp() {
 
     // 初始化正则表达式测试
     testRegex();
-    
+
     // 添加页面加载动画
     addPageTransitions();
 }
 
 // 设置键盘快捷键
 function setupKeyboardShortcuts() {
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         // Alt + 数字键切换工具
         if (e.altKey && !e.ctrlKey && !e.shiftKey) {
             const toolKeys = {
                 '1': 'password-generator',
-                '2': 'color-palette', 
+                '2': 'color-palette',
                 '3': 'regex-tester',
                 '4': 'json-formatter',
                 '5': 'url-encoder',
@@ -47,25 +47,25 @@ function setupKeyboardShortcuts() {
                 '9': 'qr-generator',
                 '0': 'text-diff'
             };
-            
+
             if (toolKeys[e.key]) {
                 e.preventDefault();
                 switchTool(toolKeys[e.key]);
             }
         }
-        
+
         // Ctrl/Cmd + K 清空当前工具
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
             e.preventDefault();
             clearCurrentTool();
         }
-        
+
         // Ctrl/Cmd + D 切换主题
         if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
             e.preventDefault();
             toggleTheme();
         }
-        
+
         // ESC 键清空焦点
         if (e.key === 'Escape') {
             document.activeElement.blur();
@@ -75,7 +75,7 @@ function setupKeyboardShortcuts() {
 
 // 清空当前工具
 function clearCurrentTool() {
-    switch(currentTool) {
+    switch (currentTool) {
         case 'password-generator':
             document.getElementById('generatedPassword').value = '';
             break;
@@ -119,7 +119,7 @@ function addPageTransitions() {
         tool.style.transform = 'translateY(20px)';
         tool.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
     });
-    
+
     // 显示当前工具
     setTimeout(() => {
         const activeTool = document.querySelector('.tool.active');
@@ -147,33 +147,33 @@ function setupNavigation() {
 function switchTool(toolId) {
     // 如果已经是当前工具，直接返回
     if (currentTool === toolId) return;
-    
+
     const currentToolElement = document.querySelector(`.tool.active`);
     const newToolElement = document.getElementById(toolId);
-    
+
     // 淡出当前工具
     if (currentToolElement) {
         currentToolElement.style.opacity = '0';
         currentToolElement.style.transform = 'translateY(-20px)';
-        
+
         setTimeout(() => {
             currentToolElement.classList.remove('active');
             currentToolElement.style.transform = 'translateY(20px)';
         }, 150);
     }
-    
+
     // 更新导航按钮状态
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tool === toolId);
     });
-    
+
     // 淡入新工具
     setTimeout(() => {
         if (newToolElement) {
             newToolElement.classList.add('active');
             newToolElement.style.opacity = '0';
             newToolElement.style.transform = 'translateY(20px)';
-            
+
             setTimeout(() => {
                 newToolElement.style.opacity = '1';
                 newToolElement.style.transform = 'translateY(0)';
@@ -181,7 +181,7 @@ function switchTool(toolId) {
         }
         currentTool = toolId;
     }, 150);
-    
+
     // 添加点击反馈动画
     const activeNavBtn = document.querySelector(`[data-tool="${toolId}"]`);
     if (activeNavBtn) {
@@ -782,7 +782,7 @@ Made with ❤️ for developers`);
 function convertTimestamp() {
     const timestampInput = document.getElementById('timestampInput').value;
     const timestampResult = document.getElementById('timestampResult');
-    
+
     if (timestampInput) {
         const timestamp = parseInt(timestampInput);
         const date = new Date(timestamp * 1000);
@@ -794,7 +794,7 @@ function convertTimestamp() {
 function convertDateTime() {
     const datetimeInput = document.getElementById('datetimeInput').value;
     const datetimeResult = document.getElementById('datetimeResult');
-    
+
     if (datetimeInput) {
         const date = new Date(datetimeInput);
         const timestamp = Math.floor(date.getTime() / 1000);
@@ -824,18 +824,18 @@ function updateTimestampFormats(date) {
 }
 
 // 添加时间戳输入监听器
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const timestampInput = document.getElementById('timestampInput');
     const datetimeInput = document.getElementById('datetimeInput');
-    
+
     if (timestampInput) {
         timestampInput.addEventListener('input', convertTimestamp);
     }
-    
+
     if (datetimeInput) {
         datetimeInput.addEventListener('input', convertDateTime);
     }
-    
+
     // 初始化时间戳转换器
     setCurrentTimestamp();
 });
@@ -847,23 +847,23 @@ function generateQR() {
     const level = document.getElementById('qrLevel').value;
     const qrDisplay = document.getElementById('qrDisplay');
     const downloadBtn = document.getElementById('downloadQR');
-    
+
     if (!text.trim()) {
         qrDisplay.innerHTML = '<p style="color: #e74c3c;">请输入要生成二维码的内容</p>';
         downloadBtn.style.display = 'none';
         return;
     }
-    
+
     // 使用Google Chart API生成二维码
     const qrUrl = `https://chart.googleapis.com/chart?chs=${size}x${size}&cht=qr&chl=${encodeURIComponent(text)}&choe=UTF-8&chld=${level}|0`;
-    
+
     qrDisplay.innerHTML = `
         <img src="${qrUrl}" 
              alt="QR Code" 
              style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px;"
              onload="document.getElementById('downloadQR').style.display = 'inline-block'">
     `;
-    
+
     // 存储二维码URL供下载使用
     window.currentQrUrl = qrUrl;
 }
@@ -885,27 +885,27 @@ function compareTexts() {
     const textB = document.getElementById('textB').value;
     const diffResult = document.getElementById('diffResult');
     const diffStats = document.getElementById('diffStats');
-    
+
     if (!textA.trim() && !textB.trim()) {
         diffResult.innerHTML = '<p style="color: #e74c3c;">请输入要对比的文本</p>';
         diffStats.textContent = '请输入文本进行对比';
         return;
     }
-    
+
     const linesA = textA.split('\n');
     const linesB = textB.split('\n');
-    
+
     let html = '<div class="diff-content">';
     let addedLines = 0;
     let removedLines = 0;
     let modifiedLines = 0;
-    
+
     const maxLines = Math.max(linesA.length, linesB.length);
-    
+
     for (let i = 0; i < maxLines; i++) {
         const lineA = linesA[i] || '';
         const lineB = linesB[i] || '';
-        
+
         if (lineA === lineB) {
             // 相同行
             if (lineA !== '') {
@@ -944,10 +944,10 @@ function compareTexts() {
             }
         }
     }
-    
+
     html += '</div>';
     diffResult.innerHTML = html;
-    
+
     // 更新统计信息
     diffStats.innerHTML = `
         <span style="color: #27ae60;">+${addedLines} 添加</span>
