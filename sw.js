@@ -1,10 +1,11 @@
-const CACHE_NAME = 'devtools-hub-v1.0.0';
+const CACHE_NAME = 'devtools-hub-v1.1.0';
 const urlsToCache = [
     '/',
     '/index.html',
     '/styles.css',
     '/script.js',
     '/manifest.json',
+    '/screenshots/password-generator.png',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',
     'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
 ];

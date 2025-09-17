@@ -27,6 +27,22 @@
     
     <!-- Manifest -->
     <link rel="manifest" href="/manifest.json">
+
+    <!-- Canonical & Open Graph / Twitter Card for better SEO & sharing -->
+    <link rel="canonical" href="https://wxingda.github.io/devtools-hub" />
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DevTools Hub">
+    <meta property="og:title" content="DevTools Hub - 一站式开发者工具集合" />
+    <meta property="og:description" content="一站式开发者工具集合，包含密码生成器、颜色调色板、正则测试器、JSON格式化器等实用工具，支持离线使用" />
+    <meta property="og:url" content="https://wxingda.github.io/devtools-hub" />
+    <meta property="og:image" content="https://wxingda.github.io/devtools-hub/screenshots/password-generator.png" />
+    <meta property="og:image:alt" content="DevTools Hub 截图" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="DevTools Hub - 开发者工具集合" />
+    <meta name="twitter:description" content="集成密码生成、颜色调色、正则测试、JSON格式化等10+工具，支持PWA离线使用" />
+    <meta name="twitter:image" content="https://wxingda.github.io/devtools-hub/screenshots/password-generator.png" />
+    <meta name="twitter:site" content="@devtools_hub" />
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
@@ -63,53 +79,66 @@
         <header class="header">
             <div class="header-content">
                 <h1><i class="fas fa-tools"></i> DevTools Hub</h1>
-                <p>专为开发者打造的实用工具集合</p>
+                <p data-i18n="header.tagline">专为开发者打造的实用工具集合</p>
                 <button class="theme-toggle" id="themeToggle">
                     <i class="fas fa-moon"></i>
                 </button>
+                <button class="lang-toggle" id="langToggle" aria-label="切换语言 / Switch Language">EN</button>
             </div>
         </header>
+
+        <!-- Share Bar -->
+        <div class="share-bar" aria-label="分享此项目" role="region">
+            <button class="share-btn" data-share="github" title="GitHub" aria-label="打开 GitHub 仓库"><i class="fab fa-github"></i></button>
+            <button class="share-btn" data-share="copy" title="复制项目地址" aria-label="复制项目地址"><i class="fas fa-link"></i></button>
+            <button class="share-btn" data-share="weibo" title="分享到微博" aria-label="分享到微博"><i class="fab fa-weibo"></i></button>
+            <button class="share-btn" data-share="twitter" title="Share on Twitter" aria-label="Share on Twitter"><i class="fab fa-twitter"></i></button>
+        </div>
 
         <nav class="nav">
             <button class="nav-btn active" data-tool="password-generator">
                 <i class="fas fa-key"></i>
-                <span>密码生成器</span>
+                <span data-i18n="nav.password-generator">密码生成器</span>
             </button>
             <button class="nav-btn" data-tool="color-palette">
                 <i class="fas fa-palette"></i>
-                <span>颜色调色板</span>
+                <span data-i18n="nav.color-palette">颜色调色板</span>
             </button>
             <button class="nav-btn" data-tool="regex-tester">
                 <i class="fas fa-search"></i>
-                <span>正则测试器</span>
+                <span data-i18n="nav.regex-tester">正则测试器</span>
             </button>
             <button class="nav-btn" data-tool="json-formatter">
                 <i class="fas fa-code"></i>
-                <span>JSON格式化</span>
+                <span data-i18n="nav.json-formatter">JSON格式化</span>
             </button>
             <button class="nav-btn" data-tool="url-encoder">
                 <i class="fas fa-link"></i>
-                <span>URL编码器</span>
+                <span data-i18n="nav.url-encoder">URL编码器</span>
             </button>
             <button class="nav-btn" data-tool="base64-encoder">
                 <i class="fas fa-file-code"></i>
-                <span>Base64编码</span>
+                <span data-i18n="nav.base64-encoder">Base64编码</span>
             </button>
             <button class="nav-btn" data-tool="hash-calculator">
                 <i class="fas fa-calculator"></i>
-                <span>哈希计算器</span>
+                <span data-i18n="nav.hash-calculator">哈希计算器</span>
             </button>
             <button class="nav-btn" data-tool="timestamp-converter">
                 <i class="fas fa-clock"></i>
-                <span>时间戳转换</span>
+                <span data-i18n="nav.timestamp-converter">时间戳转换</span>
             </button>
             <button class="nav-btn" data-tool="qr-generator">
                 <i class="fas fa-qrcode"></i>
-                <span>二维码生成</span>
+                <span data-i18n="nav.qr-generator">二维码生成</span>
             </button>
             <button class="nav-btn" data-tool="text-diff">
                 <i class="fas fa-exchange-alt"></i>
-                <span>文本对比</span>
+                <span data-i18n="nav.text-diff">文本对比</span>
+            </button>
+            <button class="nav-btn" data-tool="css-unit-converter">
+                <i class="fas fa-ruler-combined"></i>
+                <span data-i18n="nav.css-unit-converter">CSS单位</span>
             </button>
         </nav>
 
@@ -117,8 +146,8 @@
             <!-- 密码生成器 -->
             <div class="tool active" id="password-generator">
                 <div class="tool-header">
-                    <h2><i class="fas fa-key"></i> 密码生成器</h2>
-                    <p>生成安全的随机密码</p>
+                    <h2><i class="fas fa-key"></i> <span data-i18n="nav.password-generator">密码生成器</span></h2>
+                    <p data-i18n="tool.password.sub">生成安全的随机密码</p>
                 </div>
                 <div class="tool-content">
                     <div class="form-group">
@@ -155,8 +184,8 @@
             <!-- 颜色调色板 -->
             <div class="tool" id="color-palette">
                 <div class="tool-header">
-                    <h2><i class="fas fa-palette"></i> 颜色调色板</h2>
-                    <p>颜色选择和格式转换</p>
+                    <h2><i class="fas fa-palette"></i> <span data-i18n="nav.color-palette">颜色调色板</span></h2>
+                    <p data-i18n="tool.color.sub">颜色选择和格式转换</p>
                 </div>
                 <div class="tool-content">
                     <div class="color-picker-section">
@@ -192,8 +221,8 @@
             <!-- 正则表达式测试器 -->
             <div class="tool" id="regex-tester">
                 <div class="tool-header">
-                    <h2><i class="fas fa-search"></i> 正则表达式测试器</h2>
-                    <p>实时测试和验证正则表达式</p>
+                    <h2><i class="fas fa-search"></i> <span data-i18n="nav.regex-tester">正则表达式测试器</span></h2>
+                    <p data-i18n="tool.regex.sub">实时测试和验证正则表达式</p>
                 </div>
                 <div class="tool-content">
                     <div class="regex-section">
@@ -227,8 +256,8 @@
             <!-- JSON格式化器 -->
             <div class="tool" id="json-formatter">
                 <div class="tool-header">
-                    <h2><i class="fas fa-code"></i> JSON格式化器</h2>
-                    <p>美化和压缩JSON数据</p>
+                    <h2><i class="fas fa-code"></i> <span data-i18n="nav.json-formatter">JSON格式化器</span></h2>
+                    <p data-i18n="tool.json.sub">美化和压缩JSON数据</p>
                 </div>
                 <div class="tool-content">
                     <div class="json-section">
@@ -273,8 +302,8 @@
             <!-- URL编码器 -->
             <div class="tool" id="url-encoder">
                 <div class="tool-header">
-                    <h2><i class="fas fa-link"></i> URL编码/解码器</h2>
-                    <p>URL字符串编码解码</p>
+                    <h2><i class="fas fa-link"></i> <span data-i18n="nav.url-encoder">URL编码/解码器</span></h2>
+                    <p data-i18n="tool.url.sub">URL字符串编码解码</p>
                 </div>
                 <div class="tool-content">
                     <div class="url-section">
@@ -301,8 +330,8 @@
             <!-- Base64编码器 -->
             <div class="tool" id="base64-encoder">
                 <div class="tool-header">
-                    <h2><i class="fas fa-file-code"></i> Base64编码器</h2>
-                    <p>Base64编码解码工具</p>
+                    <h2><i class="fas fa-file-code"></i> <span data-i18n="nav.base64-encoder">Base64编码器</span></h2>
+                    <p data-i18n="tool.base64.sub">Base64编码解码工具</p>
                 </div>
                 <div class="tool-content">
                     <div class="base64-section">
@@ -329,8 +358,8 @@
             <!-- 哈希计算器 -->
             <div class="tool" id="hash-calculator">
                 <div class="tool-header">
-                    <h2><i class="fas fa-calculator"></i> 哈希计算器</h2>
-                    <p>MD5、SHA1、SHA256计算</p>
+                    <h2><i class="fas fa-calculator"></i> <span data-i18n="nav.hash-calculator">哈希计算器</span></h2>
+                    <p data-i18n="tool.hash.sub">MD5、SHA1、SHA256计算</p>
                 </div>
                 <div class="tool-content">
                     <div class="hash-section">
@@ -374,8 +403,8 @@
             <!-- 时间戳转换器 -->
             <div class="tool" id="timestamp-converter">
                 <div class="tool-header">
-                    <h2><i class="fas fa-clock"></i> 时间戳转换器</h2>
-                    <p>Unix时间戳与日期时间互转</p>
+                    <h2><i class="fas fa-clock"></i> <span data-i18n="nav.timestamp-converter">时间戳转换器</span></h2>
+                    <p data-i18n="tool.timestamp.sub">Unix时间戳与日期时间互转</p>
                 </div>
                 <div class="tool-content">
                     <div class="timestamp-section">
@@ -429,8 +458,8 @@
             <!-- 二维码生成器 -->
             <div class="tool" id="qr-generator">
                 <div class="tool-header">
-                    <h2><i class="fas fa-qrcode"></i> 二维码生成器</h2>
-                    <p>将文本或URL转换为二维码</p>
+                    <h2><i class="fas fa-qrcode"></i> <span data-i18n="nav.qr-generator">二维码生成器</span></h2>
+                    <p data-i18n="tool.qr.sub">将文本或URL转换为二维码</p>
                 </div>
                 <div class="tool-content">
                     <div class="qr-section">
@@ -480,8 +509,8 @@
             <!-- 文本差异对比器 -->
             <div class="tool" id="text-diff">
                 <div class="tool-header">
-                    <h2><i class="fas fa-exchange-alt"></i> 文本差异对比</h2>
-                    <p>比较两段文本的差异</p>
+                    <h2><i class="fas fa-exchange-alt"></i> <span data-i18n="nav.text-diff">文本差异对比</span></h2>
+                    <p data-i18n="tool.textdiff.sub">比较两段文本的差异</p>
                 </div>
                 <div class="tool-content">
                     <div class="diff-section">
@@ -526,6 +555,43 @@
             </div>
         </main>
 
+        <!-- CSS 单位转换器 -->
+        <div class="tool" id="css-unit-converter">
+            <div class="tool-header">
+                <h2><i class="fas fa-ruler-combined"></i> <span data-i18n="nav.css-unit-converter">CSS 单位转换器</span></h2>
+                <p data-i18n="tool.cssunit.sub">在 px / rem / em / vw / vh / % 之间快速换算</p>
+            </div>
+            <div class="tool-content">
+                <div class="form-group">
+                    <label for="baseFontSize">根字体大小 (px)</label>
+                    <input type="number" id="baseFontSize" value="16" min="8" max="48">
+                </div>
+                <div class="form-group">
+                    <label for="inputValue">输入数值</label>
+                    <input type="number" id="inputValue" value="16" step="0.25">
+                </div>
+                <div class="form-group">
+                    <label for="inputUnit">输入单位</label>
+                    <select id="inputUnit">
+                        <option value="px">px</option>
+                        <option value="rem" selected>rem</option>
+                        <option value="em">em</option>
+                        <option value="vw">vw</option>
+                        <option value="vh">vh</option>
+                        <option value="%">%</option>
+                    </select>
+                </div>
+                <button class="btn primary" onclick="convertCssUnits()"><i class="fas fa-exchange-alt"></i> 进行转换</button>
+                <div class="result-group" style="margin-top:1rem">
+                    <div class="result-box">
+                        <input type="text" id="cssUnitResult" placeholder="结果将显示在这里..." readonly>
+                        <button class="copy-btn" onclick="copyCssUnitResult()"><i class="fas fa-copy"></i></button>
+                    </div>
+                </div>
+                <div id="cssUnitTable" class="css-unit-table"></div>
+            </div>
+        </div>
+
         <footer class="footer">
             <p>&copy; 2024 DevTools Hub. Made with ❤️ for developers.</p>
             <div class="footer-links">
@@ -541,8 +607,94 @@
 
     <script src="script.js"></script>
     
+    <!-- Floating Star CTA -->
+    <div id="star-cta" class="star-cta" aria-label="Star this project on GitHub" role="button" tabindex="0">
+        <div class="star-cta-inner">
+            <i class="fas fa-star"></i>
+            <span data-i18n="cta.star">Star 项目</span>
+        </div>
+        <div class="star-cta-actions">
+            <button class="cta-btn" data-action="open-github"><i class="fab fa-github"></i></button>
+            <button class="cta-btn" data-action="copy-link"><i class="fas fa-link"></i></button>
+            <button class="cta-btn" data-action="close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
     <!-- PWA Installation and Service Worker -->
     <script>
+        // Star CTA 交互
+        (function(){
+            const cta = document.getElementById('star-cta');
+            if(!cta) return;
+            let expanded = false;
+            function setExpanded(v){
+                expanded = v; cta.classList.toggle('expanded', v);
+            }
+            cta.addEventListener('click', e=>{
+                const btn = e.target.closest('.cta-btn');
+                if(!btn){
+                    setExpanded(!expanded);
+                    return;
+                }
+                const act = btn.getAttribute('data-action');
+                switch(act){
+                    case 'open-github':
+                        window.open('https://github.com/wxingda/devtools-hub','_blank');
+                        break;
+                    case 'copy-link':
+                        navigator.clipboard.writeText('https://github.com/wxingda/devtools-hub').then(()=>{
+                            if(window.showNotification) showNotification('仓库地址已复制，欢迎 Star ⭐','success');
+                        });
+                        break;
+                    case 'close':
+                        cta.classList.add('hide');
+                        break;
+                }
+            });
+            // 键盘支持
+            cta.addEventListener('keydown', e=>{
+                if(e.key==='Enter' || e.key===' ') { e.preventDefault(); setExpanded(!expanded); }
+                if(e.key==='Escape') { cta.classList.add('hide'); }
+            });
+            // 延迟显示
+            setTimeout(()=> cta.classList.add('show'), 1500);
+        })();
+
+        // 分享逻辑
+        (function(){
+            const repoUrl = 'https://github.com/wxingda/devtools-hub';
+            const siteUrl = 'https://wxingda.github.io/devtools-hub';
+            const text = 'DevTools Hub - 一站式开发者工具集合 (PWA/离线/零依赖)';
+            function copy(text){
+                navigator.clipboard.writeText(text).then(()=>{
+                    if(window.showNotification){
+                        showNotification('链接已复制，去分享给朋友吧！','success');
+                    } else {
+                        alert('链接已复制');
+                    }
+                });
+            }
+            document.addEventListener('click', e=>{
+                const btn = e.target.closest('.share-btn');
+                if(!btn) return;
+                const type = btn.getAttribute('data-share');
+                switch(type){
+                    case 'github':
+                        window.open(repoUrl, '_blank');
+                        break;
+                    case 'copy':
+                        copy(repoUrl);
+                        break;
+                    case 'weibo':
+                        window.open(`https://service.weibo.com/share/share.php?title=${encodeURIComponent(text)}&url=${encodeURIComponent(siteUrl)}&pic=${encodeURIComponent(siteUrl+'/screenshots/password-generator.png')}`,'_blank');
+                        break;
+                    case 'twitter':
+                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(siteUrl)}`,'_blank');
+                        break;
+                }
+            });
+        })();
+
         // Service Worker 注册
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {

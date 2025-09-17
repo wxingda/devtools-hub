@@ -5,6 +5,7 @@ let currentTool = 'password-generator';
 document.addEventListener('DOMContentLoaded', function () {
     initializeApp();
     setupKeyboardShortcuts();
+    setupI18n();
 });
 
 // 初始化应用
@@ -31,6 +32,58 @@ function initializeApp() {
 }
 
 // 设置键盘快捷键
+
+// CSS 单位转换器
+function convertCssUnits() {
+    const baseFontSize = parseFloat(document.getElementById('baseFontSize').value) || 16;
+    const inputValue = parseFloat(document.getElementById('inputValue').value);
+    const inputUnit = document.getElementById('inputUnit').value;
+    if (isNaN(inputValue)) {
+        showNotification('请输入有效的数值', 'error');
+        return;
+    }
+    const viewportWidth = window.innerWidth || 1440;
+    const viewportHeight = window.innerHeight || 900;
+
+    // 统一换算到 px
+    let valueInPx;
+    switch (inputUnit) {
+        case 'px': valueInPx = inputValue; break;
+        case 'rem': valueInPx = inputValue * baseFontSize; break;
+        case 'em': valueInPx = inputValue * baseFontSize; break; // 简化：与 rem 同根字号
+        case 'vw': valueInPx = (inputValue / 100) * viewportWidth; break;
+        case 'vh': valueInPx = (inputValue / 100) * viewportHeight; break;
+        case '%': valueInPx = (inputValue / 100) * baseFontSize; break; // 简化假设百分比相对根字体
+        default: valueInPx = inputValue;
+    }
+
+    // 生成所有单位
+    const results = {
+        px: valueInPx,
+        rem: valueInPx / baseFontSize,
+        em: valueInPx / baseFontSize,
+        vw: (valueInPx / viewportWidth) * 100,
+        vh: (valueInPx / viewportHeight) * 100,
+        '%': (valueInPx / baseFontSize) * 100
+    };
+
+    const ordered = ['px', 'rem', 'em', 'vw', 'vh', '%'];
+    const table = ordered.map(u => {
+        const val = results[u];
+        return `<div class="unit-item"><h4>${u}</h4><code>${val % 1 === 0 ? val : val.toFixed(4)}</code></div>`;
+    }).join('');
+    const displayStr = ordered.map(u => `${u}: ${results[u] % 1 === 0 ? results[u] : results[u].toFixed(4)}`).join(' | ');
+    const resultInput = document.getElementById('cssUnitResult');
+    if (resultInput) resultInput.value = displayStr;
+    const tableEl = document.getElementById('cssUnitTable');
+    if (tableEl) tableEl.innerHTML = table;
+}
+
+function copyCssUnitResult() {
+    const el = document.getElementById('cssUnitResult');
+    if (!el || !el.value) return;
+    copyToClipboard(el.value, '转换结果已复制');
+}
 function setupKeyboardShortcuts() {
     document.addEventListener('keydown', function (e) {
         // Alt + 数字键切换工具
@@ -214,6 +267,88 @@ function setupTheme() {
 function updateThemeIcon(theme) {
     const icon = document.querySelector('#themeToggle i');
     icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+// i18n 简易实现
+const I18N_DICTIONARY = {
+    zh: {
+        'header.tagline': '专为开发者打造的实用工具集合',
+        'nav.password-generator': '密码生成器',
+        'nav.color-palette': '颜色调色板',
+        'nav.regex-tester': '正则测试器',
+        'nav.json-formatter': 'JSON格式化',
+        'nav.url-encoder': 'URL编码器',
+        'nav.base64-encoder': 'Base64编码',
+        'nav.hash-calculator': '哈希计算器',
+        'nav.timestamp-converter': '时间戳转换',
+        'nav.qr-generator': '二维码生成',
+        'nav.text-diff': '文本对比',
+        'nav.css-unit-converter': 'CSS单位',
+        'tool.password.sub': '生成安全的随机密码',
+        'tool.color.sub': '颜色选择和格式转换',
+        'tool.regex.sub': '实时测试和验证正则表达式',
+        'tool.json.sub': '美化和压缩JSON数据',
+        'tool.url.sub': 'URL字符串编码解码',
+        'tool.base64.sub': 'Base64编码解码工具',
+        'tool.hash.sub': 'MD5、SHA1、SHA256计算',
+        'tool.timestamp.sub': 'Unix时间戳与日期时间互转',
+        'tool.qr.sub': '将文本或URL转换为二维码',
+        'tool.textdiff.sub': '比较两段文本的差异',
+        'tool.cssunit.sub': '在 px / rem / em / vw / vh / % 之间快速换算'
+    },
+    en: {
+        'header.tagline': 'A collection of handy tools for developers',
+        'nav.password-generator': 'Password',
+        'nav.color-palette': 'Colors',
+        'nav.regex-tester': 'Regex',
+        'nav.json-formatter': 'JSON',
+        'nav.url-encoder': 'URL Encode',
+        'nav.base64-encoder': 'Base64',
+        'nav.hash-calculator': 'Hash',
+        'nav.timestamp-converter': 'Timestamp',
+        'nav.qr-generator': 'QR Code',
+        'nav.text-diff': 'Diff',
+        'nav.css-unit-converter': 'CSS Units',
+        'tool.password.sub': 'Generate secure random passwords',
+        'tool.color.sub': 'Color picking & format conversion',
+        'tool.regex.sub': 'Test and validate regular expressions',
+        'tool.json.sub': 'Beautify & compress JSON data',
+        'tool.url.sub': 'Encode or decode URL strings',
+        'tool.base64.sub': 'Base64 encode & decode',
+        'tool.hash.sub': 'MD5, SHA1 & SHA256 calculation',
+        'tool.timestamp.sub': 'Convert between Unix timestamp and date',
+        'tool.qr.sub': 'Turn text or URL into QR code',
+        'tool.textdiff.sub': 'Compare differences between two texts',
+        'tool.cssunit.sub': 'Convert between px / rem / em / vw / vh / %'
+    }
+};
+
+let currentLang = localStorage.getItem('lang') || 'zh';
+
+function setupI18n() {
+    applyI18n();
+    const toggle = document.getElementById('langToggle');
+    if (toggle) {
+        toggle.textContent = currentLang === 'zh' ? 'EN' : '中文';
+        toggle.addEventListener('click', () => {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            localStorage.setItem('lang', currentLang);
+            applyI18n();
+            toggle.textContent = currentLang === 'zh' ? 'EN' : '中文';
+            showNotification(currentLang === 'zh' ? '已切换到中文' : 'Switched to English', 'success');
+        });
+    }
+}
+
+function applyI18n() {
+    const dict = I18N_DICTIONARY[currentLang] || {};
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+            el.textContent = dict[key];
+        }
+    });
+    document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
 }
 
 // 初始化工具

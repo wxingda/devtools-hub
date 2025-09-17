@@ -84,6 +84,26 @@ body {
     top: 1rem;
     right: 1rem;
     background: rgba(255,255,255,0.2);
+    
+    /* 语言切换按钮 */
+    .lang-toggle {
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        padding: 0.45rem 0.75rem;
+        margin-left: 0.75rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: background .25s, color .25s, border .25s, transform .2s;
+    }
+
+    .lang-toggle:hover { background: var(--primary-color); color: #fff; }
+    .lang-toggle:active { transform: scale(.92); }
+    [data-theme="dark"] .lang-toggle { background:#1f2733; }
+    [data-theme="dark"] .lang-toggle:hover { background: var(--primary-color); }
     border: none;
     color: white;
     padding: 0.75rem;
@@ -922,6 +942,131 @@ body {
     user-select: none;
 }
 
+/* Share Bar */
+.share-bar {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--card-bg, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    margin: 1rem 0 1.5rem;
+    flex-wrap: wrap;
+}
+
+.share-btn {
+    background: var(--primary-color,#3498db);
+    border: none;
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: transform .2s, box-shadow .2s, background .2s;
+}
+
+.share-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+[data-theme="dark"] .share-bar {
+    background: #1f2733;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+}
+
+[data-theme="dark"] .share-btn {
+    background: #3d6fa3;
+}
+
+.share-btn:active { transform: scale(.92); }
+
+/* Floating Star CTA */
+.star-cta {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 1500;
+    background: var(--primary-color);
+    color: #fff;
+    padding: .75rem 1rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    font-size: .9rem;
+    font-weight: 600;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: opacity .4s ease, transform .4s ease, background .3s;
+}
+.star-cta.show { opacity: 1; transform: translateY(0); }
+.star-cta.hide { opacity:0; pointer-events:none; }
+.star-cta-inner { display:flex; align-items:center; gap:.4rem; }
+.star-cta i { color: #ffd166; }
+.star-cta:hover { background: #2574a8; }
+.star-cta.expanded { padding-right: .75rem; }
+
+.star-cta-actions { display:flex; gap:.4rem; overflow:hidden; max-width:0; transition:max-width .35s ease; }
+.star-cta.expanded .star-cta-actions { max-width:200px; }
+
+.cta-btn { background:rgba(255,255,255,.2); backdrop-filter:blur(4px); border:none; color:#fff; width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .25s, transform .25s; }
+.cta-btn:hover { background:rgba(255,255,255,.32); transform:translateY(-3px); }
+.cta-btn:active { transform:scale(.9); }
+
+[data-theme="dark"] .star-cta { background:#255e87; }
+[data-theme="dark"] .star-cta:hover { background:#1e4e70; }
+[data-theme="dark"] .cta-btn { background:rgba(255,255,255,.15); }
+[data-theme="dark"] .cta-btn:hover { background:rgba(255,255,255,.28); }
+
+/* CSS 单位转换器 */
+.css-unit-table {
+    margin-top: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+    gap: .75rem;
+}
+
+.css-unit-table .unit-item {
+    background: var(--surface-color);
+    padding: .75rem .6rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+    font-size: .8rem;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.css-unit-table .unit-item h4 {
+    margin: 0;
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: .5px;
+    text-transform: uppercase;
+}
+
+.css-unit-table .unit-item code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .85rem;
+    background: rgba(0,0,0,0.05);
+    padding: 2px 4px;
+    border-radius: 4px;
+    word-break: break-all;
+}
+
+[data-theme="dark"] .css-unit-table .unit-item code {
+    background: rgba(255,255,255,0.08);
+}
 .line-content {
     padding: 0 1rem;
     white-space: pre-wrap;
