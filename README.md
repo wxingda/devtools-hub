@@ -1,4 +1,3 @@
-
 <div align="center">
 
 # 🚀 DevTools Hub
@@ -11,15 +10,26 @@
 [![GitHub forks](https://img.shields.io/github/forks/wxingda/devtools-hub?style=for-the-badge&logo=github&color=brightgreen)](https://github.com/wxingda/devtools-hub/network)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](LICENSE)
 [![Website](https://img.shields.io/badge/website-online-success?style=for-the-badge&logo=vercel)](https://wxingda.github.io/devtools-hub)
+[![PWA Ready](https://img.shields.io/badge/PWA-ready-orange?style=for-the-badge&logo=googlechrome)](https://wxingda.github.io/devtools-hub)
+[![i18n](https://img.shields.io/badge/i18n-ZH|EN-informational?style=for-the-badge)](#-多语言)
 
 [![View Demo](https://img.shields.io/badge/🌟-查看演示-ff4757?style=for-the-badge&logoColor=white)](https://wxingda.github.io/devtools-hub)
 [![Download](https://img.shields.io/badge/⬇️-立即下载-2ed573?style=for-the-badge&logoColor=white)](https://github.com/wxingda/devtools-hub/archive/refs/heads/main.zip)
 
+<p align="center">
+  <sup>English version coming soon – PRs welcome! (You can still use the app in English via the toggle inside the UI)</sup>
+</p>
+<p align="center"><strong>中文</strong> | <a href="./README.en.md">English</a></p>
 </div>
 
 ---
 
-## � 项目亮点
+## ✨ TL;DR
+> 零依赖、纯前端、多工具集合 + PWA + 深色模式 + 多语言切换。直接访问即可使用：**https://wxingda.github.io/devtools-hub**
+
+---
+
+## 🔥 项目亮点
 
 <table>
 <tr>
@@ -31,7 +41,10 @@
 ✅ **响应式设计** - 完美适配所有设备  
 ✅ **现代化界面** - 精美的 UI/UX 设计  
 ✅ **零依赖** - 纯原生JavaScript，加载迅速  
-✅ **开源免费** - MIT许可证，自由使用
+✅ **开源免费** - MIT许可证，自由使用  
+✅ **PWA 安装** - 一键安装到桌面  
+✅ **快捷键支持** - Alt + 数字快速切换工具  
+✅ **浮动 Star CTA** - 引导更多互动
 
 </td>
 <td width="50%">
@@ -42,7 +55,9 @@
 💻 **100%** 纯前端实现  
 📱 **响应式** 移动端优化  
 🌙 **深色模式** 护眼体验  
-⚡ **<100KB** 轻量级应用
+⚡ **<100KB** 轻量级应用  
+🛰 **0 后端** 无服务端依赖  
+🧪 **可扩展架构** 即将插件化  
 
 </td>
 </tr>
@@ -126,7 +141,7 @@ php -S localhost:8000
 ### 🎨 颜色调色板
 - RGB、HEX、HSL格式转换
 - 色彩预览
-- 渐变色生成
+- 渊渐色生成
 - 色彩搭配建议
 
 ### 🔍 正则表达式测试器
@@ -140,6 +155,14 @@ php -S localhost:8000
 - 压缩JSON
 - 语法验证
 - 树状结构显示
+
+## 🆕 新增 / 最近改进
+- ✅ JSON 树视图（文本/树双模式切换）
+- ✅ 离线二维码生成（取消外部依赖，当前为简化占位版本，后续将升级为真实 QR 算法）
+- ✅ 使用统计面板（完全本地，不上传）
+- ✅ 插件 API 初步命名空间 (`window.DevToolsHub.registerTool`) 预留扩展能力
+
+> 欢迎提交 PR：改进 QR 生成、补充真实 MD5、增加更多可视化工具。
 
 ## 🔧 技术栈
 
@@ -272,12 +295,11 @@ php -S localhost:8000
 [![GitHub stars](https://img.shields.io/github/stars/wxingda/devtools-hub?style=social)](https://github.com/wxingda/devtools-hub/stargazers)
 
 **[🌐 在线体验](https://wxingda.github.io/devtools-hub)** •
-**[📖 查看文档](https://github.com/wxingda/devtools-hub/wiki)** •
-**[💬 参与讨论](https://github.com/wxingda/devtools-hub/discussions)** •
-**[🐛 反馈问题](https://github.com/wxingda/devtools-hub/issues)**
+**[📖 文档](https://github.com/wxingda/devtools-hub/wiki)** •
+**[💬 讨论](https://github.com/wxingda/devtools-hub/discussions)** •
+**[🐛 问题反馈](https://github.com/wxingda/devtools-hub/issues)**
 
 *Made with ❤️ by developers, for developers*
 
 [![Follow](https://img.shields.io/github/followers/wxingda?style=social&label=Follow)](https://github.com/wxingda)
-
 </div>

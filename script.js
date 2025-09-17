@@ -1,3 +1,12 @@
+// DevTools Hub Namespace 模块化封装
+window.DevToolsHub = (function () {
+    const api = {};
+    api.state = { currentTool: 'password-generator', tools: {} };
+    api.registerTool = function (id, hooks) { api.state.tools[id] = hooks || {}; };
+    api.switchTool = function (id) { if (typeof switchTool === 'function') switchTool(id); };
+    return api;
+})();
+
 // 全局变量
 let currentTool = 'password-generator';
 
@@ -1103,3 +1112,58 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+// JSON 树视图 & 离线 QR & 使用统计 增强
+(function () {
+    // =============== 使用统计 ===============
+    const USAGE_KEY = 'devtools_usage_stats_v1';
+    function loadUsage() { try { return JSON.parse(localStorage.getItem(USAGE_KEY)) || {}; } catch (e) { return {}; } }
+    function saveUsage(stats) { localStorage.setItem(USAGE_KEY, JSON.stringify(stats)); }
+    function recordUsage(tool) { const stats = loadUsage(); const now = Date.now(); if (!stats[tool]) stats[tool] = { count: 0, last: now }; stats[tool].count++; stats[tool].last = now; saveUsage(stats); }
+    function formatTime(ts) { if (!ts) return '-'; const d = new Date(ts); return d.toLocaleString(); }
+    function openUsageModal() { const modal = document.getElementById('usageModal'); if (!modal) return; renderUsageTable(); modal.setAttribute('aria-hidden', 'false'); const focusClose = modal.querySelector('.modal-close'); focusClose && focusClose.focus(); }
+    function closeUsageModal() { const modal = document.getElementById('usageModal'); if (!modal) return; modal.setAttribute('aria-hidden', 'true'); }
+    function renderUsageTable() { const stats = loadUsage(); const tbody = document.getElementById('usageTableBody'); if (!tbody) return; const rows = Object.entries(stats).sort((a, b) => b[1].count - a[1].count).map(([tool, data]) => `<tr><td>${tool}</td><td>${data.count}</td><td>${formatTime(data.last)}</td></tr>`).join(''); tbody.innerHTML = rows || '<tr><td colspan="3" style="opacity:.6">暂无数据</td></tr>'; }
+    document.addEventListener('click', e => { if (e.target.matches('[data-close-modal]') || e.target.closest('[data-close-modal]')) closeUsageModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeUsageModal(); });
+    document.addEventListener('DOMContentLoaded', () => { // 悬浮入口按钮
+        if (!document.querySelector('.usage-trigger-btn')) {
+            const btn = document.createElement('button'); btn.className = 'usage-trigger-btn'; btn.innerHTML = '<i class="fas fa-chart-line"></i><span>统计</span>'; btn.addEventListener('click', openUsageModal); document.body.appendChild(btn);
+        }
+        const resetBtn = document.getElementById('resetUsageBtn'); if (resetBtn) { resetBtn.addEventListener('click', () => { if (confirm('确定重置所有统计？')) { saveUsage({}); renderUsageTable(); showNotification && showNotification('统计已重置', 'success'); } }); }
+    });
+
+    // Hook switchTool 来记录使用
+    const _originalSwitch = window.switchTool; if (typeof _originalSwitch === 'function') { window.switchTool = function (toolId) { _originalSwitch(toolId); recordUsage(toolId); }; }
+
+    // =============== JSON 树视图 ===============
+    function buildTree(container, data) {
+        container.innerHTML = ''; const ul = document.createElement('ul'); container.appendChild(ul); function createNode(key, value, parent) {
+            const li = document.createElement('li'); let type = typeof value; if (value === null) type = 'null'; const isObj = type === 'object'; const isArr = Array.isArray(value); li.className = 'tree-node'; const wrapper = document.createElement('div'); wrapper.className = 'node-line'; if (isObj || isArr) { wrapper.innerHTML = `<span class="node-toggle" role="button" tabindex="0">▶</span><span class="node-key">${escapeHtml(String(key))}</span><span class="node-sep">: </span><span class="node-type">${isArr ? `Array(${value.length})` : 'Object'}</span>`; } else { let cls = 'node-value-string'; if (type === 'number') cls = 'node-value-number'; else if (type === 'boolean') cls = 'node-value-boolean'; else if (type === 'null') cls = 'node-value-null'; wrapper.innerHTML = `<span class="node-key">${escapeHtml(String(key))}</span><span class="node-sep">: </span><span class="${cls}">${escapeHtml(JSON.stringify(value))}</span>`; }
+            li.appendChild(wrapper); parent.appendChild(li); if (isObj || isArr) { const childUl = document.createElement('ul'); li.appendChild(childUl); (isArr ? value : Object.entries(value)).forEach((entry, i) => { if (isArr) createNode(i, entry, childUl); else { const [k, v] = entry; createNode(k, v, childUl); } }); li.classList.add('collapsed'); wrapper.querySelector('.node-toggle').addEventListener('click', () => { li.classList.toggle('collapsed'); }); wrapper.querySelector('.node-toggle').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.classList.toggle('collapsed'); } }); }
+        }
+        if (typeof data === 'object' && data !== null) { if (Array.isArray(data)) { createNode('[root]', data, ul); } else { createNode('[root]', data, ul); } } else { ul.innerHTML = `<li><em>根节点不是对象/数组</em></li>`; }
+    }
+
+    function showTree() { const input = document.getElementById('jsonInput'); const tree = document.getElementById('jsonTreeView'); const output = document.getElementById('jsonOutput'); if (!tree || !input) return; try { const data = JSON.parse(input.value); buildTree(tree, data); tree.hidden = false; output.style.display = 'none'; document.getElementById('showTreeBtn').style.display = 'none'; document.getElementById('showTextBtn').style.display = 'inline-flex'; } catch (e) { showNotification && showNotification('当前 JSON 无法解析', 'error'); } }
+    function showText() { const tree = document.getElementById('jsonTreeView'); const output = document.getElementById('jsonOutput'); if (!tree) return; tree.hidden = true; output.style.display = 'block'; document.getElementById('showTreeBtn').style.display = 'inline-flex'; document.getElementById('showTextBtn').style.display = 'none'; }
+
+    document.addEventListener('DOMContentLoaded', () => { const treeBtn = document.getElementById('showTreeBtn'); const textBtn = document.getElementById('showTextBtn'); if (treeBtn) treeBtn.addEventListener('click', showTree); if (textBtn) textBtn.addEventListener('click', showText); });
+
+    // =============== 离线 QR 生成（替换外部 API） ===============
+    // 简化：使用一个最小实现（伪：不完整二维码算法，仅占位演示）。建议后续接入真正二维码库或手写模块。
+    function generateSimpleQR(text, size) {
+        const canvas = document.createElement('canvas'); canvas.width = canvas.height = size; const ctx = canvas.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, size, size); ctx.fillStyle = '#000'; // 简单 hash 映射点阵（非真实二维码，仅示例）。
+        let hash = 0; for (let i = 0; i < text.length; i++) { hash = (hash * 31 + text.charCodeAt(i)) >>> 0; }
+        const cells = 33; const cellSize = Math.floor(size / cells); for (let y = 0; y < cells; y++) { for (let x = 0; x < cells; x++) { const bit = (hash + x * 73856093 + y * 19349663) & 7; if (bit === 0) { ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize); } } }
+        return canvas.toDataURL('image/png');
+    }
+
+    const originalGenerateQR = window.generateQR; // 保留原函数引用
+    window.generateQR = function () {
+        try {
+            const text = document.getElementById('qrText').value; const size = parseInt(document.getElementById('qrSize').value) || 300; const level = document.getElementById('qrLevel').value; const qrDisplay = document.getElementById('qrDisplay'); const downloadBtn = document.getElementById('downloadQR'); if (!text.trim()) { qrDisplay.innerHTML = '<p style="color:#e74c3c;">请输入要生成二维码的内容</p>'; downloadBtn.style.display = 'none'; return; } // 使用本地实现
+            const dataUrl = generateSimpleQR(text + '|' + level, size); qrDisplay.innerHTML = `<img src="${dataUrl}" alt="QR Code" style="max-width:100%;height:auto;border:1px solid #ddd;border-radius:8px;"/>`; window.currentQrUrl = dataUrl; downloadBtn.style.display = 'inline-block';
+        } catch (e) { console.warn('离线 QR 失败，回退外部 API', e); if (originalGenerateQR) originalGenerateQR(); }
+    };
+})();

@@ -1,80 +1,76 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-app="devtools-hub">
 <head>
+    <!-- 基础 Meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevTools Hub - 开发者工具集合</title>
-    <meta name="description" content="一站式开发者工具集合，包含密码生成器、颜色调色板、正则测试器、JSON格式化器等实用工具，支持离线使用">
-    <meta name="keywords" content="开发者工具,密码生成器,颜色调色板,正则表达式,JSON格式化,Base64编码,哈希计算,二维码生成,文本对比,时间戳转换">
-    <meta name="author" content="DevTools Hub">
-    
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#3498db">
+    <title>DevTools Hub - 开发者工具集合 | 一站式开发效率工具箱</title>
+    <meta name="description" content="DevTools Hub: 一站式开发者工具集合(密码生成器/颜色调色板/正则/JSON/二维码/哈希/时间戳等)，纯前端、离线可用、支持PWA与深色模式。">
+    <meta name="keywords" content="devtools hub,开发者工具,密码生成器,颜色调色板,正则表达式,JSON格式化,Base64,哈希,二维码,文本对比,CSS单位,前端工具,PWA,离线工具">
+    <meta name="author" content="wxingda">
+    <meta name="robots" content="index, follow">
+
+    <!-- 改进: 添加主题偏好 与 首选颜色模式 -->
+    <meta name="color-scheme" content="light dark">
+
+    <!-- PWA Meta -->
+    <meta name="theme-color" content="#3498db" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="DevTools Hub">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="msapplication-TileColor" content="#3498db">
     <meta name="msapplication-tap-highlight" content="no">
-    
-    <!-- Favicon and App Icons -->
+
+    <!-- Favicon & Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-    <link rel="apple-touch-icon" href="/icons/icon-152x152.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png">
     <link rel="apple-touch-icon" sizes="167x167" href="/icons/icon-167x167.png">
-    
-    <!-- Manifest -->
     <link rel="manifest" href="/manifest.json">
 
-    <!-- Canonical & Open Graph / Twitter Card for better SEO & sharing -->
+    <!-- Canonical & Open Graph -->
     <link rel="canonical" href="https://wxingda.github.io/devtools-hub" />
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="DevTools Hub">
     <meta property="og:title" content="DevTools Hub - 一站式开发者工具集合" />
-    <meta property="og:description" content="一站式开发者工具集合，包含密码生成器、颜色调色板、正则测试器、JSON格式化器等实用工具，支持离线使用" />
+    <meta property="og:description" content="集成密码生成、颜色调色、正则测试、JSON格式化、哈希、二维码、时间戳、文本对比、CSS单位等10+工具，支持离线/PWA" />
     <meta property="og:url" content="https://wxingda.github.io/devtools-hub" />
     <meta property="og:image" content="https://wxingda.github.io/devtools-hub/screenshots/password-generator.png" />
     <meta property="og:image:alt" content="DevTools Hub 截图" />
 
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="DevTools Hub - 开发者工具集合" />
-    <meta name="twitter:description" content="集成密码生成、颜色调色、正则测试、JSON格式化等10+工具，支持PWA离线使用" />
+    <meta name="twitter:description" content="一站式多功能开发工具箱 (PWA/离线)" />
     <meta name="twitter:image" content="https://wxingda.github.io/devtools-hub/screenshots/password-generator.png" />
-    <meta name="twitter:site" content="@devtools_hub" />
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- 预连接 & 预加载 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="preload" href="/styles.css" as="style">
+    <link rel="preload" href="/script.js" as="script">
+
+    <link rel="stylesheet" href="styles.css" media="all" id="core-style">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
+
+    <!-- 字体延迟加载 -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "DevTools Hub",
-      "description": "一站式开发者工具集合，包含密码生成器、颜色调色板、正则测试器等实用工具",
-      "url": "https://wxingda.github.io/devtools-hub",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "author": {
-        "@type": "Person",
-        "name": "wxingda"
-      }
-    }
-    </script>
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"DevTools Hub","description":"一站式开发者工具集合 (密码/颜色/正则/JSON/二维码/哈希/时间戳/对比/CSS单位)","url":"https://wxingda.github.io/devtools-hub","applicationCategory":"DeveloperApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"wxingda"}}</script>
+
+    <!-- 首屏加载体验占位 -->
+    <style>body:not(.ready) .main{opacity:.001}body:not(.ready)::before{content:'正在加载 DevTools Hub...';position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font:500 1rem/1.4 system-ui;color:#555;background:var(--bg-color);}html[data-theme='dark'] body:not(.ready)::before{color:#bbb}</style>
 </head>
 <body>
+    <a href="#main" class="skip-link" style="position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden;">跳到主要内容</a>
     <div class="container">
         <header class="header">
             <div class="header-content">
@@ -259,23 +255,15 @@
                     <h2><i class="fas fa-code"></i> <span data-i18n="nav.json-formatter">JSON格式化器</span></h2>
                     <p data-i18n="tool.json.sub">美化和压缩JSON数据</p>
                 </div>
-                <div class="tool-content">
+                <div class="tool-content" data-tool-section="json">
                     <div class="json-section">
                         <div class="json-input">
                             <label for="jsonInput">输入JSON</label>
-                            <textarea id="jsonInput" rows="12" placeholder="在这里粘贴或输入JSON数据...">
-{
-  "name": "DevTools Hub",
-  "version": "1.0.0",
-  "description": "开发者工具集合",
-  "tools": ["password-generator", "color-palette", "regex-tester", "json-formatter"],
-  "features": {
-    "offline": true,
-    "responsive": true,
-    "darkMode": true
-  }
-}
-                            </textarea>
+                            <textarea id="jsonInput" rows="12" placeholder="在这里粘贴或输入JSON数据..."></textarea>
+                            <div class="json-view-toggle">
+                                <button class="btn secondary" id="showTreeBtn" type="button">树视图</button>
+                                <button class="btn secondary" id="showTextBtn" type="button" style="display:none">文本视图</button>
+                            </div>
                         </div>
                         <div class="json-controls">
                             <button class="btn primary" onclick="formatJSON()">
@@ -291,6 +279,7 @@
                         <div class="json-output">
                             <label for="jsonOutput">格式化结果</label>
                             <textarea id="jsonOutput" rows="12" readonly></textarea>
+                            <div id="jsonTreeView" class="json-tree" hidden aria-label="JSON 树视图" role="tree"></div>
                             <div class="json-info">
                                 <span id="jsonStatus"></span>
                             </div>
@@ -828,5 +817,31 @@
             }
         });
     </script>
+    <noscript><div style="margin:2rem;padding:1rem;border:1px solid #e74c3c;color:#e74c3c;border-radius:8px;max-width:760px;margin-inline:auto;font-size:.9rem">⚠️ 您的浏览器已禁用 JavaScript，DevTools Hub 需要 JS 才能运行。请启用后刷新。</div></noscript>
+    <script>window.addEventListener('DOMContentLoaded',()=>document.body.classList.add('ready'))</script>
+
+    <!-- 使用统计模态框 -->
+    <div id="usageModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="usageModalTitle">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-content">
+        <header class="modal-header">
+          <h3 id="usageModalTitle">使用统计</h3>
+          <button class="modal-close" data-close-modal aria-label="关闭统计窗口"><i class="fas fa-times"></i></button>
+        </header>
+        <div class="modal-body" id="usageStatsContainer">
+          <p style="font-size:.9rem;color:var(--text-secondary)">本地统计（仅存储在浏览器，不上传）。</p>
+          <div class="usage-table-wrapper">
+            <table class="usage-table" aria-label="工具使用统计">
+              <thead><tr><th>工具</th><th>使用次数</th><th>最后使用时间</th></tr></thead>
+              <tbody id="usageTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn secondary" data-close-modal>关闭</button>
+          <button class="btn" id="resetUsageBtn">重置统计</button>
+        </footer>
+      </div>
+    </div>
 </body>
 </html>

@@ -1,11 +1,19 @@
-const CACHE_NAME = 'devtools-hub-v1.1.0';
-const urlsToCache = [
+const CACHE_VERSION = 'v1.2.0';
+const CORE_CACHE = `devtools-core-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `devtools-runtime-${CACHE_VERSION}`;
+const OFFLINE_URL = '/offline.html';
+
+const CORE_ASSETS = [
     '/',
     '/index.html',
     '/styles.css',
     '/script.js',
     '/manifest.json',
-    '/screenshots/password-generator.png',
+    OFFLINE_URL,
+    '/screenshots/password-generator.png'
+];
+
+const EXTERNAL_ASSETS = [
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',
     'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
 ];
@@ -14,15 +22,19 @@ const urlsToCache = [
 self.addEventListener('install', event => {
     console.log('Service Worker: 安装中...');
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('Service Worker: 缓存文件');
-                return cache.addAll(urlsToCache);
+        Promise.all([
+            caches.open(CORE_CACHE).then(cache => {
+                console.log('Service Worker: 缓存核心文件');
+                return cache.addAll(CORE_ASSETS);
+            }),
+            caches.open(RUNTIME_CACHE).then(cache => {
+                console.log('Service Worker: 缓存外部资源');
+                return cache.addAll(EXTERNAL_ASSETS);
             })
-            .then(() => {
-                console.log('Service Worker: 安装完成');
-                return self.skipWaiting();
-            })
+        ]).then(() => {
+            console.log('Service Worker: 安装完成');
+            return self.skipWaiting();
+        })
     );
 });
 
@@ -30,13 +42,11 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
     console.log('Service Worker: 激活中...');
     event.waitUntil(
-        caches.keys().then(cacheNames => {
+        caches.keys().then(keys => {
             return Promise.all(
-                cacheNames.map(cacheName => {
-                    if (cacheName !== CACHE_NAME) {
-                        console.log('Service Worker: 删除旧缓存', cacheName);
-                        return caches.delete(cacheName);
-                    }
+                keys.filter(k => ![CORE_CACHE, RUNTIME_CACHE].includes(k)).map(k => {
+                    console.log('Service Worker: 删除旧缓存', k);
+                    return caches.delete(k);
                 })
             );
         }).then(() => {
@@ -46,50 +56,58 @@ self.addEventListener('activate', event => {
     );
 });
 
-// 拦截请求
+// 通用 fetch 处理：优先缓存核心，其他资源 stale-while-revalidate
 self.addEventListener('fetch', event => {
     // 只处理 GET 请求
     if (event.request.method !== 'GET') {
         return;
     }
+    const url = new URL(event.request.url);
 
+    // HTML: network first + offline fallback
+    if (event.request.mode === 'navigate' || (event.request.headers.get('Accept') || '').includes('text/html')) {
+        event.respondWith(
+            fetch(event.request)
+                .then(resp => {
+                    const copy = resp.clone();
+                    caches.open(CORE_CACHE).then(c => c.put(event.request, copy));
+                    return resp;
+                })
+                .catch(async () => (await caches.match(event.request)) || (await caches.match(OFFLINE_URL)))
+        );
+        return;
+    }
+
+    // 核心静态资源：cache first
+    if (CORE_ASSETS.includes(url.pathname)) {
+        event.respondWith(
+            caches.match(event.request).then(cached => cached || fetch(event.request).then(resp => {
+                const copy = resp.clone();
+                caches.open(CORE_CACHE).then(c => c.put(event.request, copy));
+                return resp;
+            }))
+        );
+        return;
+    }
+
+    // 外部与运行时资源：stale-while-revalidate
     event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                // 如果在缓存中找到，返回缓存版本
-                if (response) {
-                    console.log('Service Worker: 从缓存返回', event.request.url);
-                    return response;
+        caches.match(event.request).then(cached => {
+            const fetchPromise = fetch(event.request).then(networkResp => {
+                if (networkResp && networkResp.status === 200) {
+                    const copy = networkResp.clone();
+                    caches.open(RUNTIME_CACHE).then(c => c.put(event.request, copy));
                 }
-
-                // 否则从网络获取
-                console.log('Service Worker: 从网络获取', event.request.url);
-                return fetch(event.request).then(response => {
-                    // 检查是否是有效响应
-                    if (!response || response.status !== 200 || response.type !== 'basic') {
-                        return response;
-                    }
-
-                    // 克隆响应，因为响应是流，只能读取一次
-                    const responseToCache = response.clone();
-
-                    caches.open(CACHE_NAME)
-                        .then(cache => {
-                            cache.put(event.request, responseToCache);
-                        });
-
-                    return response;
-                }).catch(() => {
-                    // 网络失败时，返回离线页面或默认内容
-                    console.log('Service Worker: 网络请求失败', event.request.url);
-
-                    // 如果请求的是 HTML 页面，返回主页
-                    if (event.request.destination === 'document') {
-                        return caches.match('/index.html');
-                    }
-                });
-            })
+                return networkResp;
+            }).catch(() => cached);
+            return cached || fetchPromise;
+        })
     );
+});
+
+// 处理消息 (skip waiting)
+self.addEventListener('message', e => {
+    if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 // 后台同步
@@ -153,14 +171,5 @@ self.addEventListener('notificationclick', event => {
         event.waitUntil(
             clients.openWindow('/')
         );
-    }
-});
-
-// 消息处理
-self.addEventListener('message', event => {
-    console.log('Service Worker: 接收到消息', event.data);
-
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        self.skipWaiting();
     }
 });
