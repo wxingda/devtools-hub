@@ -141,7 +141,7 @@ php -S localhost:8000
 ### 🎨 颜色调色板
 - RGB、HEX、HSL格式转换
 - 色彩预览
-- 渊渐色生成
+- 渐变色生成
 - 色彩搭配建议
 
 ### 🔍 正则表达式测试器
@@ -161,6 +161,12 @@ php -S localhost:8000
 - ✅ 离线二维码生成（取消外部依赖，当前为简化占位版本，后续将升级为真实 QR 算法）
 - ✅ 使用统计面板（完全本地，不上传）
 - ✅ 插件 API 初步命名空间 (`window.DevToolsHub.registerTool`) 预留扩展能力
+
+### 🔗 深链接 / 快速直达
+- 现在支持通过 URL 参数或哈希直达某个工具：
+  - https://wxingda.github.io/devtools-hub/?tool=json-formatter
+  - https://wxingda.github.io/devtools-hub/#qr-generator
+  - 支持的 ID：password-generator、color-palette、regex-tester、json-formatter、url-encoder、base64-encoder、hash-calculator、timestamp-converter、qr-generator、text-diff、css-unit-converter
 
 > 欢迎提交 PR：改进 QR 生成、补充真实 MD5、增加更多可视化工具。
 

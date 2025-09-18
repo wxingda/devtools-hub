@@ -1134,21 +1134,65 @@ function escapeHtml(text) {
     });
 
     // Hook switchTool 来记录使用
-    const _originalSwitch = window.switchTool; if (typeof _originalSwitch === 'function') { window.switchTool = function (toolId) { _originalSwitch(toolId); recordUsage(toolId); }; }
+    // 深链接支持：包装 switchTool，同步 URL hash，并记录使用
+    const _originalSwitch = window.switchTool;
+    let _ignoreHash = false;
+    function _setHash(toolId) {
+        if (location.hash.slice(1) === toolId) return;
+        _ignoreHash = true;
+        try { location.hash = toolId; } catch (_) { }
+        // 下一轮事件循环后允许处理 hashchange
+        setTimeout(() => { _ignoreHash = false; }, 0);
+    }
+    if (typeof _originalSwitch === 'function') {
+        window.switchTool = function (toolId) {
+            _originalSwitch(toolId);
+            recordUsage(toolId);
+            _setHash(toolId);
+        };
+    }
 
     // =============== JSON 树视图 ===============
-    function buildTree(container, data) {
+    function buildTree(container, data, query) {
         container.innerHTML = ''; const ul = document.createElement('ul'); container.appendChild(ul); function createNode(key, value, parent) {
             const li = document.createElement('li'); let type = typeof value; if (value === null) type = 'null'; const isObj = type === 'object'; const isArr = Array.isArray(value); li.className = 'tree-node'; const wrapper = document.createElement('div'); wrapper.className = 'node-line'; if (isObj || isArr) { wrapper.innerHTML = `<span class="node-toggle" role="button" tabindex="0">▶</span><span class="node-key">${escapeHtml(String(key))}</span><span class="node-sep">: </span><span class="node-type">${isArr ? `Array(${value.length})` : 'Object'}</span>`; } else { let cls = 'node-value-string'; if (type === 'number') cls = 'node-value-number'; else if (type === 'boolean') cls = 'node-value-boolean'; else if (type === 'null') cls = 'node-value-null'; wrapper.innerHTML = `<span class="node-key">${escapeHtml(String(key))}</span><span class="node-sep">: </span><span class="${cls}">${escapeHtml(JSON.stringify(value))}</span>`; }
             li.appendChild(wrapper); parent.appendChild(li); if (isObj || isArr) { const childUl = document.createElement('ul'); li.appendChild(childUl); (isArr ? value : Object.entries(value)).forEach((entry, i) => { if (isArr) createNode(i, entry, childUl); else { const [k, v] = entry; createNode(k, v, childUl); } }); li.classList.add('collapsed'); wrapper.querySelector('.node-toggle').addEventListener('click', () => { li.classList.toggle('collapsed'); }); wrapper.querySelector('.node-toggle').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.classList.toggle('collapsed'); } }); }
+            // 简易高亮搜索
+            if (query) {
+                const q = String(query).toLowerCase();
+                const txt = wrapper.textContent.toLowerCase();
+                if (txt.includes(q)) {
+                    wrapper.style.background = 'rgba(255, 214, 102, .18)';
+                    wrapper.style.borderRadius = '6px';
+                }
+            }
         }
         if (typeof data === 'object' && data !== null) { if (Array.isArray(data)) { createNode('[root]', data, ul); } else { createNode('[root]', data, ul); } } else { ul.innerHTML = `<li><em>根节点不是对象/数组</em></li>`; }
     }
 
-    function showTree() { const input = document.getElementById('jsonInput'); const tree = document.getElementById('jsonTreeView'); const output = document.getElementById('jsonOutput'); if (!tree || !input) return; try { const data = JSON.parse(input.value); buildTree(tree, data); tree.hidden = false; output.style.display = 'none'; document.getElementById('showTreeBtn').style.display = 'none'; document.getElementById('showTextBtn').style.display = 'inline-flex'; } catch (e) { showNotification && showNotification('当前 JSON 无法解析', 'error'); } }
+    function showTree() { const input = document.getElementById('jsonInput'); const tree = document.getElementById('jsonTreeView'); const output = document.getElementById('jsonOutput'); if (!tree || !input) return; try { const data = JSON.parse(input.value); const q = (document.getElementById('jsonTreeSearch') || {}).value || ''; buildTree(tree, data, q); tree.hidden = false; output.style.display = 'none'; document.getElementById('showTreeBtn').style.display = 'none'; document.getElementById('showTextBtn').style.display = 'inline-flex'; } catch (e) { showNotification && showNotification('当前 JSON 无法解析', 'error'); } }
     function showText() { const tree = document.getElementById('jsonTreeView'); const output = document.getElementById('jsonOutput'); if (!tree) return; tree.hidden = true; output.style.display = 'block'; document.getElementById('showTreeBtn').style.display = 'inline-flex'; document.getElementById('showTextBtn').style.display = 'none'; }
 
-    document.addEventListener('DOMContentLoaded', () => { const treeBtn = document.getElementById('showTreeBtn'); const textBtn = document.getElementById('showTextBtn'); if (treeBtn) treeBtn.addEventListener('click', showTree); if (textBtn) textBtn.addEventListener('click', showText); });
+    document.addEventListener('DOMContentLoaded', () => {
+        const treeBtn = document.getElementById('showTreeBtn'); const textBtn = document.getElementById('showTextBtn'); if (treeBtn) treeBtn.addEventListener('click', showTree); if (textBtn) textBtn.addEventListener('click', showText);
+        const search = document.getElementById('jsonTreeSearch'); if (search) { search.addEventListener('input', () => { const tree = document.getElementById('jsonTreeView'); if (!tree || tree.hidden) return; showTree(); }); }
+        // 初始根据 URL 参数或 hash 激活工具
+        const params = new URLSearchParams(location.search);
+        const urlTool = params.get('tool');
+        const hashTool = location.hash ? location.hash.slice(1) : '';
+        const target = hashTool || urlTool;
+        if (target && typeof window.switchTool === 'function') {
+            window.switchTool(target);
+        }
+        // 监听 hash 变化（例如用户直接修改 #tool）
+        window.addEventListener('hashchange', () => {
+            if (_ignoreHash) return;
+            const t = location.hash.slice(1);
+            if (t && typeof window.switchTool === 'function') {
+                window.switchTool(t);
+            }
+        });
+    });
 
     // =============== 离线 QR 生成（替换外部 API） ===============
     // 简化：使用一个最小实现（伪：不完整二维码算法，仅占位演示）。建议后续接入真正二维码库或手写模块。

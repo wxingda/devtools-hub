@@ -263,6 +263,7 @@
                             <div class="json-view-toggle">
                                 <button class="btn secondary" id="showTreeBtn" type="button">树视图</button>
                                 <button class="btn secondary" id="showTextBtn" type="button" style="display:none">文本视图</button>
+                                <input type="search" id="jsonTreeSearch" placeholder="搜索键/值..." style="flex:1;max-width:220px;display:none" aria-label="搜索 JSON 树">
                             </div>
                         </div>
                         <div class="json-controls">
@@ -818,7 +819,19 @@
         });
     </script>
     <noscript><div style="margin:2rem;padding:1rem;border:1px solid #e74c3c;color:#e74c3c;border-radius:8px;max-width:760px;margin-inline:auto;font-size:.9rem">⚠️ 您的浏览器已禁用 JavaScript，DevTools Hub 需要 JS 才能运行。请启用后刷新。</div></noscript>
-    <script>window.addEventListener('DOMContentLoaded',()=>document.body.classList.add('ready'))</script>
+        <script>
+            window.addEventListener('DOMContentLoaded',()=>{
+                document.body.classList.add('ready');
+                // 当进入树视图时显示搜索框
+                const treeBtn = document.getElementById('showTreeBtn');
+                const textBtn = document.getElementById('showTextBtn');
+                const search = document.getElementById('jsonTreeSearch');
+                if (treeBtn && search && textBtn) {
+                    treeBtn.addEventListener('click', ()=>{ search.style.display='inline-flex'; });
+                    textBtn.addEventListener('click', ()=>{ search.style.display='none'; });
+                }
+            });
+        </script>
 
     <!-- 使用统计模态框 -->
     <div id="usageModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="usageModalTitle">
