@@ -256,31 +256,83 @@
                     <p data-i18n="tool.json.sub">美化和压缩JSON数据</p>
                 </div>
                 <div class="tool-content" data-tool-section="json">
+                    <!-- 顶部工具栏 -->
+                <div class="json-toolbar">
+                    <div class="json-btn-group input-controls">
+                        <button id="pasteJsonBtn" class="json-btn json-btn-paste" title="从剪贴板粘贴 JSON 数据 (Ctrl+V)">
+                            <i class="fas fa-paste"></i>粘贴
+                        </button>
+                        <button id="clearJsonBtn" class="json-btn json-btn-clear" title="清空所有内容">
+                            <i class="fas fa-times-circle"></i>清空
+                        </button>
+                    </div>
+                    <div class="json-btn-group process-controls">
+                        <button id="formatJsonBtn" class="json-btn json-btn-primary" title="美化格式化 JSON (推荐)">
+                            <i class="fas fa-code"></i>格式化
+                        </button>
+                        <button id="compressJsonBtn" class="json-btn" title="压缩 JSON，移除空格和换行">
+                            <i class="fas fa-compress-alt"></i>压缩
+                        </button>
+                        <button id="validateJsonBtn" class="json-btn" title="验证 JSON 语法正确性">
+                            <i class="fas fa-check-circle"></i>验证
+                        </button>
+                    </div>
+                    <div class="json-btn-group output-controls">
+                        <button id="copyOutputBtn" class="json-btn json-btn-copy" title="复制结果到剪贴板 (Ctrl+C)">
+                            <i class="fas fa-copy"></i>复制
+                        </button>
+                        <button id="downloadOutputBtn" class="json-btn" title="下载为 .json 文件">
+                            <i class="fas fa-download"></i>下载
+                        </button>
+                    </div>
+                    <div class="json-btn-group view-controls">
+                        <button id="showTreeBtn" class="json-btn json-btn-toggle active" title="树形视图，便于查看结构">
+                            <i class="fas fa-sitemap"></i>树视图
+                        </button>
+                        <button id="showTextBtn" class="json-btn json-btn-toggle" title="文本视图，便于编辑">
+                            <i class="fas fa-align-left"></i>文本
+                        </button>
+                    </div>
+                </div>                    <!-- 搜索栏 -->
+                    <div class="json-search-bar" style="display:none" id="jsonSearchBar">
+                        <input type="search" id="jsonTreeSearch" placeholder="搜索键或值..." aria-label="搜索 JSON 树">
+                        <span class="search-hint">支持实时搜索和高亮</span>
+                    </div>
+                    
                     <div class="json-section">
-                        <div class="json-input">
-                            <label for="jsonInput">输入JSON</label>
-                            <textarea id="jsonInput" rows="18" placeholder="在这里粘贴或输入JSON数据..."></textarea>
-                            <div class="json-view-toggle">
-                                <button class="btn secondary" id="showTreeBtn" type="button">树视图</button>
-                                <button class="btn secondary" id="showTextBtn" type="button" style="display:none">文本视图</button>
-                                <input type="search" id="jsonTreeSearch" placeholder="搜索键/值..." style="flex:1;max-width:220px;display:none" aria-label="搜索 JSON 树">
+                        <div class="json-panel">
+                            <div class="json-panel-header">
+                                <h4><i class="fas fa-edit"></i> JSON 输入</h4>
+                                <div class="json-panel-stats" id="inputStats">0 行</div>
+                            </div>
+                            <div class="json-editor-wrapper">
+                                <textarea id="jsonInput" 
+                                          rows="24" 
+                                          spellcheck="false"
+                                          placeholder="请输入或粘贴 JSON 数据...
+
+示例:
+{
+  &quot;name&quot;: &quot;开发工具集&quot;,
+  &quot;tools&quot;: [&quot;JSON 格式化&quot;, &quot;密码生成&quot;, &quot;颜色选择&quot;]
+}
+
+💡 提示：
+• 支持快捷键 Ctrl+V 粘贴
+• 实时语法验证和统计
+• 自动检测并纠正常见错误"></textarea>
                             </div>
                         </div>
-                        <div class="json-controls">
-                            <button class="btn primary" onclick="formatJSON()">
-                                <i class="fas fa-magic"></i> 格式化
-                            </button>
-                            <button class="btn secondary" onclick="compressJSON()">
-                                <i class="fas fa-compress"></i> 压缩
-                            </button>
-                            <button class="btn secondary" onclick="validateJSON()">
-                                <i class="fas fa-check"></i> 验证
-                            </button>
-                        </div>
-                        <div class="json-output">
-                            <label for="jsonOutput">格式化结果</label>
-                            <textarea id="jsonOutput" rows="18" readonly></textarea>
-                            <div id="jsonTreeView" class="json-tree" hidden aria-label="JSON 树视图" role="tree"></div>
+                        
+                        <div class="json-panel">
+                            <div class="json-panel-header">
+                                <h4><i class="fas fa-eye"></i> 预览结果</h4>
+                                <div class="json-panel-stats" id="outputStats">等待输入</div>
+                            </div>
+                            <div class="json-editor-wrapper">
+                                <textarea id="jsonOutput" rows="24" readonly spellcheck="false"></textarea>
+                                <div id="jsonTreeView" class="json-tree" hidden aria-label="JSON 树视图" role="tree"></div>
+                            </div>
                             <div class="json-info">
                                 <span id="jsonStatus"></span>
                             </div>

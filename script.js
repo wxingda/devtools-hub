@@ -132,6 +132,22 @@ function setupKeyboardShortcuts() {
         if (e.key === 'Escape') {
             document.activeElement.blur();
         }
+
+        // JSON 工具快捷键：Cmd/Ctrl + Enter 格式化，Cmd/Ctrl + M 压缩，Cmd/Ctrl+Shift+C 复制输出
+        if ((e.ctrlKey || e.metaKey) && (currentTool === 'json-formatter' || document.activeElement.closest && document.activeElement.closest('#jsonInput'))) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                formatJSON();
+            }
+            if (e.key && e.key.toLowerCase() === 'm' && !e.shiftKey) {
+                e.preventDefault();
+                compressJSON();
+            }
+            if (e.key && (e.key.toLowerCase() === 'c' && e.shiftKey)) {
+                e.preventDefault();
+                copyOutput();
+            }
+        }
     });
 }
 
@@ -393,13 +409,82 @@ function initializeTools() {
         element.addEventListener('input', testRegex);
     });
 
-    // JSON输入实时验证
+    // JSON输入实时验证和统计
     const jsonInput = document.getElementById('jsonInput');
-    jsonInput.addEventListener('input', debounce(validateJSON, 500));
+    if (jsonInput) {
+        jsonInput.addEventListener('input', debounce(() => {
+            validateJSON();
+            updateInputStats();
+        }, 300));
+
+        // 快捷键支持
+        jsonInput.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                formatJSON();
+            }
+        });
+
+        // 初始化统计
+        updateInputStats();
+        updateOutputStats('等待输入');
+    }
+
+    // JSON 便捷操作按钮绑定
+    const pasteBtn = document.getElementById('pasteJsonBtn');
+    const clearBtn = document.getElementById('clearJsonBtn');
+    const fmtBtn = document.getElementById('formatJsonBtn');
+    const cmpBtn = document.getElementById('compressJsonBtn');
+    const copyOutBtn = document.getElementById('copyOutputBtn');
+    const downloadOutBtn = document.getElementById('downloadOutputBtn');
+
+    if (pasteBtn) pasteBtn.addEventListener('click', pasteJson);
+    if (clearBtn) clearBtn.addEventListener('click', clearJsonInput);
+    if (fmtBtn) fmtBtn.addEventListener('click', formatJSON);
+    if (cmpBtn) cmpBtn.addEventListener('click', compressJSON);
+    if (copyOutBtn) copyOutBtn.addEventListener('click', copyOutput);
+    if (downloadOutBtn) downloadOutBtn.addEventListener('click', downloadOutput);
+
+    // 树视图切换增强
+    const treeBtn = document.getElementById('showTreeBtn');
+    const textBtn = document.getElementById('showTextBtn');
+    const searchBar = document.getElementById('jsonSearchBar');
+
+    if (treeBtn) {
+        treeBtn.addEventListener('click', () => {
+            showTree();
+            treeBtn.classList.add('active');
+            if (textBtn) textBtn.classList.remove('active');
+            if (searchBar) searchBar.style.display = 'flex';
+        });
+    }
+
+    if (textBtn) {
+        textBtn.addEventListener('click', () => {
+            showText();
+            textBtn.classList.add('active');
+            if (treeBtn) treeBtn.classList.remove('active');
+            if (searchBar) searchBar.style.display = 'none';
+        });
+    }
 
     // 哈希计算实时更新
     const hashInput = document.getElementById('hashInput');
     hashInput.addEventListener('input', debounce(calculateHashes, 300));
+
+    // 全局快捷键支持
+    document.addEventListener('keydown', (e) => {
+        // 只在 JSON 工具区域活跃时响应
+        if (document.activeElement && document.activeElement.closest('.tool[id="json-formatter"]')) {
+            if (e.ctrlKey && e.key === 'v' && e.target === document.body) {
+                e.preventDefault();
+                pasteJson();
+            } else if (e.ctrlKey && e.key === 'c' && e.target === document.getElementById('jsonOutput')) {
+                e.preventDefault();
+                copyOutput();
+            }
+        }
+    });
 }
 
 // 密码生成器功能
@@ -576,43 +661,155 @@ function testRegex() {
 function formatJSON() {
     const input = document.getElementById('jsonInput').value;
     const output = document.getElementById('jsonOutput');
+    const btn = document.getElementById('formatJsonBtn');
 
-    try {
-        const parsed = JSON.parse(input);
-        output.value = JSON.stringify(parsed, null, 2);
-        showJsonStatus('JSON格式化成功！', 'success');
-    } catch (error) {
-        showJsonStatus(`JSON格式错误: ${error.message}`, 'error');
+    if (!input.trim()) {
+        showJsonStatus('请输入 JSON 内容', 'error');
+        updateOutputStats('等待输入');
+        return;
     }
+
+    // 添加加载状态
+    btn.classList.add('loading');
+    setTimeout(() => {
+        try {
+            const parsed = JSON.parse(input);
+            const formatted = JSON.stringify(parsed, null, 2);
+            output.value = formatted;
+            showJsonStatus('格式化成功', 'success');
+            updateOutputStats(`已格式化, ${formatted.split('\n').length} 行`);
+
+            // 成功动画效果
+            output.style.animation = 'fadeInSuccess 0.5s ease';
+            setTimeout(() => output.style.animation = '', 500);
+        } catch (error) {
+            output.value = '';
+            showJsonStatus(`格式化失败: ${error.message}`, 'error');
+            updateOutputStats('格式化失败');
+        } finally {
+            btn.classList.remove('loading');
+        }
+    }, 100);
 }
 
 function compressJSON() {
     const input = document.getElementById('jsonInput').value;
     const output = document.getElementById('jsonOutput');
+    const btn = document.getElementById('compressJsonBtn');
 
-    try {
-        const parsed = JSON.parse(input);
-        output.value = JSON.stringify(parsed);
-        showJsonStatus('JSON压缩成功！', 'success');
-    } catch (error) {
-        showJsonStatus(`JSON格式错误: ${error.message}`, 'error');
+    if (!input.trim()) {
+        showJsonStatus('请输入 JSON 内容', 'error');
+        updateOutputStats('等待输入');
+        return;
     }
+
+    btn.classList.add('loading');
+    setTimeout(() => {
+        try {
+            const parsed = JSON.parse(input);
+            const compressed = JSON.stringify(parsed);
+            output.value = compressed;
+            showJsonStatus('压缩成功', 'success');
+            updateOutputStats(`已压缩, ${compressed.length} 字符`);
+
+            // 成功动画效果
+            output.style.animation = 'fadeInSuccess 0.5s ease';
+            setTimeout(() => output.style.animation = '', 500);
+        } catch (error) {
+            output.value = '';
+            showJsonStatus(`压缩失败: ${error.message}`, 'error');
+            updateOutputStats('压缩失败');
+        } finally {
+            btn.classList.remove('loading');
+        }
+    }, 100);
 }
 
 function validateJSON() {
     const input = document.getElementById('jsonInput').value;
 
     if (!input.trim()) {
-        showJsonStatus('请输入JSON数据', 'error');
+        showJsonStatus('等待输入', '');
         return;
     }
 
     try {
         JSON.parse(input);
-        showJsonStatus('JSON格式正确！', 'success');
+        showJsonStatus('JSON 格式正确', 'success');
     } catch (error) {
-        showJsonStatus(`JSON格式错误: ${error.message}`, 'error');
+        showJsonStatus(`语法错误: ${error.message}`, 'error');
     }
+}
+
+// JSON convenience helpers
+async function pasteJson() {
+    try {
+        const text = await navigator.clipboard.readText();
+        const input = document.getElementById('jsonInput');
+        if (input) {
+            input.value = text;
+            validateJSON();
+            updateInputStats();
+            showNotification('已从剪贴板粘贴内容', 'success');
+        }
+    } catch (e) {
+        showNotification('无法访问剪贴板：' + e.message, 'error');
+    }
+}
+
+function clearJsonInput() {
+    const input = document.getElementById('jsonInput');
+    const output = document.getElementById('jsonOutput');
+    if (input) input.value = '';
+    if (output) output.value = '';
+    const tree = document.getElementById('jsonTreeView'); if (tree) tree.innerHTML = '';
+    showJsonStatus('已清空', '');
+    updateInputStats();
+    updateOutputStats('等待输入');
+}
+
+function copyOutput() {
+    const out = document.getElementById('jsonOutput');
+    if (!out || !out.value) {
+        showNotification('没有可复制的内容', 'warning');
+        return;
+    }
+    copyToClipboard(out.value, 'JSON 结果已复制');
+}
+
+function downloadOutput() {
+    const out = document.getElementById('jsonOutput');
+    if (!out || !out.value) {
+        showNotification('没有可下载的内容', 'warning');
+        return;
+    }
+    const blob = new Blob([out.value], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showNotification('已准备下载', 'success');
+}
+
+// 统计功能
+function updateInputStats() {
+    const input = document.getElementById('jsonInput');
+    const stats = document.getElementById('inputStats');
+    if (!input || !stats) return;
+
+    const lines = input.value.split('\n').length;
+    const chars = input.value.length;
+    stats.textContent = `${lines} 行, ${chars} 字符`;
+}
+
+function updateOutputStats(status) {
+    const stats = document.getElementById('outputStats');
+    if (!stats) return;
+    stats.textContent = status;
 }
 
 function showJsonStatus(message, type) {
