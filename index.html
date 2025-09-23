@@ -146,32 +146,121 @@
                     <p data-i18n="tool.password.sub">生成安全的随机密码</p>
                 </div>
                 <div class="tool-content">
-                    <div class="form-group">
-                        <label for="passwordLength">密码长度: <span id="lengthValue">16</span></label>
-                        <input type="range" id="passwordLength" min="4" max="128" value="16">
-                    </div>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="includeUppercase" checked> 包含大写字母 (A-Z)</label>
-                        <label><input type="checkbox" id="includeLowercase" checked> 包含小写字母 (a-z)</label>
-                        <label><input type="checkbox" id="includeNumbers" checked> 包含数字 (0-9)</label>
-                        <label><input type="checkbox" id="includeSymbols"> 包含特殊字符 (!@#$...)</label>
-                    </div>
-                    <button class="btn primary" onclick="generatePassword()">
-                        <i class="fas fa-refresh"></i> 生成密码
-                    </button>
-                    <div class="result-group">
-                        <div class="result-box">
-                            <input type="text" id="generatedPassword" placeholder="生成的密码将显示在这里..." readonly>
-                            <button class="copy-btn" onclick="copyPassword()">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                        <div class="password-strength">
-                            <span>密码强度: </span>
-                            <div class="strength-meter">
-                                <div class="strength-bar" id="strengthBar"></div>
+                    <!-- 密码配置面板 -->
+                    <div class="password-config-panel">
+                        <div class="config-section">
+                            <div class="form-group length-control">
+                                <label for="passwordLength">
+                                    <i class="fas fa-ruler"></i>
+                                    密码长度: <span id="lengthValue" class="length-badge">16</span>
+                                </label>
+                                <input type="range" id="passwordLength" min="4" max="128" value="16" class="length-slider">
+                                <div class="length-presets">
+                                    <button class="preset-btn" data-length="8">短 (8)</button>
+                                    <button class="preset-btn" data-length="16">中 (16)</button>
+                                    <button class="preset-btn active" data-length="24">长 (24)</button>
+                                    <button class="preset-btn" data-length="32">超长 (32)</button>
+                                </div>
                             </div>
-                            <span id="strengthText">中等</span>
+                        </div>
+                        
+                        <div class="config-section">
+                            <h4><i class="fas fa-cogs"></i> 字符类型</h4>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-card">
+                                    <input type="checkbox" id="includeUppercase" checked>
+                                    <div class="checkbox-content">
+                                        <i class="fas fa-font"></i>
+                                        <span>大写字母</span>
+                                        <small>A-Z</small>
+                                    </div>
+                                </label>
+                                <label class="checkbox-card">
+                                    <input type="checkbox" id="includeLowercase" checked>
+                                    <div class="checkbox-content">
+                                        <i class="fas fa-font"></i>
+                                        <span>小写字母</span>
+                                        <small>a-z</small>
+                                    </div>
+                                </label>
+                                <label class="checkbox-card">
+                                    <input type="checkbox" id="includeNumbers" checked>
+                                    <div class="checkbox-content">
+                                        <i class="fas fa-hashtag"></i>
+                                        <span>数字</span>
+                                        <small>0-9</small>
+                                    </div>
+                                </label>
+                                <label class="checkbox-card">
+                                    <input type="checkbox" id="includeSymbols">
+                                    <div class="checkbox-content">
+                                        <i class="fas fa-at"></i>
+                                        <span>特殊字符</span>
+                                        <small>!@#$...</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 生成操作区 -->
+                    <div class="password-actions">
+                        <button class="btn btn-generate" onclick="generatePassword()">
+                            <i class="fas fa-magic"></i> 生成安全密码
+                        </button>
+                        <button class="btn btn-secondary" onclick="generateMultiple()">
+                            <i class="fas fa-layer-group"></i> 批量生成
+                        </button>
+                    </div>
+
+                    <!-- 结果显示区 -->
+                    <div class="password-result-panel">
+                        <div class="result-header">
+                            <h4><i class="fas fa-shield-alt"></i> 生成结果</h4>
+                            <div class="result-actions">
+                                <button class="action-btn" onclick="regeneratePassword()" title="重新生成">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                                <button class="action-btn" onclick="clearPassword()" title="清空">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="result-group">
+                            <div class="password-display">
+                                <input type="text" id="generatedPassword" placeholder="点击"生成安全密码"按钮..." readonly>
+                                <button class="copy-btn" onclick="copyPassword()" title="复制密码">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="password-analysis">
+                                <div class="strength-section">
+                                    <div class="strength-header">
+                                        <span class="strength-label">密码强度:</span>
+                                        <span id="strengthText" class="strength-text">待生成</span>
+                                    </div>
+                                    <div class="strength-meter">
+                                        <div class="strength-bar" id="strengthBar"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="password-info">
+                                    <div class="info-item">
+                                        <span class="info-label">字符数:</span>
+                                        <span id="charCount">0</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">熵值:</span>
+                                        <span id="entropyValue">0 bits</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">破解时间:</span>
+                                        <span id="crackTime">-</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -184,32 +273,141 @@
                     <p data-i18n="tool.color.sub">颜色选择和格式转换</p>
                 </div>
                 <div class="tool-content">
-                    <div class="color-picker-section">
-                        <div class="color-display">
-                            <div class="color-preview" id="colorPreview"></div>
+                    <!-- 主颜色选择区 -->
+                    <div class="color-main-section">
+                        <div class="color-picker-area">
+                            <div class="color-preview-large" id="colorPreview"></div>
                             <input type="color" id="colorPicker" value="#3498db">
+                            <div class="picker-actions">
+                                <button class="picker-btn" onclick="pickColorFromScreen()" title="从屏幕取色">
+                                    <i class="fas fa-eye-dropper"></i>
+                                </button>
+                                <button class="picker-btn" onclick="randomColor()" title="随机颜色">
+                                    <i class="fas fa-dice"></i>
+                                </button>
+                                <button class="picker-btn" onclick="saveToHistory()" title="保存到历史">
+                                    <i class="fas fa-bookmark"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="color-inputs">
-                            <div class="input-group">
+                        
+                        <div class="color-formats-grid">
+                            <div class="format-group">
                                 <label for="hexInput">HEX</label>
-                                <input type="text" id="hexInput" value="#3498db">
+                                <div class="input-with-copy">
+                                    <input type="text" id="hexInput" value="#3498db" readonly>
+                                    <button class="copy-format-btn" onclick="copyFormat('hex')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="input-group">
+                            <div class="format-group">
                                 <label for="rgbInput">RGB</label>
-                                <input type="text" id="rgbInput" value="rgb(52, 152, 219)">
+                                <div class="input-with-copy">
+                                    <input type="text" id="rgbInput" value="rgb(52, 152, 219)" readonly>
+                                    <button class="copy-format-btn" onclick="copyFormat('rgb')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="input-group">
+                            <div class="format-group">
                                 <label for="hslInput">HSL</label>
-                                <input type="text" id="hslInput" value="hsl(204, 70%, 53%)">
+                                <div class="input-with-copy">
+                                    <input type="text" id="hslInput" value="hsl(204, 70%, 53%)" readonly>
+                                    <button class="copy-format-btn" onclick="copyFormat('hsl')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="format-group">
+                                <label for="hsvaInput">HSVA</label>
+                                <div class="input-with-copy">
+                                    <input type="text" id="hsvaInput" value="hsva(204, 76%, 86%, 1)" readonly>
+                                    <button class="copy-format-btn" onclick="copyFormat('hsva')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="format-group">
+                                <label for="cmykInput">CMYK</label>
+                                <div class="input-with-copy">
+                                    <input type="text" id="cmykInput" value="cmyk(76%, 31%, 0%, 14%)" readonly>
+                                    <button class="copy-format-btn" onclick="copyFormat('cmyk')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="format-group">
+                                <label for="cssInput">CSS变量</label>
+                                <div class="input-with-copy">
+                                    <input type="text" id="cssInput" value="--primary-color: #3498db;" readonly>
+                                    <button class="copy-format-btn" onclick="copyFormat('css')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="color-palette">
-                        <h3>调色板</h3>
-                        <div class="palette-colors" id="paletteColors"></div>
-                        <button class="btn secondary" onclick="generatePalette()">
-                            <i class="fas fa-refresh"></i> 生成新调色板
-                        </button>
+
+                    <!-- 颜色历史记录 -->
+                    <div class="color-history-section">
+                        <div class="section-header">
+                            <h4><i class="fas fa-history"></i> 颜色历史</h4>
+                            <button class="clear-btn" onclick="clearColorHistory()">
+                                <i class="fas fa-trash"></i> 清空
+                            </button>
+                        </div>
+                        <div class="color-history" id="colorHistory">
+                            <!-- 历史颜色将通过 JavaScript 添加 -->
+                        </div>
+                    </div>
+
+                    <!-- 调色板生成 -->
+                    <div class="palette-section">
+                        <div class="section-header">
+                            <h4><i class="fas fa-palette"></i> 调色板生成</h4>
+                            <div class="palette-controls">
+                                <select id="paletteType">
+                                    <option value="monochromatic">单色调色板</option>
+                                    <option value="analogous">相邻色调色板</option>
+                                    <option value="complementary">互补色调色板</option>
+                                    <option value="triadic">三色调色板</option>
+                                    <option value="tetradic">四色调色板</option>
+                                    <option value="split">分裂补色调色板</option>
+                                </select>
+                                <button class="btn btn-primary" onclick="generatePalette()">
+                                    <i class="fas fa-magic"></i> 生成
+                                </button>
+                            </div>
+                        </div>
+                        <div class="palette-display" id="paletteDisplay">
+                            <!-- 调色板将通过 JavaScript 生成 -->
+                        </div>
+                    </div>
+
+                    <!-- 常用颜色预设 -->
+                    <div class="presets-section">
+                        <h4><i class="fas fa-star"></i> 常用颜色</h4>
+                        <div class="color-presets">
+                            <div class="preset-category">
+                                <h5>Material Design</h5>
+                                <div class="preset-colors" data-category="material">
+                                    <!-- 预设颜色将通过 JavaScript 添加 -->
+                                </div>
+                            </div>
+                            <div class="preset-category">
+                                <h5>扁平化设计</h5>
+                                <div class="preset-colors" data-category="flat">
+                                    <!-- 预设颜色将通过 JavaScript 添加 -->
+                                </div>
+                            </div>
+                            <div class="preset-category">
+                                <h5>品牌色彩</h5>
+                                <div class="preset-colors" data-category="brand">
+                                    <!-- 预设颜色将通过 JavaScript 添加 -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

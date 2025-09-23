@@ -384,6 +384,18 @@ function initializeTools() {
 
     lengthSlider.addEventListener('input', (e) => {
         lengthValue.textContent = e.target.value;
+        updateLengthPresets(e.target.value);
+    });
+
+    // 长度预设按钮
+    const presetBtns = document.querySelectorAll('.preset-btn');
+    presetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const length = btn.dataset.length;
+            lengthSlider.value = length;
+            lengthValue.textContent = length;
+            updateLengthPresets(length);
+        });
     });
 
     // 颜色选择器
@@ -502,7 +514,7 @@ function generatePassword() {
     if (includeSymbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
 
     if (charset === '') {
-        alert('请至少选择一种字符类型！');
+        showNotification('请至少选择一种字符类型！', 'warning');
         return;
     }
 
@@ -513,6 +525,45 @@ function generatePassword() {
 
     document.getElementById('generatedPassword').value = password;
     updatePasswordStrength(password);
+    updatePasswordAnalysis(password);
+}
+
+// 批量生成密码
+function generateMultiple() {
+    const passwords = [];
+    for (let i = 0; i < 5; i++) {
+        generatePassword();
+        passwords.push(document.getElementById('generatedPassword').value);
+    }
+
+    // 显示批量密码对话框或在新窗口中显示
+    const passwordList = passwords.join('\n');
+    const newWindow = window.open('', '_blank');
+    newWindow.document.write(`
+        <html>
+            <head><title>批量生成的密码</title></head>
+            <body style="font-family: monospace; padding: 20px;">
+                <h3>批量生成的安全密码 (${passwords.length} 个)</h3>
+                <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px;">${passwordList}</pre>
+                <button onclick="navigator.clipboard.writeText('${passwordList}').then(() => alert('所有密码已复制到剪贴板！'))">复制全部</button>
+            </body>
+        </html>
+    `);
+}
+
+// 重新生成密码
+function regeneratePassword() {
+    generatePassword();
+}
+
+// 清空密码
+function clearPassword() {
+    document.getElementById('generatedPassword').value = '';
+    document.getElementById('strengthText').textContent = '待生成';
+    document.getElementById('strengthBar').className = 'strength-bar';
+    document.getElementById('charCount').textContent = '0';
+    document.getElementById('entropyValue').textContent = '0 bits';
+    document.getElementById('crackTime').textContent = '-';
 }
 
 // 更新密码强度
@@ -530,17 +581,69 @@ function updatePasswordStrength(password) {
     if (/[^A-Za-z0-9]/.test(password)) score++;
 
     const levels = [
-        { class: 'weak', text: '弱' },
-        { class: 'weak', text: '较弱' },
-        { class: 'medium', text: '中等' },
-        { class: 'medium', text: '较强' },
-        { class: 'strong', text: '强' },
-        { class: 'very-strong', text: '很强' }
+        { class: 'weak', text: '弱', color: '#e74c3c' },
+        { class: 'weak', text: '较弱', color: '#f39c12' },
+        { class: 'medium', text: '中等', color: '#f1c40f' },
+        { class: 'medium', text: '较强', color: '#2ecc71' },
+        { class: 'strong', text: '强', color: '#27ae60' },
+        { class: 'very-strong', text: '很强', color: '#16a085' }
     ];
 
     const level = levels[Math.min(score, 5)];
     strengthBar.className = `strength-bar ${level.class}`;
     strengthText.textContent = level.text;
+    strengthText.style.backgroundColor = level.color;
+    strengthText.style.color = 'white';
+}
+
+// 更新密码分析信息
+function updatePasswordAnalysis(password) {
+    // 更新字符数
+    document.getElementById('charCount').textContent = password.length;
+
+    // 计算熵值
+    const charset = getCharsetSize(password);
+    const entropy = Math.log2(Math.pow(charset, password.length));
+    document.getElementById('entropyValue').textContent = `${Math.round(entropy)} bits`;
+
+    // 估算破解时间
+    const crackTime = estimateCrackTime(entropy);
+    document.getElementById('crackTime').textContent = crackTime;
+}
+
+// 获取字符集大小
+function getCharsetSize(password) {
+    let size = 0;
+    if (/[a-z]/.test(password)) size += 26;
+    if (/[A-Z]/.test(password)) size += 26;
+    if (/[0-9]/.test(password)) size += 10;
+    if (/[^A-Za-z0-9]/.test(password)) size += 32; // 估算特殊字符数量
+    return size;
+}
+
+// 估算破解时间
+function estimateCrackTime(entropy) {
+    const attempts = Math.pow(2, entropy) / 2; // 平均需要尝试一半的可能性
+    const attemptsPerSecond = 1e9; // 假设每秒10亿次尝试
+    const seconds = attempts / attemptsPerSecond;
+
+    if (seconds < 60) return '瞬间';
+    if (seconds < 3600) return `${Math.round(seconds / 60)} 分钟`;
+    if (seconds < 86400) return `${Math.round(seconds / 3600)} 小时`;
+    if (seconds < 31536000) return `${Math.round(seconds / 86400)} 天`;
+    if (seconds < 31536000000) return `${Math.round(seconds / 31536000)} 年`;
+    return '数世纪';
+}
+
+// 更新长度预设按钮状态
+function updateLengthPresets(currentLength) {
+    const presetBtns = document.querySelectorAll('.preset-btn');
+    presetBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.length === currentLength) {
+            btn.classList.add('active');
+        }
+    });
 }
 
 // 复制密码
