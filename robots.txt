@@ -1,3 +1,58 @@
 User-agent: *
 Allow: /
+
+# 重要页面
+Allow: /index.html
+Allow: /manifest.json
+Allow: /sw.js
+Allow: /offline.html
+
+# 静态资源
+Allow: /icons/
+Allow: /screenshots/
+Allow: /styles.css
+Allow: /script.js
+
+# 禁止访问的目录
+Disallow: /.git/
+Disallow: /.github/
+Disallow: /node_modules/
+Disallow: /.vscode/
+Disallow: /.idea/
+
+# 站点地图
 Sitemap: https://wxingda.github.io/devtools-hub/sitemap.xml
+
+# 爬虫延迟（毫秒）
+Crawl-delay: 1
+
+# 特定搜索引擎爬虫
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+# 禁止某些爬虫
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /

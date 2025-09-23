@@ -1,15 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+    <!-- 主页 -->
     <url>
         <loc>https://wxingda.github.io/devtools-hub/</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>weekly</changefreq>
         <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="zh-cn"
+            href="https://wxingda.github.io/devtools-hub/?lang=zh" />
+        <xhtml:link rel="alternate" hreflang="en"
+            href="https://wxingda.github.io/devtools-hub/?lang=en" />
+        <image:image>
+            <image:loc>https://wxingda.github.io/devtools-hub/screenshots/og-image.png</image:loc>
+            <image:title>DevTools Hub - 开发者工具集合</image:title>
+            <image:caption>一站式开发者工具集合，包含密码生成器、调色板、JSON格式化等实用工具</image:caption>
+        </image:image>
     </url>
+
+    <!-- 主页面入口 -->
     <url>
         <loc>https://wxingda.github.io/devtools-hub/index.html</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
+
+    <!-- 密码生成器工具 -->
+    <url>
+        <loc>https://wxingda.github.io/devtools-hub/#password-generator</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- 颜色调色板工具 -->
+    <url>
+        <loc>https://wxingda.github.io/devtools-hub/#color-palette</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- JSON格式化工具 -->
+    <url>
+        <loc>https://wxingda.github.io/devtools-hub/#json-formatter</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- 正则表达式测试工具 -->
+    <url>
+        <loc>https://wxingda.github.io/devtools-hub/#regex-tester</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Base64编解码工具 -->
+    <url>
+        <loc>https://wxingda.github.io/devtools-hub/#base64</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- 哈希计算工具 -->
+    <url>
+        <loc>https://wxingda.github.io/devtools-hub/#hash</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- 二维码生成工具 -->
+    <url>
+        <loc>https://wxingda.github.io/devtools-hub/#qr-code</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- 文本对比工具 -->
+    <url>
+        <loc>https://wxingda.github.io/devtools-hub/#text-diff</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- CSS单位转换工具 -->
+    <url>
+        <loc>https://wxingda.github.io/devtools-hub/#css-units</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- 时间戳转换工具 -->
+    <url>
+        <loc>https://wxingda.github.io/devtools-hub/#timestamp</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- 离线页面 -->
     <url>
         <loc>https://wxingda.github.io/devtools-hub/offline.html</loc>
+        <lastmod>2024-01-15T00:00:00+08:00</lastmod>
+        <changefreq>yearly</changefreq>
         <priority>0.5</priority>
     </url>
+
 </urlset>
