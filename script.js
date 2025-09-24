@@ -643,6 +643,7 @@ function initializeTools() {
     const cmpBtn = document.getElementById('compressJsonBtn');
     const copyOutBtn = document.getElementById('copyOutputBtn');
     const downloadOutBtn = document.getElementById('downloadOutputBtn');
+    const validateBtn = document.getElementById('validateJsonBtn');
 
     if (pasteBtn) pasteBtn.addEventListener('click', pasteJson);
     if (clearBtn) clearBtn.addEventListener('click', clearJsonInput);
@@ -650,6 +651,7 @@ function initializeTools() {
     if (cmpBtn) cmpBtn.addEventListener('click', compressJSON);
     if (copyOutBtn) copyOutBtn.addEventListener('click', copyOutput);
     if (downloadOutBtn) downloadOutBtn.addEventListener('click', downloadOutput);
+    if (validateBtn) validateBtn.addEventListener('click', validateJSON);
 
     // 树视图切换增强
     const treeBtn = document.getElementById('showTreeBtn');
@@ -691,6 +693,28 @@ function initializeTools() {
             }
         }
     });
+
+    // 文本对比：输入统计与快捷键
+    const textAEl = document.getElementById('textA');
+    const textBEl = document.getElementById('textB');
+    if (textAEl && textBEl) {
+        const updateStats = debounce(updateDiffInputStats, 150);
+        textAEl.addEventListener('input', updateStats);
+        textBEl.addEventListener('input', updateStats);
+
+        // Cmd/Ctrl + Enter 快速对比
+        const handleKey = (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                e.preventDefault();
+                compareTexts();
+            }
+        };
+        textAEl.addEventListener('keydown', handleKey);
+        textBEl.addEventListener('keydown', handleKey);
+
+        // 初始化一次统计
+        updateDiffInputStats();
+    }
 }
 
 // 密码生成器功能
@@ -2276,12 +2300,84 @@ function clearDiff() {
     document.getElementById('textB').value = '';
     document.getElementById('diffResult').innerHTML = '';
     document.getElementById('diffStats').textContent = '点击"对比文本"查看差异';
+    updateDiffInputStats();
 }
 
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// 文本对比辅助函数
+async function pasteDiff(side) {
+    try {
+        const text = await navigator.clipboard.readText();
+        const targetId = side === 'right' ? 'textB' : 'textA';
+        const el = document.getElementById(targetId);
+        if (el) {
+            el.value = text;
+            updateDiffInputStats();
+            showNotification(`已粘贴到${side === 'right' ? '右侧' : '左侧'}`, 'success');
+        }
+    } catch (e) {
+        showNotification('无法访问剪贴板：' + e.message, 'error');
+    }
+}
+
+function swapDiffTexts() {
+    const a = document.getElementById('textA');
+    const b = document.getElementById('textB');
+    if (!a || !b) return;
+    const tmp = a.value;
+    a.value = b.value;
+    b.value = tmp;
+    updateDiffInputStats();
+    showNotification('已交换左右文本', 'info');
+}
+
+function copyDiff() {
+    const result = document.getElementById('diffResult');
+    if (!result || !result.innerText.trim()) {
+        showNotification('没有可复制的对比结果', 'warning');
+        return;
+    }
+    copyToClipboard(result.innerText, '对比结果已复制');
+}
+
+function downloadDiff() {
+    const result = document.getElementById('diffResult');
+    if (!result || !result.innerText.trim()) {
+        showNotification('没有可下载的对比结果', 'warning');
+        return;
+    }
+    const blob = new Blob([result.innerText], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'diff-result.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showNotification('已准备下载', 'success');
+}
+
+function updateDiffInputStats() {
+    const a = document.getElementById('textA');
+    const b = document.getElementById('textB');
+    const aStats = document.getElementById('textAStats');
+    const bStats = document.getElementById('textBStats');
+    if (a && aStats) {
+        const lines = a.value ? a.value.split('\n').length : 0;
+        const chars = a.value.length;
+        aStats.textContent = `${lines} 行, ${chars} 字符`;
+    }
+    if (b && bStats) {
+        const lines = b.value ? b.value.split('\n').length : 0;
+        const chars = b.value.length;
+        bStats.textContent = `${lines} 行, ${chars} 字符`;
+    }
 }
 
 // JSON 树视图 & 离线 QR & 使用统计 增强

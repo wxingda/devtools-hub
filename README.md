@@ -87,7 +87,7 @@
 
 <div align="center">
 <img src="screenshots/password-generator.png" alt="密码生成器" width="400" style="margin: 10px;">
-<img src="screenshots/color-palette.png" alt="颜色调色板" width="400" style="margin: 10px;">
+<img src="screenshots/json-toolbar.png" alt="JSON格式化器" width="400" style="margin: 10px;">
 </div>
 
 ## 🚀 快速上手

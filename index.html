@@ -920,12 +920,47 @@
                     <h2><i class="fas fa-exchange-alt"></i> <span data-i18n="nav.text-diff">文本差异对比</span></h2>
                     <p data-i18n="tool.textdiff.sub">比较两段文本的差异</p>
                 </div>
-                <div class="tool-content">
-                    <div class="diff-section">
-                        <div class="diff-inputs">
-                            <div class="diff-input">
-                                <label for="textA">原始文本</label>
-                                <textarea id="textA" rows="15" placeholder="输入原始文本...">function generatePassword() {
+                <div class="tool-content" data-tool-section="text-diff">
+                    <!-- 顶部工具栏（复用 JSON 工具样式） -->
+                    <div class="json-toolbar">
+                        <div class="json-btn-group input-controls">
+                            <button class="json-btn json-btn-paste" onclick="pasteDiff('left')" title="从剪贴板粘贴到左侧">
+                                <i class="fas fa-paste"></i>粘贴左侧
+                            </button>
+                            <button class="json-btn json-btn-paste" onclick="pasteDiff('right')" title="从剪贴板粘贴到右侧">
+                                <i class="fas fa-paste"></i>粘贴右侧
+                            </button>
+                            <button class="json-btn" onclick="swapDiffTexts()" title="交换左右文本">
+                                <i class="fas fa-exchange-alt"></i>交换
+                            </button>
+                            <button class="json-btn json-btn-clear" onclick="clearDiff()" title="清空两侧文本">
+                                <i class="fas fa-times-circle"></i>清空
+                            </button>
+                        </div>
+                        <div class="json-btn-group process-controls">
+                            <button class="json-btn json-btn-primary" onclick="compareTexts()" title="对比两段文本差异">
+                                <i class="fas fa-search"></i>对比
+                            </button>
+                        </div>
+                        <div class="json-btn-group output-controls">
+                            <button class="json-btn json-btn-copy" onclick="copyDiff()" title="复制对比结果为文本">
+                                <i class="fas fa-copy"></i>复制结果
+                            </button>
+                            <button class="json-btn" onclick="downloadDiff()" title="下载对比结果为 .txt">
+                                <i class="fas fa-download"></i>下载结果
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 面板区域（复用 JSON 工具面板样式） -->
+                    <div class="json-section">
+                        <div class="json-panel">
+                            <div class="json-panel-header">
+                                <h4><i class="fas fa-file-alt"></i> 原始文本</h4>
+                                <div class="json-panel-stats" id="textAStats">0 行</div>
+                            </div>
+                            <div class="json-editor-wrapper">
+                                <textarea id="textA" rows="16" placeholder="输入原始文本...">function generatePassword() {
     const length = parseInt(document.getElementById('passwordLength').value);
     const uppercase = document.getElementById('includeUppercase').checked;
     const lowercase = document.getElementById('includeLowercase').checked;
@@ -933,9 +968,15 @@
     const symbols = document.getElementById('includeSymbols').checked;
 }</textarea>
                             </div>
-                            <div class="diff-input">
-                                <label for="textB">修改后文本</label>
-                                <textarea id="textB" rows="15" placeholder="输入修改后的文本...">function generatePassword() {
+                        </div>
+
+                        <div class="json-panel">
+                            <div class="json-panel-header">
+                                <h4><i class="fas fa-file-alt"></i> 修改后文本</h4>
+                                <div class="json-panel-stats" id="textBStats">0 行</div>
+                            </div>
+                            <div class="json-editor-wrapper">
+                                <textarea id="textB" rows="16" placeholder="输入修改后的文本...">function generatePassword() {
     const length = parseInt(document.getElementById('passwordLength').value);
     const includeUppercase = document.getElementById('includeUppercase').checked;
     const includeLowercase = document.getElementById('includeLowercase').checked;
@@ -944,19 +985,15 @@
 }</textarea>
                             </div>
                         </div>
-                        <div class="diff-controls">
-                            <button class="btn primary" onclick="compareTexts()">
-                                <i class="fas fa-search"></i> 对比文本
-                            </button>
-                            <button class="btn secondary" onclick="clearDiff()">
-                                <i class="fas fa-trash"></i> 清空
-                            </button>
-                        </div>
-                        <div class="diff-output">
-                            <div class="diff-stats">
-                                <span id="diffStats">点击"对比文本"查看差异</span>
+
+                        <div class="json-panel">
+                            <div class="json-panel-header">
+                                <h4><i class="fas fa-notes-medical"></i> 对比结果</h4>
+                                <div class="json-panel-stats" id="diffStats">点击"对比文本"查看差异</div>
                             </div>
-                            <div id="diffResult" class="diff-result"></div>
+                            <div class="json-editor-wrapper">
+                                <div id="diffResult" class="diff-result"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
