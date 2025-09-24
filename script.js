@@ -201,6 +201,16 @@ function shareProject(platform) {
     let shareUrl = '';
 
     switch (platform) {
+        case 'docs':
+            window.location.href = '/docs/';
+            return;
+        case 'github':
+            window.open('https://github.com/wxingda/devtools-hub', '_blank');
+            showNotification('正在打开 GitHub 仓库...', 'info');
+            return;
+        case 'weibo':
+            shareUrl = `https://service.weibo.com/share/share.php?url=${url}&title=${title}&language=zh_cn`;
+            break;
         case 'twitter':
             shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}&hashtags=devtools,webdev,privacy`;
             break;
@@ -230,7 +240,7 @@ function shareProject(platform) {
 
 // GitHub 星标按钮点击处理
 function starProject() {
-    window.open('https://github.com/你的用户名/devtools-hub', '_blank');
+    window.open('https://github.com/wxingda/devtools-hub', '_blank');
     showNotification('感谢支持！正在打开 GitHub 页面...', 'success');
 }
 
@@ -414,6 +424,19 @@ function setupNavigation() {
         });
     });
 }
+
+// Share Bar 绑定
+document.addEventListener('DOMContentLoaded', function () {
+    const shareButtons = document.querySelectorAll('.share-bar .share-btn');
+    shareButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const platform = btn.getAttribute('data-share');
+            if (platform) {
+                shareProject(platform);
+            }
+        });
+    });
+});
 
 // 切换工具
 function switchTool(toolId) {

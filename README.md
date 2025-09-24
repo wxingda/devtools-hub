@@ -301,7 +301,8 @@ php -S localhost:8000
 [![GitHub stars](https://img.shields.io/github/stars/wxingda/devtools-hub?style=social)](https://github.com/wxingda/devtools-hub/stargazers)
 
 **[🌐 在线体验](https://wxingda.github.io/devtools-hub)** •
-**[📖 文档](https://github.com/wxingda/devtools-hub/wiki)** •
+**[📖 新手教程](./docs/README.md)** •
+**[📚 文档](https://github.com/wxingda/devtools-hub/wiki)** •
 **[💬 讨论](https://github.com/wxingda/devtools-hub/discussions)** •
 **[🐛 问题反馈](https://github.com/wxingda/devtools-hub/issues)**
 
