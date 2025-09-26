@@ -1,17 +1,24 @@
 // DevTools Hub Namespace 模块化封装
 window.DevToolsHub = (function () {
     const api = {};
-    api.state = { currentTool: 'password-generator', tools: {} };
+    api.state = { currentTool: 'json-formatter', tools: {} };
     api.registerTool = function (id, hooks) { api.state.tools[id] = hooks || {}; };
     api.switchTool = function (id) { if (typeof switchTool === 'function') switchTool(id); };
     return api;
 })();
 
 // 全局变量
-let currentTool = 'password-generator';
+let currentTool = 'json-formatter';
 
 // DOM加载完成后初始化
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+    try {
+        if (window.partialsReady && typeof window.partialsReady.then === 'function') {
+            await window.partialsReady;
+        }
+    } catch (e) {
+        console.warn('[init] partialsReady wait failed:', e);
+    }
     initializeApp();
     setupKeyboardShortcuts();
     setupI18n();

@@ -167,58 +167,7 @@
 <body>
     <a href="#main" class="skip-link" style="position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden;">跳到主要内容</a>
     <div class="container">
-        <header class="header">
-            <div class="header-content">
-                <div class="header-main">
-                    <h1><i class="fas fa-tools"></i> DevTools Hub <span class="version-badge">v2.0</span></h1>
-                    <p class="header-tagline" data-i18n="header.tagline">
-                        ⚡ 一站式开发者工具集合 | 🎯 纯前端 | 🔒 隐私安全 | 📱 PWA支持
-                    </p>
-                    <div class="header-stats">
-                        <span class="stat-badge">
-                            <i class="fas fa-tools"></i> <strong>11+</strong> 实用工具
-                        </span>
-                        <span class="stat-badge">
-                            <i class="fas fa-shield-alt"></i> <strong>100%</strong> 离线可用
-                        </span>
-                        <span class="stat-badge">
-                            <i class="fas fa-rocket"></i> <strong>零</strong> 服务器依赖
-                        </span>
-                    </div>
-                    <div class="header-actions">
-                        <a href="https://github.com/wxingda/devtools-hub" class="github-btn" target="_blank" rel="noopener">
-                            <i class="fab fa-github"></i>
-                            <span class="btn-text">
-                                <strong>⭐ Star on GitHub</strong>
-                                <small>支持开源项目发展</small>
-                            </span>
-                        </a>
-                        <!-- 官方 GitHub Star 按钮（带计数） -->
-                        <a class="github-button" href="https://github.com/wxingda/devtools-hub" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star wxingda/devtools-hub on GitHub">Star</a>
-                        <!-- 备用计数徽章（由脚本填充） -->
-                        <span class="star-count-badge" title="GitHub Stars"><i class="fas fa-star"></i> <span data-star-count>—</span></span>
-                        <button class="quick-start-btn" onclick="showQuickStart()">
-                            <i class="fas fa-play-circle"></i>
-                            <span>快速开始</span>
-                        </button>
-                        <a class="install-btn" href="/docs/" target="_self" rel="noopener" title="阅读新手教程">
-                            <i class="fas fa-book-open"></i>
-                            <span>学习路径</span>
-                        </a>
-                        <button class="install-btn" onclick="installPWA()" style="display: none;">
-                            <i class="fas fa-download"></i>
-                            <span>安装到桌面</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="header-controls">
-                    <button class="theme-toggle" id="themeToggle" title="切换主题">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <button class="lang-toggle" id="langToggle" aria-label="切换语言 / Switch Language" title="Switch Language">EN</button>
-                </div>
-            </div>
-        </header>
+        <div data-include="/partials/header.html"></div>
 
         <!-- 功能亮点展示 -->
         <div class="features-highlight" id="featuresHighlight">
@@ -259,65 +208,13 @@
             </button>
         </div>
 
-        <!-- Share Bar -->
-        <div class="share-bar" aria-label="分享此项目" role="region">
-            <button class="share-btn" data-share="github" title="GitHub" aria-label="打开 GitHub 仓库"><i class="fab fa-github"></i></button>
-            <button class="share-btn" data-share="copy" title="复制项目地址" aria-label="复制项目地址"><i class="fas fa-link"></i></button>
-            <button class="share-btn" data-share="weibo" title="分享到微博" aria-label="分享到微博"><i class="fab fa-weibo"></i></button>
-            <button class="share-btn" data-share="twitter" title="Share on Twitter" aria-label="Share on Twitter"><i class="fab fa-twitter"></i></button>
-            <button class="share-btn" data-share="docs" title="查看新手教程" aria-label="查看新手教程"><i class="fas fa-book"></i></button>
-        </div>
+        <div data-include="/partials/share-bar.html"></div>
 
-        <nav class="nav">
-            <button class="nav-btn active" data-tool="password-generator">
-                <i class="fas fa-key"></i>
-                <span data-i18n="nav.password-generator">密码生成器</span>
-            </button>
-            <button class="nav-btn" data-tool="color-palette">
-                <i class="fas fa-palette"></i>
-                <span data-i18n="nav.color-palette">颜色调色板</span>
-            </button>
-            <button class="nav-btn" data-tool="regex-tester">
-                <i class="fas fa-search"></i>
-                <span data-i18n="nav.regex-tester">正则测试器</span>
-            </button>
-            <button class="nav-btn" data-tool="json-formatter">
-                <i class="fas fa-code"></i>
-                <span data-i18n="nav.json-formatter">JSON格式化</span>
-            </button>
-            <button class="nav-btn" data-tool="url-encoder">
-                <i class="fas fa-link"></i>
-                <span data-i18n="nav.url-encoder">URL编码器</span>
-            </button>
-            <button class="nav-btn" data-tool="base64-encoder">
-                <i class="fas fa-file-code"></i>
-                <span data-i18n="nav.base64-encoder">Base64编码</span>
-            </button>
-            <button class="nav-btn" data-tool="hash-calculator">
-                <i class="fas fa-calculator"></i>
-                <span data-i18n="nav.hash-calculator">哈希计算器</span>
-            </button>
-            <button class="nav-btn" data-tool="timestamp-converter">
-                <i class="fas fa-clock"></i>
-                <span data-i18n="nav.timestamp-converter">时间戳转换</span>
-            </button>
-            <button class="nav-btn" data-tool="qr-generator">
-                <i class="fas fa-qrcode"></i>
-                <span data-i18n="nav.qr-generator">二维码生成</span>
-            </button>
-            <button class="nav-btn" data-tool="text-diff">
-                <i class="fas fa-exchange-alt"></i>
-                <span data-i18n="nav.text-diff">文本对比</span>
-            </button>
-            <button class="nav-btn" data-tool="css-unit-converter">
-                <i class="fas fa-ruler-combined"></i>
-                <span data-i18n="nav.css-unit-converter">CSS单位</span>
-            </button>
-        </nav>
+        <div data-include="/partials/nav.html"></div>
 
         <main class="main">
             <!-- 密码生成器 -->
-            <div class="tool active" id="password-generator">
+            <div class="tool" id="password-generator">
                 <div class="tool-header">
                     <h2><i class="fas fa-key"></i> <span data-i18n="nav.password-generator">密码生成器</span></h2>
                     <p data-i18n="tool.password.sub">生成安全的随机密码</p>
@@ -625,7 +522,7 @@
             </div>
 
             <!-- JSON格式化器 -->
-            <div class="tool" id="json-formatter">
+            <div class="tool active" id="json-formatter">
                 <div class="tool-header">
                     <h2><i class="fas fa-code"></i> <span data-i18n="nav.json-formatter">JSON格式化器</span></h2>
                     <p data-i18n="tool.json.sub">美化和压缩JSON数据</p>
@@ -1047,40 +944,14 @@
 
         </main>
         
-        <footer class="footer" role="contentinfo">
-            <div class="footer-inner">
-                <div class="footer-brand">
-                    <h3>DevTools Hub</h3>
-                    <p>一站式前端开发工具集合 · 纯前端 · 离线可用 · 隐私优先</p>
-                </div>
-                <div class="footer-links">
-                    <a href="/docs/" target="_self">新手教程</a>
-                    <a href="/" target="_self">在线体验</a>
-                    <a href="https://github.com/wxingda/devtools-hub" target="_blank" rel="noopener">GitHub 仓库</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <small>© 2024 DevTools Hub · <a href="https://github.com/wxingda/devtools-hub/graphs/contributors" target="_blank" rel="noopener">贡献者</a></small>
-            </div>
-        </footer>
+        <div data-include="/partials/footer.html"></div>
 
         <!-- 仅保留一个页脚（上方品牌+链接+版权） -->
     </div>
 
+    <script src="js/partials.js"></script>
     <script src="script.js"></script>
-    <!-- Floating Star CTA -->
-    <div id="star-cta" class="star-cta" aria-label="Star this project on GitHub" role="button" tabindex="0">
-        <div class="star-cta-inner">
-            <i class="fas fa-star"></i>
-            <span data-i18n="cta.star">Star 项目</span>
-            <span class="star-cta-count" data-star-count>—</span>
-        </div>
-        <div class="star-cta-actions">
-            <button class="cta-btn" data-action="open-github"><i class="fab fa-github"></i></button>
-            <button class="cta-btn" data-action="copy-link"><i class="fas fa-link"></i></button>
-            <button class="cta-btn" data-action="close"><i class="fas fa-times"></i></button>
-        </div>
-    </div>
+    <div data-include="/partials/star-cta.html"></div>
 
     <!-- 拆分后的脚本模块 -->
     <script src="js/header.js"></script>
@@ -1090,28 +961,7 @@
     <!-- GitHub Buttons 脚本：自动渲染 Star 计数按钮 -->
     <script async defer src="https://buttons.github.io/buttons.js" crossorigin="anonymous"></script>
 
-    <!-- 使用统计模态框 -->
-    <div id="usageModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="usageModalTitle">
-      <div class="modal-backdrop" data-close-modal></div>
-      <div class="modal-content">
-        <header class="modal-header">
-          <h3 id="usageModalTitle">使用统计</h3>
-          <button class="modal-close" data-close-modal aria-label="关闭统计窗口"><i class="fas fa-times"></i></button>
-        </header>
-        <div class="modal-body" id="usageStatsContainer">
-          <p style="font-size:.9rem;color:var(--text-secondary)">本地统计（仅存储在浏览器，不上传）。</p>
-          <div class="usage-table-wrapper">
-            <table class="usage-table" aria-label="工具使用统计">
-              <thead><tr><th>工具</th><th>使用次数</th><th>最后使用时间</th></tr></thead>
-              <tbody id="usageTableBody"></tbody>
-            </table>
-          </div>
-        </div>
-        <footer class="modal-footer">
-          <button class="btn secondary" data-close-modal>关闭</button>
-          <button class="btn" id="resetUsageBtn">重置统计</button>
-        </footer>
-      </div>
-    </div>
+        <!-- 使用统计模态框 -->
+        <div data-include="/partials/usage-modal.html"></div>
 </body>
 </html>

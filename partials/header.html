@@ -1,0 +1,49 @@
+<header class="header">
+  <div class="header-content">
+    <div class="header-main">
+      <h1><i class="fas fa-tools"></i> DevTools Hub <span class="version-badge">v2.0</span></h1>
+      <p class="header-tagline" data-i18n="header.tagline">
+        ⚡ 一站式开发者工具集合 | 🎯 纯前端 | 🔒 隐私安全 | 📱 PWA支持
+      </p>
+      <div class="header-stats">
+        <span class="stat-badge">
+          <i class="fas fa-tools"></i> <strong>11+</strong> 实用工具
+        </span>
+        <span class="stat-badge">
+          <i class="fas fa-shield-alt"></i> <strong>100%</strong> 离线可用
+        </span>
+        <span class="stat-badge">
+          <i class="fas fa-rocket"></i> <strong>零</strong> 服务器依赖
+        </span>
+      </div>
+      <div class="header-actions">
+        <a href="https://github.com/wxingda/devtools-hub" class="github-btn" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i>
+          <span class="btn-text">
+            <strong>⭐ Star on GitHub</strong>
+            <small>支持开源项目发展</small>
+          </span>
+        </a>
+        <a class="github-button" href="https://github.com/wxingda/devtools-hub" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star wxingda/devtools-hub on GitHub">Star</a>
+        <button class="quick-start-btn" onclick="showQuickStart()">
+          <i class="fas fa-play-circle"></i>
+          <span>快速开始</span>
+        </button>
+        <a class="install-btn" href="/docs/" target="_self" rel="noopener" title="阅读新手教程">
+          <i class="fas fa-book-open"></i>
+          <span>学习路径</span>
+        </a>
+        <button class="install-btn" onclick="installPWA()" style="display: none;">
+          <i class="fas fa-download"></i>
+          <span>安装到桌面</span>
+        </button>
+      </div>
+    </div>
+    <div class="header-controls">
+      <button class="theme-toggle" id="themeToggle" title="切换主题">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="lang-toggle" id="langToggle" aria-label="切换语言 / Switch Language" title="Switch Language">EN</button>
+    </div>
+  </div>
+</header>

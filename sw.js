@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.3.0';
+const CACHE_VERSION = 'v1.4.0';
 const CORE_CACHE = `devtools-core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `devtools-runtime-${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
@@ -9,10 +9,18 @@ const CORE_ASSETS = [
     '/styles.css',
     '/script.js',
     '/js/header.js',
+    '/js/partials.js',
     '/js/pwa.js',
     '/manifest.json',
     OFFLINE_URL,
-    '/screenshots/password-generator.png'
+    '/screenshots/password-generator.png',
+    // HTML partials for offline
+    '/partials/header.html',
+    '/partials/share-bar.html',
+    '/partials/nav.html',
+    '/partials/footer.html',
+    '/partials/star-cta.html',
+    '/partials/usage-modal.html'
 ];
 
 const EXTERNAL_ASSETS = [
