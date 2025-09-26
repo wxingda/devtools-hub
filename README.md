@@ -298,6 +298,30 @@ php -S localhost:8000
 
 - 感谢 [Font Awesome](https://fontawesome.com/) 提供图标
 - 感谢 [Google Fonts](https://fonts.google.com/) 提供字体
+
+---
+
+## 📦 结构与模块化拆分
+
+为提升维护性与可扩展性，项目已开始将逻辑按职责拆分：
+
+- script.js：核心应用逻辑与各工具功能（后续将继续细分到 tools/*）
+- js/header.js：页头浮动 Star CTA、页面就绪标记（body.ready）等交互
+- js/pwa.js：Service Worker 注册、PWA 安装横幅、更新提示等逻辑
+
+Service Worker 的预缓存列表已加入新拆分的脚本文件，确保离线可用。
+
+后续规划（按工具进一步模块化）：
+
+- js/tools/password.js（密码生成器）
+- js/tools/color.js（颜色调色板）
+- js/tools/json.js（JSON 格式化与树视图）
+- js/tools/regex.js（正则测试器）
+- js/tools/qr.js（二维码生成）
+- js/tools/diff.js（文本对比）
+- js/tools/hash.js、js/tools/url.js、js/tools/base64.js、js/tools/timestamp.js、js/tools/css-units.js
+
+说明：为避免一次性改动过大导致风险，本次先将 index.html 中的内联脚本抽取成独立文件。等功能验证稳定后，再分阶段把 script.js 中的各工具迁移到独立模块，采用命名空间或在 window 上暴露函数，使现有 HTML 事件绑定（如 onclick）不受影响。
 - 感谢所有贡献者和使用者的支持
 
 ---
