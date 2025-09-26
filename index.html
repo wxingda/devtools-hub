@@ -165,13 +165,6 @@
     <style>body:not(.ready) .main{opacity:.001}body:not(.ready)::before{content:'正在加载 DevTools Hub...';position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font:500 1rem/1.4 system-ui;color:#555;background:var(--bg-color);}html[data-theme='dark'] body:not(.ready)::before{color:#bbb}</style>
 </head>
 <body>
-    <!-- GitHub Corner (带有无障碍标签) -->
-    <a href="https://github.com/wxingda/devtools-hub" class="github-corner" aria-label="Star wxingda/devtools-hub on GitHub" title="Star on GitHub">
-        <svg width="64" height="64" viewBox="0 0 250 250" aria-hidden="true" focusable="false">
-            <path d="M0,0 L115,0 L130,15 L250,15 L250,0 L0,0 Z" fill="currentColor" opacity=".08"></path>
-            <path d="M128 109c-15 0-27 12-27 27 0 12 8 22 19 26 1 0 2-1 2-1l0-9c-8 2-10-3-10-3-1-3-3-4-3-4-3-2 0-2 0-2 3 0 5 3 5 3 3 5 8 3 9 2 0-2 1-3 1-4-7-1-14-3-14-15 0-3 1-5 3-7 0 0-1-3 0-7 0 0 3-1 7 3 2-1 5-2 7-2s5 1 7 2c4-4 7-3 7-3 1 4 0 7 0 7 2 2 3 4 3 7 0 12-7 14-14 15 1 1 2 3 2 6l0 9c0 0 1 1 2 1 11-4 19-14 19-26 0-15-12-27-27-27z" fill="currentColor"></path>
-        </svg>
-    </a>
     <a href="#main" class="skip-link" style="position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden;">跳到主要内容</a>
     <div class="container">
         <header class="header">
@@ -1014,6 +1007,44 @@
                     </div>
                 </div>
             </div>
+
+            <!-- CSS 单位转换器（移回主区域） -->
+            <div class="tool" id="css-unit-converter">
+                <div class="tool-header">
+                    <h2><i class="fas fa-ruler-combined"></i> <span data-i18n="nav.css-unit-converter">CSS 单位转换器</span></h2>
+                    <p data-i18n="tool.cssunit.sub">在 px / rem / em / vw / vh / % 之间快速换算</p>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="baseFontSize">根字体大小 (px)</label>
+                        <input type="number" id="baseFontSize" value="16" min="8" max="48">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputValue">输入数值</label>
+                        <input type="number" id="inputValue" value="16" step="0.25">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputUnit">输入单位</label>
+                        <select id="inputUnit">
+                            <option value="px">px</option>
+                            <option value="rem" selected>rem</option>
+                            <option value="em">em</option>
+                            <option value="vw">vw</option>
+                            <option value="vh">vh</option>
+                            <option value="%">%</option>
+                        </select>
+                    </div>
+                    <button class="btn primary" onclick="convertCssUnits()"><i class="fas fa-exchange-alt"></i> 进行转换</button>
+                    <div class="result-group" style="margin-top:1rem">
+                        <div class="result-box">
+                            <input type="text" id="cssUnitResult" placeholder="结果将显示在这里..." readonly>
+                            <button class="copy-btn" onclick="copyCssUnitResult()"><i class="fas fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div id="cssUnitTable" class="css-unit-table"></div>
+                </div>
+            </div>
+
         </main>
         
         <footer class="footer" role="contentinfo">
@@ -1033,73 +1064,7 @@
             </div>
         </footer>
 
-        <!-- 页脚：新手教程入口与版权信息 -->
-        <footer class="footer" role="contentinfo">
-            <p>Made with ❤️ for developers · DevTools Hub</p>
-            <div class="footer-links">
-                <a href="https://github.com/wxingda/devtools-hub/tree/main/docs" target="_blank" rel="noopener" aria-label="阅读新手教程">
-                    <i class="fas fa-book"></i>
-                    <span>新手教程</span>
-                </a>
-                <a href="https://wxingda.github.io/devtools-hub" target="_blank" rel="noopener" aria-label="在线体验">
-                    <i class="fas fa-external-link-alt"></i>
-                    <span>在线体验</span>
-                </a>
-                <a href="https://github.com/wxingda/devtools-hub" target="_blank" rel="noopener" aria-label="GitHub 仓库">
-                    <i class="fab fa-github"></i>
-                    <span>GitHub</span>
-                </a>
-            </div>
-        </footer>
-
-        <!-- CSS 单位转换器 -->
-        <div class="tool" id="css-unit-converter">
-            <div class="tool-header">
-                <h2><i class="fas fa-ruler-combined"></i> <span data-i18n="nav.css-unit-converter">CSS 单位转换器</span></h2>
-                <p data-i18n="tool.cssunit.sub">在 px / rem / em / vw / vh / % 之间快速换算</p>
-            </div>
-            <div class="tool-content">
-                <div class="form-group">
-                    <label for="baseFontSize">根字体大小 (px)</label>
-                    <input type="number" id="baseFontSize" value="16" min="8" max="48">
-                </div>
-                <div class="form-group">
-                    <label for="inputValue">输入数值</label>
-                    <input type="number" id="inputValue" value="16" step="0.25">
-                </div>
-                <div class="form-group">
-                    <label for="inputUnit">输入单位</label>
-                    <select id="inputUnit">
-                        <option value="px">px</option>
-                        <option value="rem" selected>rem</option>
-                        <option value="em">em</option>
-                        <option value="vw">vw</option>
-                        <option value="vh">vh</option>
-                        <option value="%">%</option>
-                    </select>
-                </div>
-                <button class="btn primary" onclick="convertCssUnits()"><i class="fas fa-exchange-alt"></i> 进行转换</button>
-                <div class="result-group" style="margin-top:1rem">
-                    <div class="result-box">
-                        <input type="text" id="cssUnitResult" placeholder="结果将显示在这里..." readonly>
-                        <button class="copy-btn" onclick="copyCssUnitResult()"><i class="fas fa-copy"></i></button>
-                    </div>
-                </div>
-                <div id="cssUnitTable" class="css-unit-table"></div>
-            </div>
-        </div>
-
-        <footer class="footer">
-            <p>&copy; 2024 DevTools Hub. Made with ❤️ for developers.</p>
-            <div class="footer-links">
-                <a href="https://github.com/your-username/devtools-hub" target="_blank">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-                <a href="#" onclick="showAbout()">
-                    <i class="fas fa-info-circle"></i> 关于
-                </a>
-            </div>
-        </footer>
+        <!-- 仅保留一个页脚（上方品牌+链接+版权） -->
     </div>
 
     <script src="script.js"></script>

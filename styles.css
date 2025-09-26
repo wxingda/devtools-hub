@@ -148,22 +148,26 @@ body {
 
 .header-actions {
     display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: .75rem;
+    flex-wrap: nowrap;
+    align-items: center;
+    row-gap: .5rem;
+    column-gap: .75rem;
 }
 
 .github-btn {
     background: #24292e;
     color: white;
     text-decoration: none;
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
+    padding: .7rem 1rem;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: .65rem;
     transition: all 0.3s ease;
-    border: 2px solid transparent;
-    min-width: 180px;
+    border: 1px solid transparent;
+    min-width: 0;
+    white-space: nowrap;
 }
 
 .github-btn:hover {
@@ -184,7 +188,7 @@ body {
 }
 
 .btn-text strong {
-    font-size: 1rem;
+    font-size: .95rem;
     margin-bottom: 0.25rem;
 }
 
@@ -196,9 +200,9 @@ body {
 .quick-start-btn, .install-btn {
     background: rgba(255, 255, 255, 0.2);
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: .7rem 1rem;
+    border-radius: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -207,6 +211,16 @@ body {
     backdrop-filter: blur(10px);
     white-space: nowrap;
 }
+[data-star-count] { margin-left: .25rem; }
+.star-count-badge { white-space: nowrap; }
+
+/* 官方 GitHub 按钮与徽章在窄屏进行收纳 */
+@media (max-width: 768px) {
+    .github-button { display: none !important; }
+    .star-count-badge { display:none; }
+}
+
+/* GitHub Corner 样式已移除 */
 
 .quick-start-btn:hover, .install-btn:hover {
     background: rgba(255, 255, 255, 0.3);
@@ -2136,10 +2150,7 @@ body {
 [data-theme="dark"] .cta-btn { background:rgba(255,255,255,.15); }
 [data-theme="dark"] .cta-btn:hover { background:rgba(255,255,255,.28); }
 
-/* GitHub Corner */
-.github-corner { position: fixed; top: 0; right: 0; color: var(--text-color); width: 64px; height: 64px; z-index: 1600; opacity: .9; }
-.github-corner:hover { opacity: 1; }
-.github-corner svg { display:block; color: currentColor; }
+/* GitHub Corner 样式已移除 */
 
 /* Star count badge (header) */
 .star-count-badge { display:inline-flex; align-items:center; gap:.35rem; font-weight:600; color: var(--text-color); border:1px solid var(--border-color); padding:.3rem .5rem; border-radius:999px; background: var(--bg-color); }
