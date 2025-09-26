@@ -21,6 +21,15 @@ Visit directly (no install required): https://wxingda.github.io/devtools-hub
 > 10+ everyday dev utilities in one place: Passwords · Color · Regex · JSON · URL · Base64 · Hash · Timestamp · QR · Diff · CSS Units. Works offline (PWA). Zero dependencies.
 
 ---
+<p align="center">
+	<a href="https://github.com/wxingda/devtools-hub" target="_blank" rel="noopener">
+		<img alt="Star GitHub" src="https://img.shields.io/github/stars/wxingda/devtools-hub?style=social" />
+	</a>
+	<br/>
+	<sub>If this helps you, a Star ⭐ really helps others discover it. Thanks!</sub>
+	<br/>
+	<sub>PWA, offline, zero‑dependency — handy to keep bookmarked.</sub>
+</p>
 ## 🎯 Why DevTools Hub?
 - ✅ Offline first (privacy & reliability)
 - ⚡ Zero dependencies (pure vanilla JS / HTML / CSS)

@@ -692,10 +692,12 @@ body {
     border-radius: 3px;
     outline: none;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 .length-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
+    appearance: none;
     width: 20px;
     height: 20px;
     background: var(--primary-color);
@@ -2133,6 +2135,18 @@ body {
 [data-theme="dark"] .star-cta:hover { background:#1e4e70; }
 [data-theme="dark"] .cta-btn { background:rgba(255,255,255,.15); }
 [data-theme="dark"] .cta-btn:hover { background:rgba(255,255,255,.28); }
+
+/* GitHub Corner */
+.github-corner { position: fixed; top: 0; right: 0; color: var(--text-color); width: 64px; height: 64px; z-index: 1600; opacity: .9; }
+.github-corner:hover { opacity: 1; }
+.github-corner svg { display:block; color: currentColor; }
+
+/* Star count badge (header) */
+.star-count-badge { display:inline-flex; align-items:center; gap:.35rem; font-weight:600; color: var(--text-color); border:1px solid var(--border-color); padding:.3rem .5rem; border-radius:999px; background: var(--bg-color); }
+.star-count-badge i { color:#ffd166; }
+
+/* Star CTA 内计数 */
+.star-cta-count { font-weight:700; padding:.1rem .45rem; background: rgba(255,255,255,.15); border-radius: 999px; }
 
 /* CSS 单位转换器 */
 .css-unit-table {

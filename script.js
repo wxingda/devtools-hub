@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setupKeyboardShortcuts();
     setupI18n();
     initializeHeaderFeatures();
+    initStarCount();
 });
 
 // 初始化应用
@@ -242,6 +243,46 @@ function shareProject(platform) {
 function starProject() {
     window.open('https://github.com/wxingda/devtools-hub', '_blank');
     showNotification('感谢支持！正在打开 GitHub 页面...', 'success');
+}
+
+// 拉取并展示 GitHub Star 数（带缓存，避免频繁请求）
+function initStarCount() {
+    const REPO_API = 'https://api.github.com/repos/wxingda/devtools-hub';
+    const CACHE_KEY = 'dth_repo_meta';
+    const CACHE_TTL = 1000 * 60 * 30; // 30 分钟
+
+    function fmt(n) {
+        if (typeof n !== 'number') return '—';
+        if (n < 1000) return String(n);
+        if (n < 10000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+        return Math.round(n / 100) / 10 + 'k';
+    }
+
+    function render(count) {
+        const els = document.querySelectorAll('[data-star-count]');
+        els.forEach(el => el.textContent = fmt(count));
+    }
+
+    try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+            const { t, stars } = JSON.parse(cached);
+            if (Date.now() - t < CACHE_TTL) {
+                render(stars);
+            }
+        }
+    } catch (_) { }
+
+    fetch(REPO_API, { headers: { 'Accept': 'application/vnd.github+json' } })
+        .then(r => r.ok ? r.json() : Promise.reject(r.status))
+        .then(data => {
+            const stars = data && typeof data.stargazers_count === 'number' ? data.stargazers_count : null;
+            if (stars != null) {
+                render(stars);
+                try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), stars })); } catch (_) { }
+            }
+        })
+        .catch(() => {/* 静默失败，保留缓存或占位 */ });
 }
 
 // 设置键盘快捷键

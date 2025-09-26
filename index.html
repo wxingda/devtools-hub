@@ -165,6 +165,13 @@
     <style>body:not(.ready) .main{opacity:.001}body:not(.ready)::before{content:'正在加载 DevTools Hub...';position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font:500 1rem/1.4 system-ui;color:#555;background:var(--bg-color);}html[data-theme='dark'] body:not(.ready)::before{color:#bbb}</style>
 </head>
 <body>
+    <!-- GitHub Corner (带有无障碍标签) -->
+    <a href="https://github.com/wxingda/devtools-hub" class="github-corner" aria-label="Star wxingda/devtools-hub on GitHub" title="Star on GitHub">
+        <svg width="64" height="64" viewBox="0 0 250 250" aria-hidden="true" focusable="false">
+            <path d="M0,0 L115,0 L130,15 L250,15 L250,0 L0,0 Z" fill="currentColor" opacity=".08"></path>
+            <path d="M128 109c-15 0-27 12-27 27 0 12 8 22 19 26 1 0 2-1 2-1l0-9c-8 2-10-3-10-3-1-3-3-4-3-4-3-2 0-2 0-2 3 0 5 3 5 3 3 5 8 3 9 2 0-2 1-3 1-4-7-1-14-3-14-15 0-3 1-5 3-7 0 0-1-3 0-7 0 0 3-1 7 3 2-1 5-2 7-2s5 1 7 2c4-4 7-3 7-3 1 4 0 7 0 7 2 2 3 4 3 7 0 12-7 14-14 15 1 1 2 3 2 6l0 9c0 0 1 1 2 1 11-4 19-14 19-26 0-15-12-27-27-27z" fill="currentColor"></path>
+        </svg>
+    </a>
     <a href="#main" class="skip-link" style="position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden;">跳到主要内容</a>
     <div class="container">
         <header class="header">
@@ -193,6 +200,10 @@
                                 <small>支持开源项目发展</small>
                             </span>
                         </a>
+                        <!-- 官方 GitHub Star 按钮（带计数） -->
+                        <a class="github-button" href="https://github.com/wxingda/devtools-hub" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star wxingda/devtools-hub on GitHub">Star</a>
+                        <!-- 备用计数徽章（由脚本填充） -->
+                        <span class="star-count-badge" title="GitHub Stars"><i class="fas fa-star"></i> <span data-star-count>—</span></span>
                         <button class="quick-start-btn" onclick="showQuickStart()">
                             <i class="fas fa-play-circle"></i>
                             <span>快速开始</span>
@@ -1098,6 +1109,7 @@
         <div class="star-cta-inner">
             <i class="fas fa-star"></i>
             <span data-i18n="cta.star">Star 项目</span>
+            <span class="star-cta-count" data-star-count>—</span>
         </div>
         <div class="star-cta-actions">
             <button class="cta-btn" data-action="open-github"><i class="fab fa-github"></i></button>
@@ -1328,6 +1340,9 @@
                 }
             });
         </script>
+
+    <!-- GitHub Buttons 脚本：自动渲染 Star 计数按钮 -->
+    <script async defer src="https://buttons.github.io/buttons.js" crossorigin="anonymous"></script>
 
     <!-- 使用统计模态框 -->
     <div id="usageModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="usageModalTitle">

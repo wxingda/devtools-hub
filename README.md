@@ -17,6 +17,16 @@
 [![Download](https://img.shields.io/badge/⬇️-立即下载-2ed573?style=for-the-badge&logoColor=white)](https://github.com/wxingda/devtools-hub/archive/refs/heads/main.zip)
 
 <p align="center">
+  <a href="https://github.com/wxingda/devtools-hub" target="_blank" rel="noopener">
+    <img alt="Star GitHub" src="https://img.shields.io/github/stars/wxingda/devtools-hub?style=social" />
+  </a>
+  <br/>
+  <sub>喜欢就点个 Star ⭐ 支持一下，帮助更多开发者发现它。</sub>
+  <br/>
+  <sub>已支持 PWA、离线使用、零依赖，适合收藏备用。</sub>
+ </p>
+
+<p align="center">
   <sup>English version coming soon – PRs welcome! (You can still use the app in English via the toggle inside the UI)</sup>
 </p>
 <p align="center"><strong>中文</strong> | <a href="./README.en.md">English</a></p>
@@ -305,6 +315,13 @@ php -S localhost:8000
 **[📚 文档](https://github.com/wxingda/devtools-hub/wiki)** •
 **[💬 讨论](https://github.com/wxingda/devtools-hub/discussions)** •
 **[🐛 问题反馈](https://github.com/wxingda/devtools-hub/issues)**
+
+## 🙌 支持与传播
+
+- ⭐ Star 本仓库，帮助更多人看到它
+- 🗣 向你的团队/社区分享：微信群/飞书/Twitter/X/Reddit/掘金
+- 🧲 收藏站点：https://wxingda.github.io/devtools-hub
+- 🔁 常回来看看：我们每周迭代功能，欢迎关注更新
 
 *Made with ❤️ by developers, for developers*
 
