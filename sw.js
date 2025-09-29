@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.4.0';
+const CACHE_VERSION = 'v1.5.0';
 const CORE_CACHE = `devtools-core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `devtools-runtime-${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
@@ -11,6 +11,8 @@ const CORE_ASSETS = [
     '/js/header.js',
     '/js/partials.js',
     '/js/pwa.js',
+    '/js/tools/password-generator.js',
+    '/js/tools/json-formatter.js',
     '/manifest.json',
     OFFLINE_URL,
     '/screenshots/password-generator.png',

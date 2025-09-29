@@ -32,8 +32,19 @@ function initializeApp() {
     setupTheme();
     initializeTools();
 
-    // 自动生成初始密码
-    generatePassword();
+    // 初始化注册的工具模块
+    if (window.DevToolsHub && window.DevToolsHub.state.tools) {
+        Object.keys(window.DevToolsHub.state.tools).forEach(toolId => {
+            const tool = window.DevToolsHub.state.tools[toolId];
+            if (tool.init && typeof tool.init === 'function') {
+                try {
+                    tool.init();
+                } catch (e) {
+                    console.warn(`Tool ${toolId} init failed:`, e);
+                }
+            }
+        });
+    }
 
     // 自动计算初始哈希值
     calculateHashes();
