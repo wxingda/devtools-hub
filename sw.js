@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.5.0';
+const CACHE_VERSION = 'v1.5.1';
 const CORE_CACHE = `devtools-core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `devtools-runtime-${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';

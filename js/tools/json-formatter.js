@@ -94,6 +94,9 @@
             if (input) {
                 input.value = text;
                 validateJSON();
+                if (typeof updateInputStats === 'function') {
+                    try { updateInputStats(); } catch (_) { }
+                }
                 if (window.showNotification) {
                     showNotification('已粘贴剪贴板内容', 'success');
                 }
@@ -106,10 +109,23 @@
     };
 
     window.clearJson = function () {
-        document.getElementById('jsonInput').value = '';
-        document.getElementById('jsonOutput').value = '';
+        const input = document.getElementById('jsonInput');
+        const output = document.getElementById('jsonOutput');
+        const tree = document.getElementById('jsonTreeView');
+        const searchBar = document.getElementById('jsonSearchBar');
+        const btnTree = document.getElementById('showTreeBtn');
+        const btnText = document.getElementById('showTextBtn');
+        if (input) input.value = '';
+        if (output) { output.value = ''; output.hidden = false; }
+        if (tree) { tree.innerHTML = ''; tree.hidden = true; }
+        if (searchBar) searchBar.style.display = 'none';
+        if (btnTree) btnTree.classList.remove('active');
+        if (btnText) btnText.classList.add('active');
         showJsonStatus('已清空', '');
         updateOutputStats('等待输入');
+        if (typeof updateInputStats === 'function') {
+            try { updateInputStats(); } catch (_) { }
+        }
     };
 
     window.copyJsonOutput = function () {
@@ -133,124 +149,145 @@
     };
 
     // JSON树视图功能
-    window.showJsonTree = function () {
-        const input = document.getElementById('jsonInput').value;
-        if (!input.trim()) {
-            if (window.showNotification) {
-                showNotification('请先输入 JSON 内容', 'warning');
+    function toggleJsonView(mode) {
+        const output = document.getElementById('jsonOutput');
+        const tree = document.getElementById('jsonTreeView');
+        const searchBar = document.getElementById('jsonSearchBar');
+        const btnTree = document.getElementById('showTreeBtn');
+        const btnText = document.getElementById('showTextBtn');
+
+        if (!(output && tree && searchBar && btnTree && btnText)) return;
+
+        if (mode === 'tree') {
+            const raw = document.getElementById('jsonInput')?.value || '';
+            try {
+                if (!raw.trim()) throw new Error('空内容');
+                const data = JSON.parse(raw);
+                tree.innerHTML = buildJsonTreeHTML(data);
+                tree.hidden = false;
+                output.hidden = true;
+                searchBar.style.display = 'flex';
+                btnTree.classList.add('active');
+                btnText.classList.remove('active');
+            } catch (e) {
+                showJsonStatus(`无法解析 JSON: ${e.message}`, 'error');
+                // 解析失败仍回退到文本视图
+                tree.hidden = true;
+                output.hidden = false;
+                searchBar.style.display = 'none';
+                btnTree.classList.remove('active');
+                btnText.classList.add('active');
             }
-            return;
-        }
-
-        try {
-            const data = JSON.parse(input);
-            const treeHtml = generateJsonTree(data);
-
-            // 创建树视图模态框
-            const modal = document.createElement('div');
-            modal.className = 'json-tree-modal';
-            modal.innerHTML = `
-                <div class="modal-backdrop" onclick="closeJsonTree()"></div>
-                <div class="modal-content json-tree-content">
-                    <div class="modal-header">
-                        <h3><i class="fas fa-sitemap"></i> JSON 树视图</h3>
-                        <button onclick="closeJsonTree()" class="close-btn">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="json-tree-wrapper">
-                            ${treeHtml}
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            modal.offsetHeight; // 触发重排
-            modal.classList.add('show');
-
-        } catch (error) {
-            if (window.showNotification) {
-                showNotification(`无法解析 JSON: ${error.message}`, 'error');
-            }
-        }
-    };
-
-    window.closeJsonTree = function () {
-        const modal = document.querySelector('.json-tree-modal');
-        if (modal) {
-            modal.classList.remove('show');
-            setTimeout(() => modal.remove(), 300);
-        }
-    };
-
-    // 生成JSON树结构HTML
-    function generateJsonTree(data, key = '', level = 0) {
-        const indent = '  '.repeat(level);
-        let html = '';
-
-        if (Array.isArray(data)) {
-            html += `<div class="json-node array" data-level="${level}">`;
-            if (key) html += `<span class="json-key">"${key}"</span>: `;
-            html += `<span class="json-bracket">[</span>`;
-            html += `<span class="json-toggle" onclick="toggleJsonNode(this)">▼</span>`;
-            html += `<div class="json-children">`;
-
-            data.forEach((item, index) => {
-                html += generateJsonTree(item, index, level + 1);
-                if (index < data.length - 1) html += '<span class="json-comma">,</span>';
-            });
-
-            html += `</div><span class="json-bracket">]</span></div>`;
-
-        } else if (data !== null && typeof data === 'object') {
-            html += `<div class="json-node object" data-level="${level}">`;
-            if (key) html += `<span class="json-key">"${key}"</span>: `;
-            html += `<span class="json-bracket">{</span>`;
-            html += `<span class="json-toggle" onclick="toggleJsonNode(this)">▼</span>`;
-            html += `<div class="json-children">`;
-
-            const entries = Object.entries(data);
-            entries.forEach(([k, v], index) => {
-                html += generateJsonTree(v, k, level + 1);
-                if (index < entries.length - 1) html += '<span class="json-comma">,</span>';
-            });
-
-            html += `</div><span class="json-bracket">}</span></div>`;
-
         } else {
-            // 叶子节点
-            html += `<div class="json-node leaf" data-level="${level}">`;
-            if (key) html += `<span class="json-key">"${key}"</span>: `;
-
-            if (typeof data === 'string') {
-                html += `<span class="json-string">"${escapeHtml(data)}"</span>`;
-            } else if (typeof data === 'number') {
-                html += `<span class="json-number">${data}</span>`;
-            } else if (typeof data === 'boolean') {
-                html += `<span class="json-boolean">${data}</span>`;
-            } else if (data === null) {
-                html += `<span class="json-null">null</span>`;
-            }
-            html += `</div>`;
+            tree.hidden = true;
+            output.hidden = false;
+            searchBar.style.display = 'none';
+            btnTree.classList.remove('active');
+            btnText.classList.add('active');
         }
-
-        return html;
     }
 
-    // 切换JSON节点折叠状态
-    window.toggleJsonNode = function (toggleEl) {
-        const node = toggleEl.closest('.json-node');
-        const children = node.querySelector('.json-children');
+    // 重置旧事件监听（通过克隆节点替换）
+    function resetHandlers(ids) {
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el || !el.parentNode) return;
+            const clone = el.cloneNode(true);
+            el.parentNode.replaceChild(clone, el);
+        });
+    }
 
-        if (children.style.display === 'none') {
-            children.style.display = 'block';
-            toggleEl.textContent = '▼';
-        } else {
-            children.style.display = 'none';
-            toggleEl.textContent = '▶';
+    // 构建树视图（符合 .json-tree 的 ul/li 结构和样式类）
+    function buildJsonTreeHTML(data) {
+        return `<ul>${buildNode(data)}</ul>`;
+    }
+
+    function buildNode(value, key) {
+        const hasChildren = value && (Array.isArray(value) || typeof value === 'object');
+        const typeClass = Array.isArray(value) ? 'array' : (value === null ? 'null' : typeof value);
+        let head = '';
+        if (key !== undefined) {
+            head += `<span class="node-key">"${escapeHtml(String(key))}"</span><span class="node-sep">: </span>`;
         }
-    };
+        if (!hasChildren) {
+            return `<li class="leaf ${typeClass}">${head}${renderPrimitive(value)}</li>`;
+        }
+        const open = Array.isArray(value) ? '[' : '{';
+        const close = Array.isArray(value) ? ']' : '}';
+        let children = '';
+        if (Array.isArray(value)) {
+            value.forEach((v, i) => { children += buildNode(v, i); });
+        } else {
+            Object.entries(value).forEach(([k, v]) => { children += buildNode(v, k); });
+        }
+        return `<li class="branch ${typeClass}">
+            <span class="node-toggle" title="展开/折叠"></span>${head}
+            <span class="node-bracket">${open}</span>
+            <ul>${children}</ul>
+            <span class="node-bracket">${close}</span>
+        </li>`;
+    }
+
+    function renderPrimitive(v) {
+        switch (typeof v) {
+            case 'string': return `<span class="node-value-string">"${escapeHtml(v)}"</span>`;
+            case 'number': return `<span class="node-value-number">${v}</span>`;
+            case 'boolean': return `<span class="node-value-boolean">${v}</span>`;
+            default: return `<span class="node-value-null">null</span>`;
+        }
+    }
+
+    // 事件委托：展开/折叠
+    function bindTreeDelegation() {
+        const tree = document.getElementById('jsonTreeView');
+        if (!tree || tree._delegated) return;
+        tree.addEventListener('click', (e) => {
+            const toggle = e.target.closest('.node-toggle');
+            if (toggle) {
+                const li = toggle.closest('li');
+                li && li.classList.toggle('collapsed');
+            }
+        });
+        tree._delegated = true;
+    }
+
+    // 搜索与高亮
+    function bindTreeSearch() {
+        const input = document.getElementById('jsonTreeSearch');
+        const tree = document.getElementById('jsonTreeView');
+        if (!input || !tree || input._bound) return;
+        input.addEventListener('input', () => {
+            const q = input.value.trim();
+            clearHighlights(tree);
+            if (!q) return;
+            const re = new RegExp(escapeRegExp(q), 'gi');
+            const targets = tree.querySelectorAll('.node-key, .node-value-string, .node-value-number, .node-value-boolean, .node-value-null');
+            targets.forEach(el => {
+                const text = el.getAttribute('data-original') || el.textContent;
+                el.setAttribute('data-original', text);
+                el.innerHTML = text.replace(re, (m) => `<mark class="json-hl">${m}</mark>`);
+                if (re.test(text)) {
+                    // 展开包含匹配的分支
+                    let li = el.closest('li');
+                    while (li) { li.classList.remove('collapsed'); li = li.parentElement && li.parentElement.closest('li'); }
+                }
+            });
+        });
+        input._bound = true;
+    }
+
+    function clearHighlights(root) {
+        root.querySelectorAll('[data-original]').forEach(el => {
+            el.innerHTML = el.getAttribute('data-original');
+            el.removeAttribute('data-original');
+        });
+        root.querySelectorAll('mark.json-hl').forEach(m => {
+            const parent = m.parentNode; if (!parent) return;
+            parent.replaceChild(document.createTextNode(m.textContent), m);
+        });
+    }
+
+    function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
     // 转义HTML字符
     function escapeHtml(text) {
@@ -312,6 +349,43 @@
                         }
                     }
                 });
+
+                // 绑定工具栏按钮（延迟到当前事件循环之后，避免与 legacy DOMContentLoaded 冲突）
+                const byId = (id) => document.getElementById(id);
+                setTimeout(() => {
+                    // 防重复绑定：移除 legacy 监听
+                    resetHandlers([
+                        'pasteJsonBtn', 'clearJsonBtn', 'formatJsonBtn', 'compressJsonBtn',
+                        'validateJsonBtn', 'copyOutputBtn', 'downloadOutputBtn',
+                        'showTreeBtn', 'showTextBtn', 'jsonTreeSearch'
+                    ]);
+
+                    byId('pasteJsonBtn')?.addEventListener('click', pasteJson);
+                    byId('clearJsonBtn')?.addEventListener('click', clearJson);
+                    byId('formatJsonBtn')?.addEventListener('click', formatJSON);
+                    byId('compressJsonBtn')?.addEventListener('click', compressJSON);
+                    byId('validateJsonBtn')?.addEventListener('click', validateJSON);
+                    byId('copyOutputBtn')?.addEventListener('click', copyJsonOutput);
+                    byId('downloadOutputBtn')?.addEventListener('click', () => {
+                        if (typeof downloadOutput === 'function') return downloadOutput();
+                        const out = document.getElementById('jsonOutput');
+                        if (!out || !out.value) return;
+                        const blob = new Blob([out.value], { type: 'application/json;charset=utf-8' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a'); a.href = url; a.download = 'data.json';
+                        document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+                    });
+                    byId('showTreeBtn')?.addEventListener('click', () => toggleJsonView('tree'));
+                    byId('showTextBtn')?.addEventListener('click', () => toggleJsonView('text'));
+
+                    // 绑定树事件
+                    bindTreeDelegation();
+                    bindTreeSearch();
+
+                    // 默认展示树视图（根据 UI 默认按钮状态）
+                    const defaultToTree = document.getElementById('showTreeBtn')?.classList.contains('active');
+                    toggleJsonView(defaultToTree ? 'tree' : 'text');
+                }, 0);
             }
         });
     }
