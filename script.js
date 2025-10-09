@@ -53,6 +53,7 @@ function initializeApp() {
     updateColorInputs('#3498db');
     generatePalette();
     updateColorHistory(); // 加载颜色历史
+    updateColorFavorites(); // 加载颜色收藏
 
     // 初始化正则表达式测试
     testRegex();
@@ -1009,6 +1010,7 @@ function updateColorInputs(color) {
 
 // 色彩历史管理
 let colorHistory = JSON.parse(localStorage.getItem('colorHistory') || '[]');
+let colorFavorites = JSON.parse(localStorage.getItem('colorFavorites') || '[]');
 
 function addToColorHistory(color) {
     // 避免重复
@@ -1042,6 +1044,72 @@ function updateColorHistory() {
         colorDiv.addEventListener('click', () => updateColorInputs(color));
         historyContainer.appendChild(colorDiv);
     });
+}
+
+// 手动保存到历史（供按钮使用）
+function saveToHistory() {
+    const hexInput = document.getElementById('hexInput');
+    const color = (hexInput?.value || '').trim();
+    if (!/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(color)) {
+        showNotification && showNotification('未检测到有效颜色', 'warning');
+        return;
+    }
+    addToColorHistory(color);
+    showNotification && showNotification('已保存到历史', 'success');
+}
+
+// 收藏管理
+function isFavorite(color) {
+    return colorFavorites.includes(color);
+}
+
+function toggleFavoriteColor() {
+    const hexInput = document.getElementById('hexInput');
+    const color = (hexInput?.value || '').trim();
+    if (!/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(color)) {
+        showNotification && showNotification('当前颜色无效，无法收藏', 'warning');
+        return;
+    }
+    const idx = colorFavorites.indexOf(color);
+    if (idx >= 0) {
+        colorFavorites.splice(idx, 1);
+        showNotification && showNotification('已取消收藏', 'info');
+    } else {
+        // 最近在前，去重
+        colorFavorites = [color, ...colorFavorites.filter(c => c !== color)].slice(0, 30);
+        showNotification && showNotification('已收藏当前颜色', 'success');
+    }
+    localStorage.setItem('colorFavorites', JSON.stringify(colorFavorites));
+    updateColorFavorites();
+}
+
+function updateColorFavorites() {
+    const favContainer = document.getElementById('colorFavorites');
+    if (!favContainer) return;
+    favContainer.innerHTML = '';
+    if (!Array.isArray(colorFavorites)) colorFavorites = [];
+    colorFavorites.forEach(color => {
+        const div = document.createElement('div');
+        div.className = 'history-color';
+        div.style.backgroundColor = color;
+        div.title = color + '（点击应用，右键取消收藏）';
+        div.addEventListener('click', () => updateColorInputs(color));
+        div.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            colorFavorites = colorFavorites.filter(c => c !== color);
+            localStorage.setItem('colorFavorites', JSON.stringify(colorFavorites));
+            updateColorFavorites();
+        });
+        favContainer.appendChild(div);
+    });
+}
+
+function clearColorFavorites() {
+    if (!confirm('确定清空所有收藏颜色吗？')) return;
+    colorFavorites = [];
+    localStorage.setItem('colorFavorites', JSON.stringify(colorFavorites));
+    updateColorFavorites();
+    showNotification && showNotification('收藏已清空', 'info');
 }
 
 // 颜色特性分析

@@ -362,6 +362,9 @@
                                 <button class="picker-btn" onclick="saveToHistory()" title="保存到历史">
                                     <i class="fas fa-bookmark"></i>
                                 </button>
+                                <button class="picker-btn" onclick="toggleFavoriteColor()" title="收藏/取消收藏当前颜色">
+                                    <i class="fas fa-star"></i>
+                                </button>
                             </div>
                         </div>
                         
@@ -436,6 +439,19 @@
                         </div>
                     </div>
 
+                    <!-- 颜色收藏 -->
+                    <div class="color-favorites-section">
+                        <div class="section-header">
+                            <h4><i class="fas fa-star"></i> 颜色收藏</h4>
+                            <button class="clear-btn" onclick="clearColorFavorites()">
+                                <i class="fas fa-trash"></i> 清空
+                            </button>
+                        </div>
+                        <div class="color-history" id="colorFavorites">
+                            <!-- 收藏颜色将通过 JavaScript 添加 -->
+                        </div>
+                    </div>
+
                     <!-- 调色板生成 -->
                     <div class="palette-section">
                         <div class="section-header">
@@ -502,6 +518,11 @@
                             <label><input type="checkbox" id="globalFlag" checked> 全局匹配 (g)</label>
                             <label><input type="checkbox" id="ignoreCaseFlag"> 忽略大小写 (i)</label>
                             <label><input type="checkbox" id="multilineFlag"> 多行模式 (m)</label>
+                        </div>
+                        <div class="regex-extra-controls" style="margin: .5rem 0 1rem;">
+                            <button class="btn secondary" onclick="showRegexTemplates()" title="打开常用正则模板库">
+                                <i class="fas fa-book"></i> 模板库
+                            </button>
                         </div>
                         <div class="form-group">
                             <label for="testString">测试字符串</label>
