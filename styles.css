@@ -146,29 +146,9 @@ body {
     backdrop-filter: blur(10px);
 }
 
-.header-actions {
-    display: flex;
-    gap: .75rem;
-    flex-wrap: nowrap;
-    align-items: center;
-    row-gap: .4rem; 
-    column-gap: .5rem; 
-}
+.header-actions { display:flex; gap:.5rem; flex-wrap:nowrap; align-items:center; }
 
-.github-btn {
-    background: #24292e;
-    color: white;
-    text-decoration: none;
-    padding: .55rem .8rem; /* 更紧凑 */
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: .55rem; 
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-    min-width: 0;
-    white-space: nowrap;
-}
+.github-btn { background:#24292e; color:#fff; text-decoration:none; padding:.45rem .6rem; border-radius:10px; display:flex; align-items:center; gap:.5rem; transition:all .3s ease; border:1px solid transparent; min-width:0; white-space:nowrap; }
 
 .github-btn:hover {
     background: #1a1e22;
@@ -177,25 +157,13 @@ body {
     border-color: rgba(255, 255, 255, 0.2);
 }
 
-.github-btn i {
-    font-size: 1.5rem;
-}
+.github-btn i { font-size:1.2rem; }
 
-.btn-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
+.btn-text { display:flex; flex-direction:row; align-items:center; gap:.4rem; }
 
-.btn-text strong {
-    font-size: .95rem;
-    margin-bottom: 0.15rem; 
-}
+.btn-text strong { font-size:.92rem; }
 
-.btn-text small {
-    font-size: 0.8rem;
-    opacity: 0.8;
-.btn-text small { font-size: .75rem; opacity:.8; }
+.btn-text small { font-size:.78rem; opacity:.8; white-space:nowrap; }
 
 .quick-start-btn, .install-btn {
     background: rgba(255, 255, 255, 0.2);
@@ -284,60 +252,40 @@ body {
 }
 
 .feature-card h3 {
-    font-size: 1.2rem;
-    margin: 0 0 0.5rem 0;
+    font-size: 1.05rem;
+    margin: 0 0 .35rem 0;
     color: var(--text-color);
-.feature-card h3 { font-size:1.05rem; margin:0 0 .35rem 0; color:var(--text-color); }
+}
 
 .feature-card p {
     font-size: 0.9rem;
     color: var(--text-color-secondary);
-    font-size: 2.1rem; margin: 0 0 .5rem 0; font-weight: 700; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
+}
+
+.features-toggle {
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
     background: var(--primary-color);
     color: white;
     border: none;
-    padding: .35rem .75rem; 
+    padding: .35rem .75rem;
     border-radius: 20px 20px 0 0;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.features-toggle:hover {
-    background: #2980b9;
-}
+.features-toggle:hover { background: #2980b9; }
 
-.features-toggle i {
-    transition: transform 0.3s ease;
-}
+.features-toggle i { transition: transform 0.3s ease; }
 
-.features-highlight.collapsed .features-toggle i {
-    transform: rotate(180deg);
-}
+.features-highlight.collapsed .features-toggle i { transform: rotate(180deg); }
 
 .theme-toggle {
     position: absolute;
     top: 1rem;
     right: 1rem;
     background: rgba(255,255,255,0.2);
-    
-    /* 语言切换按钮 */
-    .lang-toggle {
-        background: var(--surface-color);
-        border: 1px solid var(--border-color);
-        color: var(--text-color);
-        padding: 0.45rem 0.75rem;
-        margin-left: 0.75rem;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        transition: background .25s, color .25s, border .25s, transform .2s;
-    }
-        font-size: .95rem; margin: 0 0 .75rem 0; opacity:.9; line-height:1.5; }
-    [data-theme="dark"] .lang-toggle:hover { background: var(--primary-color); }
     border: none;
     color: white;
     padding: 0.75rem;
@@ -347,10 +295,23 @@ body {
     backdrop-filter: blur(10px);
 }
 
-.theme-toggle:hover {
-    background: rgba(255,255,255,0.3);
-    transform: scale(1.1);
+.theme-toggle:hover { background: rgba(255,255,255,0.3); transform: scale(1.1); }
+
+.lang-toggle {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.45rem 0.75rem;
+    margin-left: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: background .25s, color .25s, border .25s, transform .2s;
 }
+
+[data-theme="dark"] .lang-toggle:hover { background: var(--primary-color); }
 
 /* 导航样式 */
 .nav {
