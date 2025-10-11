@@ -63,7 +63,7 @@ body {
 .header {
     background: linear-gradient(135deg, var(--primary-color), #2980b9);
     color: white;
-    padding: 2rem 1rem;
+    padding: 1.2rem 1rem; /* 从 2rem 降低到 1.2rem */
     position: relative;
     overflow: hidden;
 }
@@ -104,7 +104,7 @@ body {
 .header-main h1 {
     font-size: 2.8rem;
     margin: 0 0 1rem 0;
-    font-weight: 700;
+    font-weight: 700; 
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -123,14 +123,14 @@ body {
 .header-tagline {
     font-size: 1.2rem;
     margin: 0 0 1.5rem 0;
-    opacity: 0.9;
+    opacity: 0.9; 
     line-height: 1.5;
 }
 
 .header-stats {
     display: flex;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: .75rem; 
     flex-wrap: wrap;
 }
 
@@ -151,19 +151,19 @@ body {
     gap: .75rem;
     flex-wrap: nowrap;
     align-items: center;
-    row-gap: .5rem;
-    column-gap: .75rem;
+    row-gap: .4rem; 
+    column-gap: .5rem; 
 }
 
 .github-btn {
     background: #24292e;
     color: white;
     text-decoration: none;
-    padding: .7rem 1rem;
+    padding: .55rem .8rem; /* 更紧凑 */
     border-radius: 10px;
     display: flex;
     align-items: center;
-    gap: .65rem;
+    gap: .55rem; 
     transition: all 0.3s ease;
     border: 1px solid transparent;
     min-width: 0;
@@ -189,19 +189,19 @@ body {
 
 .btn-text strong {
     font-size: .95rem;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem; 
 }
 
 .btn-text small {
     font-size: 0.8rem;
     opacity: 0.8;
-}
+.btn-text small { font-size: .75rem; opacity:.8; }
 
 .quick-start-btn, .install-btn {
     background: rgba(255, 255, 255, 0.2);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: .7rem 1rem;
+    padding: .55rem .8rem; 
     border-radius: 10px;
     cursor: pointer;
     display: flex;
@@ -238,7 +238,7 @@ body {
 .features-highlight {
     background: var(--surface-color);
     border-bottom: 1px solid var(--border-color);
-    padding: 2rem 1rem;
+    padding: 1rem; 
     position: relative;
     transition: all 0.3s ease;
 }
@@ -252,16 +252,16 @@ body {
 .highlight-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+    gap: 1rem; 
     max-width: 1200px;
     margin: 0 auto;
-    max-height: 500px;
+    max-height: 400px; 
     transition: all 0.3s ease;
 }
 
 .feature-card {
     background: var(--bg-color);
-    padding: 1.5rem;
+    padding: 1rem; 
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     text-align: center;
@@ -276,7 +276,7 @@ body {
 
 .feature-icon {
     font-size: 2.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: .5rem; 
     height: 60px;
     display: flex;
     align-items: center;
@@ -287,24 +287,18 @@ body {
     font-size: 1.2rem;
     margin: 0 0 0.5rem 0;
     color: var(--text-color);
-}
+.feature-card h3 { font-size:1.05rem; margin:0 0 .35rem 0; color:var(--text-color); }
 
 .feature-card p {
     font-size: 0.9rem;
     color: var(--text-color-secondary);
-    margin: 0;
-    line-height: 1.5;
-}
-
-.features-toggle {
-    position: absolute;
-    bottom: 0.5rem;
+    font-size: 2.1rem; margin: 0 0 .5rem 0; font-weight: 700; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
     left: 50%;
     transform: translateX(-50%);
     background: var(--primary-color);
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: .35rem .75rem; 
     border-radius: 20px 20px 0 0;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -342,10 +336,7 @@ body {
         letter-spacing: 0.5px;
         transition: background .25s, color .25s, border .25s, transform .2s;
     }
-
-    .lang-toggle:hover { background: var(--primary-color); color: #fff; }
-    .lang-toggle:active { transform: scale(.92); }
-    [data-theme="dark"] .lang-toggle { background:#1f2733; }
+        font-size: .95rem; margin: 0 0 .75rem 0; opacity:.9; line-height:1.5; }
     [data-theme="dark"] .lang-toggle:hover { background: var(--primary-color); }
     border: none;
     color: white;
@@ -1171,19 +1162,18 @@ body {
 
 .json-btn {
     background: var(--bg-color);
-    border: 1px solid var(--border-color);
     color: var(--text-color);
-    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 0.75rem;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.875rem;
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    transition: var(--transition);
-    white-space: nowrap;
+    gap: 0.5rem;
     position: relative;
     overflow: hidden;
+    transition: all 0.2s ease;
 }
 
 .json-btn:hover {

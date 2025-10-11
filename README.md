@@ -140,6 +140,13 @@ php -S localhost:8000
 2. 点击浏览器地址栏的"安装"按钮
 3. 确认安装到桌面
 
+小贴士：当浏览器支持安装时，页面顶部会出现“安装横幅”，同时页眉里也会出现“安装到桌面”按钮；若看不到，可以尝试刷新页面或通过浏览器菜单查找“安装应用”。
+
+### 🔄 更新与缓存
+- 本站采用 Service Worker 管理静态资源缓存。发布新版本时会自动提示“有新版本可用”。
+- 点击“立即更新”将自动激活新版并刷新页面；如未出现提示，可手动强制刷新（macOS：⌘+Shift+R）。
+- 若遇到缓存问题，可在浏览器 DevTools 的 Application > Service Workers 页面，先 Unregister 再刷新。
+
 ## 🛠 工具详情
 
 ### 🔐 密码生成器
@@ -305,9 +312,15 @@ php -S localhost:8000
 
 为提升维护性与可扩展性，项目已开始将逻辑按职责拆分：
 
-- script.js：核心应用逻辑与各工具功能（后续将继续细分到 tools/*）
+- script.js：核心应用逻辑与跨工具交互（逐步下沉到 tools/* 模块）
 - js/header.js：页头浮动 Star CTA、页面就绪标记（body.ready）等交互
 - js/pwa.js：Service Worker 注册、PWA 安装横幅、更新提示等逻辑
+
+已完成的工具模块（逐步迁移中）：
+- js/tools/password-generator.js（密码生成器）
+- js/tools/json-formatter.js（JSON 美化/压缩/校验 + 树视图 + 搜索）
+
+HTML 片段采用 `partials/*.html` 并由 `js/partials.js` 在运行时注入，提升可维护性与复用度。
 
 Service Worker 的预缓存列表已加入新拆分的脚本文件，确保离线可用。
 

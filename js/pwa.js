@@ -42,6 +42,10 @@
         console.log('PWA 安装提示被触发');
         e.preventDefault();
         deferredPrompt = e;
+        // 展示头部的“安装到桌面”按钮
+        const headerBtn = document.getElementById('installPwaHeaderBtn');
+        if (headerBtn) headerBtn.style.display = 'inline-flex';
+        // 也可直接展示横幅提醒
         showInstallPrompt();
     });
 
@@ -88,6 +92,30 @@
             setTimeout(() => banner.remove(), 300);
         }
     }
+
+    // 对外暴露安装方法，供头部按钮调用
+    window.installPWA = function installPWA() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.finally(() => {
+                deferredPrompt = null;
+                hideInstallPrompt();
+                const headerBtn = document.getElementById('installPwaHeaderBtn');
+                if (headerBtn) headerBtn.style.display = 'none';
+            });
+        } else {
+            // 若无法触发浏览器原生提示，回退为展示横幅
+            showInstallPrompt();
+        }
+    };
+
+    // 安装完成事件：隐藏横幅与头部按钮，做一次轻提示
+    window.addEventListener('appinstalled', () => {
+        console.log('PWA 已安装');
+        hideInstallPrompt();
+        const headerBtn = document.getElementById('installPwaHeaderBtn');
+        if (headerBtn) headerBtn.style.display = 'none';
+    });
 
     // 显示更新可用提示
     function showUpdateAvailable() {
