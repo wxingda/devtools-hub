@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.5.2';
+const CACHE_VERSION = 'v1.5.3';
 const CORE_CACHE = `devtools-core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `devtools-runtime-${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
@@ -22,6 +22,7 @@ const CORE_ASSETS = [
     '/partials/nav.html',
     '/partials/footer.html',
     '/partials/star-cta.html',
+    '/partials/github-corner.html',
     '/partials/usage-modal.html'
 ];
 

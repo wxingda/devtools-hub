@@ -185,10 +185,17 @@ body {
 [data-star-count] { margin-left: .25rem; }
 .star-count-badge { white-space: nowrap; }
 
+/* GitHub Corner */
+.github-corner { position: absolute; top: 0; right: 0; z-index: 50; }
+.github-corner svg { opacity:.96; }
+[data-theme="dark"] .github-corner svg { fill:#0d1117 !important; color:#fff !important; }
+html:not([data-theme="dark"]) .github-corner svg { fill:#fff !important; color:#0d1117 !important; }
+
 /* 官方 GitHub 按钮与徽章在窄屏进行收纳 */
 @media (max-width: 768px) {
     .github-button { display: none !important; }
     .star-count-badge { display:none; }
+    .github-corner { transform: scale(.8); transform-origin: top right; }
 }
 
 /* GitHub Corner 样式已移除 */
