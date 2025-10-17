@@ -12,6 +12,7 @@
 [![Website](https://img.shields.io/badge/website-online-success?style=for-the-badge&logo=vercel)](https://wxingda.github.io/devtools-hub)
 [![PWA Ready](https://img.shields.io/badge/PWA-ready-orange?style=for-the-badge&logo=googlechrome)](https://wxingda.github.io/devtools-hub)
 [![i18n](https://img.shields.io/badge/i18n-ZH|EN-informational?style=for-the-badge)](#-多语言)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge&logo=github)](CONTRIBUTING.md)
 
 [![View Demo](https://img.shields.io/badge/🌟-查看演示-ff4757?style=for-the-badge&logoColor=white)](https://wxingda.github.io/devtools-hub)
 [![Download](https://img.shields.io/badge/⬇️-立即下载-2ed573?style=for-the-badge&logoColor=white)](https://github.com/wxingda/devtools-hub/archive/refs/heads/main.zip)
@@ -36,6 +37,10 @@
 
 ## ✨ TL;DR
 > 零依赖、纯前端、多工具集合 + PWA + 深色模式 + 多语言切换。直接访问即可使用：**https://wxingda.github.io/devtools-hub**
+
+如果这个项目对你有帮助，欢迎到 GitHub 点个 ⭐️Star 支持一下，能帮助更多开发者发现它：
+
+👉 https://github.com/wxingda/devtools-hub
 
 ---
 
