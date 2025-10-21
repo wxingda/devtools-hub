@@ -160,6 +160,13 @@ function showQuickStart() {
                         <li>工具间可快速切换，提升工作效率</li>
                     </ul>
                 </div>
+                <div class="quick-start-cta" style="margin-top:1rem;display:flex;align-items:center;gap:.6rem;justify-content:flex-end">
+                    <a href="https://github.com/wxingda/devtools-hub" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;color:var(--text-color);border:1px solid var(--border-color);padding:.4rem .6rem;border-radius:10px;background:var(--bg-color)">
+                        <i class="fab fa-github"></i>
+                        <span>喜欢？给个 Star</span>
+                        <span class="star-count-badge" data-star-count>—</span>
+                    </a>
+                </div>
             </div>
         </div>
     `;

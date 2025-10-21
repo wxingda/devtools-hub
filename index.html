@@ -126,27 +126,19 @@
     <link rel="apple-touch-icon" sizes="167x167" href="/icons/icon-167x167.png">
     <link rel="manifest" href="/manifest.json">
 
-    <!-- Canonical & Open Graph -->
-    <link rel="canonical" href="https://wxingda.github.io/devtools-hub" />
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="DevTools Hub">
-    <meta property="og:title" content="DevTools Hub - 一站式开发者工具集合" />
-    <meta property="og:description" content="集成密码生成、颜色调色、正则测试、JSON格式化、哈希、二维码、时间戳、文本对比、CSS单位等10+工具，支持离线/PWA" />
-    <meta property="og:url" content="https://wxingda.github.io/devtools-hub" />
-    <meta property="og:image" content="https://wxingda.github.io/devtools-hub/screenshots/password-generator.png" />
-    <meta property="og:image:alt" content="DevTools Hub 截图" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="DevTools Hub - 开发者工具集合" />
-    <meta name="twitter:description" content="一站式多功能开发工具箱 (PWA/离线)" />
-    <meta name="twitter:image" content="https://wxingda.github.io/devtools-hub/screenshots/password-generator.png" />
+    
 
     <!-- 预连接 & 预加载 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="//github.com">
+    <link rel="dns-prefetch" href="//buttons.github.io">
+    <link rel="dns-prefetch" href="//api.github.com">
+    <link rel="preconnect" href="https://github.com" crossorigin>
+    <link rel="preconnect" href="https://buttons.github.io" crossorigin>
+    <link rel="preconnect" href="https://api.github.com" crossorigin>
     <link rel="preload" href="/styles.css" as="style">
     <link rel="preload" href="/script.js" as="script">
 
@@ -158,8 +150,21 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
 
-    <!-- JSON-LD -->
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"DevTools Hub","description":"一站式开发者工具集合 (密码/颜色/正则/JSON/二维码/哈希/时间戳/对比/CSS单位)","url":"https://wxingda.github.io/devtools-hub","applicationCategory":"DeveloperApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"wxingda"}}</script>
+        <!-- JSON-LD: WebSite + SearchAction -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "DevTools Hub",
+            "url": "https://wxingda.github.io/devtools-hub/",
+            "inLanguage": "zh-CN",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://wxingda.github.io/devtools-hub/?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        }
+        </script>
 
     <!-- 首屏加载体验占位 -->
     <style>body:not(.ready) .main{opacity:.001}body:not(.ready)::before{content:'正在加载 DevTools Hub...';position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font:500 1rem/1.4 system-ui;color:#555;background:var(--bg-color);}html[data-theme='dark'] body:not(.ready)::before{color:#bbb}</style>
