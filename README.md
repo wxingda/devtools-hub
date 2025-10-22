@@ -131,12 +131,20 @@ xdg-open index.html  # Linux
 # 使用 Python
 python -m http.server 8000
 
+# 如果想减少输出，可以重定向日志（Linux/macOS）
+python -m http.server 8000 > /dev/null 2>&1
+
+# 或者仅显示错误信息
+python -m http.server 8000 > /dev/null
+
 # 使用 Node.js
 npx serve .
 
 # 使用 PHP
 php -S localhost:8000
 ```
+
+> 💡 **提示**：`python -q` 参数用于启动 Python 交互式解释器时不显示版本信息，但对 `http.server` 模块无效。如需减少服务器日志输出，可使用重定向符号 `> /dev/null`。
 
 ### 🔧 PWA 安装
 支持安装到桌面，像原生应用一样使用！

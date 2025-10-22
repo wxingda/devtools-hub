@@ -72,9 +72,18 @@ xdg-open index.html # Linux
 Or via a tiny static server:
 ```bash
 python -m http.server 8000
+
+# To reduce log output (Linux/macOS)
+python -m http.server 8000 > /dev/null 2>&1
+
+# Or show only errors
+python -m http.server 8000 > /dev/null
+
 # or
 npx serve .
 ```
+
+> 💡 **Note**: The `python -q` flag suppresses version/copyright messages in Python's interactive mode, but doesn't work with `http.server`. To suppress server logs, use output redirection like `> /dev/null`.
 
 ### Install as PWA
 1. Open the live site
