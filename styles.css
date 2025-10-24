@@ -2155,6 +2155,9 @@ html:not([data-theme="dark"]) .github-corner svg { fill:#fff !important; color:#
 /* Star CTA 内计数 */
 .star-cta-count { font-weight:700; padding:.1rem .45rem; background: rgba(255,255,255,.15); border-radius: 999px; }
 
+/* 性能优化：延迟渲染屏外工具，降低首屏样式/布局/绘制成本 */
+.tool { content-visibility: auto; contain-intrinsic-size: 800px; }
+
 /* CSS 单位转换器 */
 .css-unit-table {
     margin-top: 1.25rem;

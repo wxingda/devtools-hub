@@ -60,6 +60,9 @@ function initializeApp() {
 
     // 添加页面加载动画
     addPageTransitions();
+
+    // 首次设置工具区域的可访问性与性能优化（仅激活工具可交互）
+    applyInertState(currentTool);
 }
 
 // 初始化 Header 功能
@@ -479,6 +482,18 @@ function addPageTransitions() {
     }, 100);
 }
 
+// 仅让当前激活的工具可交互，其它工具标记为 inert（可减少事件与辅助技术干扰）
+function applyInertState(activeId) {
+    const tools = document.querySelectorAll('.tool');
+    tools.forEach(el => {
+        if (el.id === activeId) {
+            el.removeAttribute('inert');
+        } else {
+            el.setAttribute('inert', '');
+        }
+    });
+}
+
 // 设置导航
 function setupNavigation() {
     const navButtons = document.querySelectorAll('.nav-btn');
@@ -542,6 +557,8 @@ function switchTool(toolId) {
             }, 50);
         }
         currentTool = toolId;
+        // 更新 inert 状态：仅当前工具可交互
+        applyInertState(currentTool);
     }, 150);
 
     // 添加点击反馈动画

@@ -27,6 +27,16 @@
   <sub>已支持 PWA、离线使用、零依赖，适合收藏备用。</sub>
  </p>
 
+<!-- 在线体验 + Star 并列按钮，提升转化 -->
+<p align="center" style="margin-top:8px;">
+  <a href="https://wxingda.github.io/devtools-hub" target="_blank" rel="noopener" style="text-decoration:none;margin-right:.6rem">
+    <img src="https://img.shields.io/badge/🚀-在线体验-ff6b6b?style=for-the-badge&logo=googlechrome&logoColor=white" alt="在线体验" />
+  </a>
+  <a href="https://github.com/wxingda/devtools-hub" target="_blank" rel="noopener" style="text-decoration:none;">
+    <img src="https://img.shields.io/badge/⭐-Star-ffca28?style=for-the-badge&logo=github&logoColor=white" alt="Star on GitHub" />
+  </a>
+</p>
+
 <p align="center">
   <sup>English version coming soon – PRs welcome! (You can still use the app in English via the toggle inside the UI)</sup>
 </p>
