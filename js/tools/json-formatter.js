@@ -386,6 +386,9 @@
                     const defaultToTree = document.getElementById('showTreeBtn')?.classList.contains('active');
                     toggleJsonView(defaultToTree ? 'tree' : 'text');
                 }, 0);
+            },
+            clear: function () {
+                window.clearJson();
             }
         });
     }

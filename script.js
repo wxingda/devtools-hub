@@ -46,18 +46,6 @@ function initializeApp() {
         });
     }
 
-    // 自动计算初始哈希值
-    calculateHashes();
-
-    // 初始化颜色选择器
-    updateColorInputs('#3498db');
-    generatePalette();
-    updateColorHistory(); // 加载颜色历史
-    updateColorFavorites(); // 加载颜色收藏
-
-    // 初始化正则表达式测试
-    testRegex();
-
     // 添加页面加载动画
     addPageTransitions();
 
@@ -427,6 +415,15 @@ function setupKeyboardShortcuts() {
 
 // 清空当前工具
 function clearCurrentTool() {
+    if (window.DevToolsHub && window.DevToolsHub.state.tools[currentTool]) {
+        const tool = window.DevToolsHub.state.tools[currentTool];
+        if (tool.clear && typeof tool.clear === 'function') {
+            tool.clear();
+            return;
+        }
+    }
+
+    // 备用逻辑：兼容未迁移 clear 的旧工具或特定 ID
     switch (currentTool) {
         case 'password-generator':
             document.getElementById('generatedPassword').value = '';
@@ -444,21 +441,27 @@ function clearCurrentTool() {
             document.getElementById('base64Output').value = '';
             break;
         case 'hash-calculator':
-            document.getElementById('hashInput').value = '';
-            calculateHashes();
+            const hashInput = document.getElementById('hashInput');
+            if (hashInput) {
+                hashInput.value = '';
+                if (typeof calculateHashes === 'function') calculateHashes();
+            }
             break;
         case 'timestamp-converter':
-            document.getElementById('timestampInput').value = '';
-            document.getElementById('datetimeInput').value = '';
-            document.getElementById('timestampResult').value = '';
-            document.getElementById('datetimeResult').value = '';
+            const tsInputs = ['timestampInput', 'datetimeInput', 'timestampResult', 'datetimeResult'];
+            tsInputs.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
             break;
         case 'qr-generator':
-            document.getElementById('qrText').value = '';
-            document.getElementById('qrDisplay').innerHTML = '<p>点击"生成二维码"按钮创建二维码</p>';
+            const qrText = document.getElementById('qrText');
+            if (qrText) qrText.value = '';
+            const qrDisplay = document.getElementById('qrDisplay');
+            if (qrDisplay) qrDisplay.innerHTML = '<p>点击"生成二维码"按钮创建二维码</p>';
             break;
         case 'text-diff':
-            clearDiff();
+            if (typeof clearDiff === 'function') clearDiff();
             break;
     }
 }

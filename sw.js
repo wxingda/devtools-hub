@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.5.3';
+const CACHE_VERSION = 'v1.6.0';
 const CORE_CACHE = `devtools-core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `devtools-runtime-${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
@@ -13,6 +13,13 @@ const CORE_ASSETS = [
     '/js/pwa.js',
     '/js/tools/password-generator.js',
     '/js/tools/json-formatter.js',
+    '/js/tools/color-palette.js',
+    '/js/tools/regex-tester.js',
+    '/js/tools/hash-calculator.js',
+    '/js/tools/url-encoder.js',
+    '/js/tools/base64-encoder.js',
+    '/js/tools/timestamp-converter.js',
+    '/js/tools/css-units.js',
     '/manifest.json',
     OFFLINE_URL,
     '/screenshots/password-generator.png',

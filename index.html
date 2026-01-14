@@ -220,9 +220,9 @@
 
     <main id="main" class="main">
             <!-- 密码生成器 -->
-            <div class="tool" id="password-generator">
+            <div class="tool" id="password-generator" role="region" aria-labelledby="password-generator-title">
                 <div class="tool-header">
-                    <h2><i class="fas fa-key"></i> <span data-i18n="nav.password-generator">密码生成器</span></h2>
+                    <h2 id="password-generator-title"><i class="fas fa-key" aria-hidden="true"></i> <span data-i18n="nav.password-generator">密码生成器</span></h2>
                     <p data-i18n="tool.password.sub">生成安全的随机密码</p>
                 </div>
                 <div class="tool-content">
@@ -319,25 +319,25 @@
                                 <div class="strength-section">
                                     <div class="strength-header">
                                         <span class="strength-label">密码强度:</span>
-                                        <span id="strengthText" class="strength-text">待生成</span>
+                                        <span id="strengthText" class="strength-text" aria-live="polite">待生成</span>
                                     </div>
                                     <div class="strength-meter">
-                                        <div class="strength-bar" id="strengthBar"></div>
+                                        <div class="strength-bar" id="strengthBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
                                     </div>
                                 </div>
                                 
                                 <div class="password-info">
                                     <div class="info-item">
                                         <span class="info-label">字符数:</span>
-                                        <span id="charCount">0</span>
+                                        <span id="charCount" aria-live="polite">0</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">熵值:</span>
-                                        <span id="entropyValue">0 bits</span>
+                                        <span id="entropyValue" aria-live="polite">0 bits</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">破解时间:</span>
-                                        <span id="crackTime">-</span>
+                                        <span id="crackTime" aria-live="polite">-</span>
                                     </div>
                                 </div>
                             </div>
@@ -347,9 +347,9 @@
             </div>
 
             <!-- 颜色调色板 -->
-            <div class="tool" id="color-palette">
+            <div class="tool" id="color-palette" role="region" aria-labelledby="color-palette-title">
                 <div class="tool-header">
-                    <h2><i class="fas fa-palette"></i> <span data-i18n="nav.color-palette">颜色调色板</span></h2>
+                    <h2 id="color-palette-title"><i class="fas fa-palette" aria-hidden="true"></i> <span data-i18n="nav.color-palette">颜色调色板</span></h2>
                     <p data-i18n="tool.color.sub">颜色选择和格式转换</p>
                 </div>
                 <div class="tool-content">
@@ -440,7 +440,7 @@
                                 <i class="fas fa-trash"></i> 清空
                             </button>
                         </div>
-                        <div class="color-history" id="colorHistory">
+                        <div class="color-history" id="colorHistory" aria-live="polite">
                             <!-- 历史颜色将通过 JavaScript 添加 -->
                         </div>
                     </div>
@@ -453,7 +453,7 @@
                                 <i class="fas fa-trash"></i> 清空
                             </button>
                         </div>
-                        <div class="color-history" id="colorFavorites">
+                        <div class="color-history" id="colorFavorites" aria-live="polite">
                             <!-- 收藏颜色将通过 JavaScript 添加 -->
                         </div>
                     </div>
@@ -476,7 +476,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="palette-display" id="paletteDisplay">
+                        <div class="palette-display" id="paletteDisplay" aria-live="polite">
                             <!-- 调色板将通过 JavaScript 生成 -->
                         </div>
                     </div>
@@ -509,9 +509,9 @@
             </div>
 
             <!-- 正则表达式测试器 -->
-            <div class="tool" id="regex-tester">
+            <div class="tool" id="regex-tester" role="region" aria-labelledby="regex-tester-title">
                 <div class="tool-header">
-                    <h2><i class="fas fa-search"></i> <span data-i18n="nav.regex-tester">正则表达式测试器</span></h2>
+                    <h2 id="regex-tester-title"><i class="fas fa-search" aria-hidden="true"></i> <span data-i18n="nav.regex-tester">正则表达式测试器</span></h2>
                     <p data-i18n="tool.regex.sub">实时测试和验证正则表达式</p>
                 </div>
                 <div class="tool-content">
@@ -527,7 +527,7 @@
                         </div>
                         <div class="regex-extra-controls" style="margin: .5rem 0 1rem;">
                             <button class="btn secondary" onclick="showRegexTemplates()" title="打开常用正则模板库">
-                                <i class="fas fa-book"></i> 模板库
+                                <i class="fas fa-book" aria-hidden="true"></i> 模板库
                             </button>
                         </div>
                         <div class="form-group">
@@ -541,7 +541,7 @@
             </textarea>
                         </div>
                         <div class="regex-results">
-                            <h3>匹配结果 (<span id="matchCount">0</span> 个匹配)</h3>
+                            <h3>匹配结果 (<span id="matchCount" aria-live="polite">0</span> 个匹配)</h3>
                             <div class="matches-list" id="matchesList"></div>
                         </div>
                     </div>
@@ -549,9 +549,9 @@
             </div>
 
             <!-- JSON格式化器 -->
-            <div class="tool active" id="json-formatter">
+            <div class="tool active" id="json-formatter" role="region" aria-labelledby="json-formatter-title">
                 <div class="tool-header">
-                    <h2><i class="fas fa-code"></i> <span data-i18n="nav.json-formatter">JSON格式化器</span></h2>
+                    <h2 id="json-formatter-title"><i class="fas fa-code" aria-hidden="true"></i> <span data-i18n="nav.json-formatter">JSON格式化器</span></h2>
                     <p data-i18n="tool.json.sub">美化和压缩JSON数据</p>
                 </div>
                 <div class="tool-content" data-tool-section="json">
@@ -559,37 +559,37 @@
                 <div class="json-toolbar">
                     <div class="json-btn-group input-controls">
                         <button id="pasteJsonBtn" class="json-btn json-btn-paste" title="从剪贴板粘贴 JSON 数据 (Ctrl+V)">
-                            <i class="fas fa-paste"></i>粘贴
+                            <i class="fas fa-paste" aria-hidden="true"></i>粘贴
                         </button>
                         <button id="clearJsonBtn" class="json-btn json-btn-clear" title="清空所有内容">
-                            <i class="fas fa-times-circle"></i>清空
+                            <i class="fas fa-times-circle" aria-hidden="true"></i>清空
                         </button>
                     </div>
                     <div class="json-btn-group process-controls">
                         <button id="formatJsonBtn" class="json-btn json-btn-primary" title="美化格式化 JSON (推荐)">
-                            <i class="fas fa-code"></i>格式化
+                            <i class="fas fa-code" aria-hidden="true"></i>格式化
                         </button>
                         <button id="compressJsonBtn" class="json-btn" title="压缩 JSON，移除空格和换行">
-                            <i class="fas fa-compress-alt"></i>压缩
+                            <i class="fas fa-compress-alt" aria-hidden="true"></i>压缩
                         </button>
                         <button id="validateJsonBtn" class="json-btn" title="验证 JSON 语法正确性">
-                            <i class="fas fa-check-circle"></i>验证
+                            <i class="fas fa-check-circle" aria-hidden="true"></i>验证
                         </button>
                     </div>
                     <div class="json-btn-group output-controls">
                         <button id="copyOutputBtn" class="json-btn json-btn-copy" title="复制结果到剪贴板 (Ctrl+C)">
-                            <i class="fas fa-copy"></i>复制
+                            <i class="fas fa-copy" aria-hidden="true"></i>复制
                         </button>
                         <button id="downloadOutputBtn" class="json-btn" title="下载为 .json 文件">
-                            <i class="fas fa-download"></i>下载
+                            <i class="fas fa-download" aria-hidden="true"></i>下载
                         </button>
                     </div>
                     <div class="json-btn-group view-controls">
                         <button id="showTreeBtn" class="json-btn json-btn-toggle active" title="树形视图，便于查看结构">
-                            <i class="fas fa-sitemap"></i>树视图
+                            <i class="fas fa-sitemap" aria-hidden="true"></i>树视图
                         </button>
                         <button id="showTextBtn" class="json-btn json-btn-toggle" title="文本视图，便于编辑">
-                            <i class="fas fa-align-left"></i>文本
+                            <i class="fas fa-align-left" aria-hidden="true"></i>文本
                         </button>
                     </div>
                 </div>                    <!-- 搜索栏 -->
@@ -601,8 +601,8 @@
                     <div class="json-section">
                         <div class="json-panel">
                             <div class="json-panel-header">
-                                <h4><i class="fas fa-edit"></i> JSON 输入</h4>
-                                <div class="json-panel-stats" id="inputStats">0 行</div>
+                                <h4><i class="fas fa-edit" aria-hidden="true"></i> JSON 输入</h4>
+                                <div class="json-panel-stats" id="inputStats" aria-live="polite">0 行</div>
                             </div>
                             <div class="json-editor-wrapper">
                                 <textarea id="jsonInput" 
@@ -625,15 +625,15 @@
                         
                         <div class="json-panel">
                             <div class="json-panel-header">
-                                <h4><i class="fas fa-eye"></i> 预览结果</h4>
-                                <div class="json-panel-stats" id="outputStats">等待输入</div>
+                                <h4><i class="fas fa-eye" aria-hidden="true"></i> 预览结果</h4>
+                                <div class="json-panel-stats" id="outputStats" aria-live="polite">等待输入</div>
                             </div>
                             <div class="json-editor-wrapper">
                                 <textarea id="jsonOutput" rows="24" readonly spellcheck="false"></textarea>
                                 <div id="jsonTreeView" class="json-tree" hidden aria-label="JSON 树视图" role="tree"></div>
                             </div>
                             <div class="json-info">
-                                <span id="jsonStatus"></span>
+                                <span id="jsonStatus" aria-live="polite"></span>
                             </div>
                         </div>
                     </div>
@@ -641,9 +641,9 @@
             </div>
 
             <!-- URL编码器 -->
-            <div class="tool" id="url-encoder">
+            <div class="tool" id="url-encoder" role="region" aria-labelledby="url-encoder-title">
                 <div class="tool-header">
-                    <h2><i class="fas fa-link"></i> <span data-i18n="nav.url-encoder">URL编码/解码器</span></h2>
+                    <h2 id="url-encoder-title"><i class="fas fa-link" aria-hidden="true"></i> <span data-i18n="nav.url-encoder">URL编码/解码器</span></h2>
                     <p data-i18n="tool.url.sub">URL字符串编码解码</p>
                 </div>
                 <div class="tool-content">
@@ -654,10 +654,10 @@
                         </div>
                         <div class="url-controls">
                             <button class="btn primary" onclick="encodeURL()">
-                                <i class="fas fa-lock"></i> URL编码
+                                <i class="fas fa-lock" aria-hidden="true"></i> URL编码
                             </button>
                             <button class="btn secondary" onclick="decodeURL()">
-                                <i class="fas fa-unlock"></i> URL解码
+                                <i class="fas fa-unlock" aria-hidden="true"></i> URL解码
                             </button>
                         </div>
                         <div class="form-group">
@@ -669,9 +669,9 @@
             </div>
 
             <!-- Base64编码器 -->
-            <div class="tool" id="base64-encoder">
+            <div class="tool" id="base64-encoder" role="region" aria-labelledby="base64-encoder-title">
                 <div class="tool-header">
-                    <h2><i class="fas fa-file-code"></i> <span data-i18n="nav.base64-encoder">Base64编码器</span></h2>
+                    <h2 id="base64-encoder-title"><i class="fas fa-file-code" aria-hidden="true"></i> <span data-i18n="nav.base64-encoder">Base64编码器</span></h2>
                     <p data-i18n="tool.base64.sub">Base64编码解码工具</p>
                 </div>
                 <div class="tool-content">
@@ -682,10 +682,10 @@
                         </div>
                         <div class="base64-controls">
                             <button class="btn primary" onclick="encodeBase64()">
-                                <i class="fas fa-upload"></i> Base64编码
+                                <i class="fas fa-upload" aria-hidden="true"></i> Base64编码
                             </button>
                             <button class="btn secondary" onclick="decodeBase64()">
-                                <i class="fas fa-download"></i> Base64解码
+                                <i class="fas fa-download" aria-hidden="true"></i> Base64解码
                             </button>
                         </div>
                         <div class="form-group">
@@ -697,9 +697,9 @@
             </div>
 
             <!-- 哈希计算器 -->
-            <div class="tool" id="hash-calculator">
+            <div class="tool" id="hash-calculator" role="region" aria-labelledby="hash-calculator-title">
                 <div class="tool-header">
-                    <h2><i class="fas fa-calculator"></i> <span data-i18n="nav.hash-calculator">哈希计算器</span></h2>
+                    <h2 id="hash-calculator-title"><i class="fas fa-calculator" aria-hidden="true"></i> <span data-i18n="nav.hash-calculator">哈希计算器</span></h2>
                     <p data-i18n="tool.hash.sub">MD5、SHA1、SHA256计算</p>
                 </div>
                 <div class="tool-content">
@@ -714,7 +714,7 @@
                                 <div class="result-box">
                                     <input type="text" id="md5Result" readonly>
                                     <button class="copy-btn" onclick="copyHash('md5Result')">
-                                        <i class="fas fa-copy"></i>
+                                        <i class="fas fa-copy" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -723,7 +723,7 @@
                                 <div class="result-box">
                                     <input type="text" id="sha1Result" readonly>
                                     <button class="copy-btn" onclick="copyHash('sha1Result')">
-                                        <i class="fas fa-copy"></i>
+                                        <i class="fas fa-copy" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -732,7 +732,7 @@
                                 <div class="result-box">
                                     <input type="text" id="sha256Result" readonly>
                                     <button class="copy-btn" onclick="copyHash('sha256Result')">
-                                        <i class="fas fa-copy"></i>
+                                        <i class="fas fa-copy" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -742,9 +742,9 @@
             </div>
 
             <!-- 时间戳转换器 -->
-            <div class="tool" id="timestamp-converter">
+            <div class="tool" id="timestamp-converter" role="region" aria-labelledby="timestamp-converter-title">
                 <div class="tool-header">
-                    <h2><i class="fas fa-clock"></i> <span data-i18n="nav.timestamp-converter">时间戳转换器</span></h2>
+                    <h2 id="timestamp-converter-title"><i class="fas fa-clock" aria-hidden="true"></i> <span data-i18n="nav.timestamp-converter">时间戳转换器</span></h2>
                     <p data-i18n="tool.timestamp.sub">Unix时间戳与日期时间互转</p>
                 </div>
                 <div class="tool-content">
@@ -754,12 +754,12 @@
                                 <label for="timestampInput">Unix时间戳</label>
                                 <input type="number" id="timestampInput" placeholder="输入Unix时间戳...">
                                 <button class="btn secondary" onclick="setCurrentTimestamp()">
-                                    <i class="fas fa-clock"></i> 当前时间
+                                    <i class="fas fa-clock" aria-hidden="true"></i> 当前时间
                                 </button>
                             </div>
                             <div class="form-group">
                                 <label for="timestampResult">转换结果</label>
-                                <input type="text" id="timestampResult" readonly>
+                                <input type="text" id="timestampResult" readonly aria-live="polite">
                             </div>
                         </div>
                         <div class="datetime-input">
@@ -767,12 +767,12 @@
                                 <label for="datetimeInput">日期时间</label>
                                 <input type="datetime-local" id="datetimeInput">
                                 <button class="btn secondary" onclick="setCurrentDateTime()">
-                                    <i class="fas fa-calendar"></i> 当前时间
+                                    <i class="fas fa-calendar" aria-hidden="true"></i> 当前时间
                                 </button>
                             </div>
                             <div class="form-group">
                                 <label for="datetimeResult">转换结果</label>
-                                <input type="text" id="datetimeResult" readonly>
+                                <input type="text" id="datetimeResult" readonly aria-live="polite">
                             </div>
                         </div>
                         <div class="timestamp-formats">
@@ -780,15 +780,15 @@
                             <div class="format-grid">
                                 <div class="format-item">
                                     <label>ISO 8601:</label>
-                                    <input type="text" id="isoFormat" readonly>
+                                    <input type="text" id="isoFormat" readonly aria-live="polite">
                                 </div>
                                 <div class="format-item">
                                     <label>UTC:</label>
-                                    <input type="text" id="utcFormat" readonly>
+                                    <input type="text" id="utcFormat" readonly aria-live="polite">
                                 </div>
                                 <div class="format-item">
                                     <label>本地时间:</label>
-                                    <input type="text" id="localFormat" readonly>
+                                    <input type="text" id="localFormat" readonly aria-live="polite">
                                 </div>
                             </div>
                         </div>
@@ -797,9 +797,9 @@
             </div>
 
             <!-- 二维码生成器 -->
-            <div class="tool" id="qr-generator">
+            <div class="tool" id="qr-generator" role="region" aria-labelledby="qr-generator-title">
                 <div class="tool-header">
-                    <h2><i class="fas fa-qrcode"></i> <span data-i18n="nav.qr-generator">二维码生成器</span></h2>
+                    <h2 id="qr-generator-title"><i class="fas fa-qrcode" aria-hidden="true"></i> <span data-i18n="nav.qr-generator">二维码生成器</span></h2>
                     <p data-i18n="tool.qr.sub">将文本或URL转换为二维码</p>
                 </div>
                 <div class="tool-content">
@@ -830,16 +830,16 @@
                                 </div>
                             </div>
                             <button class="btn primary" onclick="generateQR()">
-                                <i class="fas fa-qrcode"></i> 生成二维码
+                                <i class="fas fa-qrcode" aria-hidden="true"></i> 生成二维码
                             </button>
                         </div>
                         <div class="qr-output">
-                            <div id="qrDisplay" class="qr-display">
+                            <div id="qrDisplay" class="qr-display" aria-live="polite">
                                 <p>点击"生成二维码"按钮创建二维码</p>
                             </div>
                             <div class="qr-actions">
                                 <button class="btn secondary" id="downloadQR" onclick="downloadQR()" style="display: none;">
-                                    <i class="fas fa-download"></i> 下载PNG
+                                    <i class="fas fa-download" aria-hidden="true"></i> 下载PNG
                                 </button>
                             </div>
                         </div>
@@ -848,9 +848,9 @@
             </div>
 
             <!-- 文本差异对比器 -->
-            <div class="tool" id="text-diff">
+            <div class="tool" id="text-diff" role="region" aria-labelledby="text-diff-title">
                 <div class="tool-header">
-                    <h2><i class="fas fa-exchange-alt"></i> <span data-i18n="nav.text-diff">文本差异对比</span></h2>
+                    <h2 id="text-diff-title"><i class="fas fa-exchange-alt" aria-hidden="true"></i> <span data-i18n="nav.text-diff">文本差异对比</span></h2>
                     <p data-i18n="tool.textdiff.sub">比较两段文本的差异</p>
                 </div>
                 <div class="tool-content" data-tool-section="text-diff">
@@ -858,29 +858,29 @@
                     <div class="json-toolbar">
                         <div class="json-btn-group input-controls">
                             <button class="json-btn json-btn-paste" onclick="pasteDiff('left')" title="从剪贴板粘贴到左侧">
-                                <i class="fas fa-paste"></i>粘贴左侧
+                                <i class="fas fa-paste" aria-hidden="true"></i>粘贴左侧
                             </button>
                             <button class="json-btn json-btn-paste" onclick="pasteDiff('right')" title="从剪贴板粘贴到右侧">
-                                <i class="fas fa-paste"></i>粘贴右侧
+                                <i class="fas fa-paste" aria-hidden="true"></i>粘贴右侧
                             </button>
                             <button class="json-btn" onclick="swapDiffTexts()" title="交换左右文本">
-                                <i class="fas fa-exchange-alt"></i>交换
+                                <i class="fas fa-exchange-alt" aria-hidden="true"></i>交换
                             </button>
                             <button class="json-btn json-btn-clear" onclick="clearDiff()" title="清空两侧文本">
-                                <i class="fas fa-times-circle"></i>清空
+                                <i class="fas fa-times-circle" aria-hidden="true"></i>清空
                             </button>
                         </div>
                         <div class="json-btn-group process-controls">
                             <button class="json-btn json-btn-primary" onclick="compareTexts()" title="对比两段文本差异">
-                                <i class="fas fa-search"></i>对比
+                                <i class="fas fa-search" aria-hidden="true"></i>对比
                             </button>
                         </div>
                         <div class="json-btn-group output-controls">
                             <button class="json-btn json-btn-copy" onclick="copyDiff()" title="复制对比结果为文本">
-                                <i class="fas fa-copy"></i>复制结果
+                                <i class="fas fa-copy" aria-hidden="true"></i>复制结果
                             </button>
                             <button class="json-btn" onclick="downloadDiff()" title="下载对比结果为 .txt">
-                                <i class="fas fa-download"></i>下载结果
+                                <i class="fas fa-download" aria-hidden="true"></i>下载结果
                             </button>
                         </div>
                     </div>
@@ -889,8 +889,8 @@
                     <div class="json-section">
                         <div class="json-panel">
                             <div class="json-panel-header">
-                                <h4><i class="fas fa-file-alt"></i> 原始文本</h4>
-                                <div class="json-panel-stats" id="textAStats">0 行</div>
+                                <h4><i class="fas fa-file-alt" aria-hidden="true"></i> 原始文本</h4>
+                                <div class="json-panel-stats" id="textAStats" aria-live="polite">0 行</div>
                             </div>
                             <div class="json-editor-wrapper">
                                 <textarea id="textA" rows="16" placeholder="输入原始文本...">function generatePassword() {
@@ -905,8 +905,8 @@
 
                         <div class="json-panel">
                             <div class="json-panel-header">
-                                <h4><i class="fas fa-file-alt"></i> 修改后文本</h4>
-                                <div class="json-panel-stats" id="textBStats">0 行</div>
+                                <h4><i class="fas fa-file-alt" aria-hidden="true"></i> 修改后文本</h4>
+                                <div class="json-panel-stats" id="textBStats" aria-live="polite">0 行</div>
                             </div>
                             <div class="json-editor-wrapper">
                                 <textarea id="textB" rows="16" placeholder="输入修改后的文本...">function generatePassword() {
@@ -921,11 +921,11 @@
 
                         <div class="json-panel">
                             <div class="json-panel-header">
-                                <h4><i class="fas fa-notes-medical"></i> 对比结果</h4>
-                                <div class="json-panel-stats" id="diffStats">点击"对比文本"查看差异</div>
+                                <h4><i class="fas fa-notes-medical" aria-hidden="true"></i> 对比结果</h4>
+                                <div class="json-panel-stats" id="diffStats" aria-live="polite">点击"对比文本"查看差异</div>
                             </div>
                             <div class="json-editor-wrapper">
-                                <div id="diffResult" class="diff-result"></div>
+                                <div id="diffResult" class="diff-result" aria-live="polite"></div>
                             </div>
                         </div>
                     </div>
@@ -933,9 +933,9 @@
             </div>
 
             <!-- CSS 单位转换器（移回主区域） -->
-            <div class="tool" id="css-unit-converter">
+            <div class="tool" id="css-unit-converter" role="region" aria-labelledby="css-unit-converter-title">
                 <div class="tool-header">
-                    <h2><i class="fas fa-ruler-combined"></i> <span data-i18n="nav.css-unit-converter">CSS 单位转换器</span></h2>
+                    <h2 id="css-unit-converter-title"><i class="fas fa-ruler-combined" aria-hidden="true"></i> <span data-i18n="nav.css-unit-converter">CSS 单位转换器</span></h2>
                     <p data-i18n="tool.cssunit.sub">在 px / rem / em / vw / vh / % 之间快速换算</p>
                 </div>
                 <div class="tool-content">
@@ -958,14 +958,14 @@
                             <option value="%">%</option>
                         </select>
                     </div>
-                    <button class="btn primary" onclick="convertCssUnits()"><i class="fas fa-exchange-alt"></i> 进行转换</button>
+                    <button class="btn primary" onclick="convertCssUnits()"><i class="fas fa-exchange-alt" aria-hidden="true"></i> 进行转换</button>
                     <div class="result-group" style="margin-top:1rem">
                         <div class="result-box">
-                            <input type="text" id="cssUnitResult" placeholder="结果将显示在这里..." readonly>
-                            <button class="copy-btn" onclick="copyCssUnitResult()"><i class="fas fa-copy"></i></button>
+                            <input type="text" id="cssUnitResult" placeholder="结果将显示在这里..." readonly aria-live="polite">
+                            <button class="copy-btn" onclick="copyCssUnitResult()"><i class="fas fa-copy" aria-hidden="true"></i></button>
                         </div>
                     </div>
-                    <div id="cssUnitTable" class="css-unit-table"></div>
+                    <div id="cssUnitTable" class="css-unit-table" aria-live="polite"></div>
                 </div>
             </div>
 
@@ -977,16 +977,22 @@
     </div>
 
     <script src="js/partials.js"></script>
-    <script src="script.js"></script>
-    <div data-include="partials/star-cta.html"></div>
-
-    <!-- 工具模块 -->
-    <script src="js/tools/password-generator.js"></script>
-    <script src="js/tools/json-formatter.js"></script>
-    
-    <!-- 拆分后的脚本模块 -->
     <script src="js/header.js"></script>
+    
+    <!-- 工具模块 -->
+    <script src="js/tools/json-formatter.js"></script>
+    <script src="js/tools/password-generator.js"></script>
+    <script src="js/tools/color-palette.js"></script>
+    <script src="js/tools/regex-tester.js"></script>
+    <script src="js/tools/hash-calculator.js"></script>
+    <script src="js/tools/url-encoder.js"></script>
+    <script src="js/tools/base64-encoder.js"></script>
+    <script src="js/tools/timestamp-converter.js"></script>
+    <script src="js/tools/css-units.js"></script>
+
+    <script src="script.js"></script>
     <script src="js/pwa.js"></script>
+    <div data-include="partials/star-cta.html"></div>
     <noscript><div style="margin:2rem;padding:1rem;border:1px solid #e74c3c;color:#e74c3c;border-radius:8px;max-width:760px;margin-inline:auto;font-size:.9rem">⚠️ 您的浏览器已禁用 JavaScript，DevTools Hub 需要 JS 才能运行。请启用后刷新。</div></noscript>
 
     <!-- GitHub Buttons 脚本：自动渲染 Star 计数按钮 -->

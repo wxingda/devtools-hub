@@ -29,9 +29,8 @@
     async function boot() {
         const els = Array.from(document.querySelectorAll('[data-include]'));
         placeholders.push(...els);
-        for (const el of els) {
-            await loadOne(el);
-        }
+        // 并行加载所有片段，提升首屏渲染速度
+        await Promise.all(els.map(el => loadOne(el)));
         resolveReady();
     }
 

@@ -251,6 +251,9 @@
 
                 // 自动生成初始密码
                 generatePassword();
+            },
+            clear: function () {
+                window.clearPassword();
             }
         });
     }
